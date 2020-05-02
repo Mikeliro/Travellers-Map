@@ -34,10 +34,6 @@ sourceSets {
         compileClasspath += sourceSets.api.output
         runtimeClasspath += sourceSets.api.output
     }
-    test {
-        compileClasspath += sourceSets.api.output
-        runtimeClasspath += sourceSets.api.output
-    }
 }
 
 minecraft {
@@ -141,11 +137,11 @@ idea {
 curseforge {
     apiKey = System.getenv('CURSE_API_KEY') // This should really be in a gradle.properties file
     project {
-        id = '238326'
+        id = '360748'
         changelog = file('changelog.txt') // A file can also be set using: changelog = file('changelog.txt')
         releaseType = 'alpha'
         mainArtifact(jar) {
-            displayName = "DRP Medieval - ${MC_VERSION} - v${MOD_VERSION} Alpha"
+            displayName = "Travellers Map - ${MC_VERSION} - v${MOD_VERSION} Alpha"
         }
     }
 }
