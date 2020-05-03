@@ -2,6 +2,7 @@ package net.dark_roleplay.travellers_map.objects.screens.full_map;
 
 import net.dark_roleplay.travellers_map.util.MapManager;
 import net.dark_roleplay.travellers_map.util.MapSegment;
+import net.dark_roleplay.travellers_map.util.MapSegmentUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,8 +25,8 @@ public class FullMapScreen extends Screen {
         int relativeX = playerPos.getX() - (playerPos.getX() & 0b00000000) - 256;
         int relativeZ = playerPos.getZ() - (playerPos.getZ() & 0b00000000) - 256;
 
-        MapSegment map = MapManager.getOrCreateMapSegment(world.getChunk(playerPos.getX() >> 4, playerPos.getZ() >> 4));
-        map.getMap().bindTexture();
+        MapSegment map = MapManager.getMapSegment(MapSegmentUtil.getSegment(player));
+        map.getDynTexture().bindTexture();
         map.updadteGPU();
 
 

@@ -41,7 +41,7 @@ public class TravellersMap {
 		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				MapManager.performIO();
+				MapManager.performUpdates();
 			}
 		}, 5000, 5000);
 	}

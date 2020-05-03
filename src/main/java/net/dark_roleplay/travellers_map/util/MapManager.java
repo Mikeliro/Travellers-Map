@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map.util;
 
+import net.dark_roleplay.travellers_map.objects.data.IMapSegmentTicket;
 import net.minecraft.world.chunk.IChunk;
 
 import java.io.File;
@@ -12,7 +13,7 @@ public class MapManager {
     private static UUID WORLD_UUID = null;
     private static File WORLD_FOLDER = null;
 
-    private static Map<String, MapSegment> MAPS = new ConcurrentHashMap<>();
+    private static Map<Long, MapSegment> MAPS = new ConcurrentHashMap<>();
 
     public static void setWorldUUID(UUID uuid){
         WORLD_UUID = uuid;
@@ -20,27 +21,38 @@ public class MapManager {
         MAPS.clear();
     }
 
-    public static MapSegment getOrCreateMapSegment(IChunk chunk){
-        if(WORLD_FOLDER == null) return null;
+    public static MapSegment getMapSegment(long ident){
+        System.out.println(MAPS.size());
+        return MAPS.get(ident);
+    }
 
-        String name = "m_" + (chunk.getPos().x >> 5) + "_" +  (chunk.getPos().z >> 5);
-        if(MAPS.containsKey(name)){
-            MapSegment segment = MAPS.get(name);
-            segment.addListeningChunk(chunk);
-            return segment;
+    public static MapSegment getOrCreateMapSegment(IChunk chunk, IMapSegmentTicket ticket){
+        if(WORLD_FOLDER == null) return null;
+        int segmentX = (chunk.getPos().x >> 5);
+        int segmentZ = (chunk.getPos().z >> 5);
+
+        long segmentIdentifier = MapSegmentUtil.getSegment(chunk);
+
+        MapSegment segment = MAPS.get(segmentIdentifier);
+        if(segment == null){
+            String name = "m_" + segmentX + "_" +  segmentZ;
+            File mapFile = new File(WORLD_FOLDER, name + ".png");
+            segment = new MapSegment(name, mapFile, segmentIdentifier);
+            MAPS.put(segmentIdentifier, segment);
         }
 
-        File mapFile = new File(WORLD_FOLDER, name + ".png");
-        MapSegment segment = new MapSegment(name, mapFile);
-        MAPS.put(name, segment);
-        segment.addListeningChunk(chunk);
-
+        segment.addTicket(ticket);
         return segment;
     }
 
-    public static void performIO(){
+    public static void performUpdates(){
         for(MapSegment segment : MAPS.values()){
-            segment.writeToFile();
+            segment.update();
         }
+    }
+
+    public static void freeMapSegment(long ident){
+        if(MAPS.containsKey(ident))
+            MAPS.remove(ident);
     }
 }
