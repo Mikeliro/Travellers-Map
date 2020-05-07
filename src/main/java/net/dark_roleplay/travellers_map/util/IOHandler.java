@@ -4,6 +4,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.UUID;
 
 public class IOHandler {

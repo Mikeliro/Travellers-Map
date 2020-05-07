@@ -4,6 +4,7 @@ import net.dark_roleplay.travellers_map.objects.data.IMapSegmentTicket;
 import net.minecraft.world.chunk.IChunk;
 
 import java.io.File;
+import java.net.SocketAddress;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,6 +16,10 @@ public class MapManager {
 
     private static Map<Long, MapSegment> MAPS = new ConcurrentHashMap<>();
 
+    public static void setUpWorldUUIDForRemote(SocketAddress remote){
+        remote.
+    }
+
     public static void setWorldUUID(UUID uuid){
         WORLD_UUID = uuid;
         WORLD_FOLDER = IOHandler.getOrCreateUniqueFolder(uuid);
@@ -22,7 +27,6 @@ public class MapManager {
     }
 
     public static MapSegment getMapSegment(long ident){
-        System.out.println(MAPS.size());
         return MAPS.get(ident);
     }
 

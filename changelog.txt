@@ -1,0 +1,5 @@
+Initial Release
+Existing features:
+You have a Minimap,
+you can zoom in and out in that minimap.
+That's it... sorry

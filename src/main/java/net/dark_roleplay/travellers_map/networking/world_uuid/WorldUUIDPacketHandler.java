@@ -17,7 +17,6 @@ public class WorldUUIDPacketHandler {
     }
 
     public static void onMessage(WorldUUIDPacket packet, Supplier<NetworkEvent.Context> supplier) {
-        //TODO Sync up Map Manager
         System.out.println("Received Packet");
         MapManager.setWorldUUID(packet.getWorldUUID());
     }
