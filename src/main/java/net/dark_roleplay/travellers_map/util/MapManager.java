@@ -17,7 +17,7 @@ public class MapManager {
     private static Map<Long, MapSegment> MAPS = new ConcurrentHashMap<>();
 
     public static void setUpWorldUUIDForRemote(SocketAddress remote){
-        remote.
+        //remote.
     }
 
     public static void setWorldUUID(UUID uuid){
