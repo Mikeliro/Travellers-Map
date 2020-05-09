@@ -1,25 +1,20 @@
 package net.dark_roleplay.travellers_map.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.dark_roleplay.travellers_map.features.mappers.CaveColorMapper;
-import net.dark_roleplay.travellers_map.features.mappers.FlatColorMapper;
-import net.dark_roleplay.travellers_map.features.mappers.FlatGrayscaleMapper;
 import net.dark_roleplay.travellers_map.features.mappers.LightingColorMapper;
 import net.dark_roleplay.travellers_map.objects.data.IMapSegmentTicket;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.Heightmap;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class MapSegment {
 
@@ -64,7 +59,7 @@ public class MapSegment {
     }
 
     public void updateChunk(IChunk chunk){
-        LightingColorMapper.INSTANCE.mapChunk(chunk, mapImage);
+        LightingColorMapper.INSTANCE_GRAYSCALE.mapChunk(chunk, mapImage);
     }
 
     public void markDirty(){
