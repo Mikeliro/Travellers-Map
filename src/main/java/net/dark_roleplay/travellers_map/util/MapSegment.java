@@ -1,12 +1,14 @@
 package net.dark_roleplay.travellers_map.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.dark_roleplay.travellers_map.features.mappers.CaveColorMapper;
 import net.dark_roleplay.travellers_map.features.mappers.LightingColorMapper;
 import net.dark_roleplay.travellers_map.objects.data.IMapSegmentTicket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunk;
 
 import java.io.File;
@@ -58,8 +60,8 @@ public class MapSegment {
         return dynTexture;
     }
 
-    public void updateChunk(IChunk chunk){
-        LightingColorMapper.INSTANCE_GRAYSCALE.mapChunk(chunk, mapImage);
+    public void updateChunk(World world, IChunk chunk){
+        LightingColorMapper.INSTANCE.mapChunk(world, chunk, mapImage);
     }
 
     public void markDirty(){

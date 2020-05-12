@@ -36,8 +36,8 @@ public class MinimapHUD extends AbstractGui {
 
 	public void render(int mouseX, int mouseY, float delta) {
 
-		int centerX = width - 38;
-		int centerY = 38;
+		int centerX = width - 33;
+		int centerY = 33;
 		World world = Minecraft.getInstance().world;
 		PlayerEntity player = Minecraft.getInstance().player;
 		BlockPos playerPos = player.getPosition();

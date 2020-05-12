@@ -1,15 +1,12 @@
 package net.dark_roleplay.travellers_map.listeners;
 
 import net.dark_roleplay.travellers_map.TravellersMap;
+import net.dark_roleplay.travellers_map.features.MappingHelper;
 import net.dark_roleplay.travellers_map.objects.data.ChunkLoadedTicket;
-import net.dark_roleplay.travellers_map.objects.data.IMapSegmentTicket;
-import net.dark_roleplay.travellers_map.util.MapManager;
-import net.dark_roleplay.travellers_map.util.MapSegment;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.ChunkPrimerWrapper;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -23,11 +20,7 @@ public class ChunkListener {
         if(event.getWorld() == null || !event.getWorld().isRemote())return;
         if(chunk instanceof ChunkPrimerWrapper || chunk instanceof ChunkPrimer) return;
 
-        IMapSegmentTicket ticket = ChunkLoadedTicket.loadChunk(chunk);
-        MapSegment segment = MapManager.getOrCreateMapSegment(chunk, ticket);
-        if(segment == null) return;
-        segment.updateChunk(chunk);
-        segment.markDirty();
+        MappingHelper.scheduleLoadedChunk(chunk.getPos());
     }
 
     @SubscribeEvent

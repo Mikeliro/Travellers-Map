@@ -17,6 +17,8 @@ public class PlayerJoinListener {
     @SubscribeEvent
     public static void playerJoinWorld(EntityJoinWorldEvent event){
         if(event.getEntity() instanceof ServerPlayerEntity && event.getWorld() instanceof ServerWorld){
+
+            //MapManager.setUpWorldUUIDForRemote();
             WorldIdentifierData data = WorldIdentifierData.getWorldIdentifier((ServerWorld) event.getWorld());
             ServerPlayerEntity player = (ServerPlayerEntity) event.getEntity();
             TravellersNetworking.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new WorldUUIDPacket().setWorldUUID(data.getWorldUUID()));

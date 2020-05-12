@@ -8,10 +8,11 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.Heightmap;
 
-public class FlatColorMapper extends Mapper{
+public class FlatColorMapper extends   Mapper{
 	public static Mapper INSTANCE_COLOR = new FlatColorMapper(new DefaultColorPalette());
 	public static Mapper INSTANCE_GRAYSCALE = new FlatColorMapper(new MonoColorPalette());
 
@@ -22,7 +23,7 @@ public class FlatColorMapper extends Mapper{
 	}
 
 	@Override
-	public void mapChunk(IChunk chunk, NativeImage img) {
+	public void mapChunk(World world, IChunk chunk, NativeImage img) {
 		BlockPos.PooledMutable pos = BlockPos.PooledMutable.retain();
 		int x = Math.floorMod(chunk.getPos().x, 32) * 16, z = Math.floorMod(chunk.getPos().z, 32) * 16;
 		for(int x2 = 0; x2 < 16; x2++){
@@ -35,5 +36,15 @@ public class FlatColorMapper extends Mapper{
 			}
 		}
 		pos.close();
+	}
+
+	@Override
+	public int getMappingInterval() {
+		return 1000;
+	}
+
+	@Override
+	public int getMaxChunksPerRun() {
+		return 40;
 	}
 }

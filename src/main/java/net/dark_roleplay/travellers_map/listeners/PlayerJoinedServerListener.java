@@ -1,6 +1,7 @@
 package net.dark_roleplay.travellers_map.listeners;
 
 import net.dark_roleplay.travellers_map.TravellersMap;
+import net.dark_roleplay.travellers_map.util.MapManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -11,6 +12,6 @@ public class PlayerJoinedServerListener {
 
 	@SubscribeEvent
 	public void onPlayerJoinedServer(ClientPlayerNetworkEvent.LoggedInEvent event) {
-		event.getNetworkManager().getRemoteAddress();
+		MapManager.setUpWorldUUIDForRemote();
 	}
 }

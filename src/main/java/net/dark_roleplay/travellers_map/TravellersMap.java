@@ -45,5 +45,4 @@ public class TravellersMap {
 			}
 		}, 5000, 5000);
 	}
-
 }

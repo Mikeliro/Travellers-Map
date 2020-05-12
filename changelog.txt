@@ -1,5 +1,4 @@
-Initial Release
-Existing features:
-You have a Minimap,
-you can zoom in and out in that minimap.
-That's it... sorry
++ Added Light based Mapping.
+Makes the minimap look like the Vanilla map.
+Improved how things work, less likely to crash with other mods now.
+* Fixed potion Icons not being offset.

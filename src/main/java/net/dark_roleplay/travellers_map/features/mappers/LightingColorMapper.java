@@ -8,6 +8,8 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.Heightmap;
 
@@ -22,20 +24,20 @@ public class LightingColorMapper extends Mapper{
 	}
 
 	@Override
-	public void mapChunk(IChunk chunk, NativeImage img) {
+	public void mapChunk(World world, IChunk chunk, NativeImage img) {
+		ChunkPos chunkPos = chunk.getPos();
 		BlockPos.PooledMutable pos = BlockPos.PooledMutable.retain();
-		BlockPos.PooledMutable pos2 = BlockPos.PooledMutable.retain();
-		int x = Math.floorMod(chunk.getPos().x, 32) * 16, z = Math.floorMod(chunk.getPos().z, 32) * 16;
+		int x = Math.floorMod(chunkPos.x, 32) * 16, z = Math.floorMod(chunkPos.z, 32) * 16;
 		for(int x2 = 0; x2 < 16; x2++){
 			for(int z2 = 0; z2 < 16; z2++){
 				int y = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE, x2, z2);
-				BlockState state = chunk.getBlockState(pos.setPos(x2, y, z2));
+				BlockState state = chunk.getBlockState(pos.setPos((chunkPos.x << 4) | x2, y, (chunkPos.z << 4) | z2));
 				MaterialColor color = state.getMaterialColor(Minecraft.getInstance().world, pos);
 				if(color != null){
 					int brightness = 1;
-					if(chunk.getBlockState(pos2.setPos(x2, y + 1, z2 - 1)).getMaterialColor(Minecraft.getInstance().world, pos2) != MaterialColor.AIR)
+					if(world.getBlockState(pos.add(0, 1, -1)).getMaterialColor(world, pos) != MaterialColor.AIR)
 						brightness--;
-					else if(chunk.getBlockState(pos2.setPos(x2, y, z2 - 1)).getMaterialColor(Minecraft.getInstance().world, pos2) == MaterialColor.AIR)
+					else if(world.getBlockState(pos.add(0, -1, 0)).getMaterialColor(world, pos) == MaterialColor.AIR)
 						brightness++;
 
 					img.setPixelRGBA(x + x2, z + z2, (palette.getRGBA(color.colorIndex, brightness)));
@@ -43,5 +45,20 @@ public class LightingColorMapper extends Mapper{
 			}
 		}
 		pos.close();
+	}
+
+	@Override
+	public int getMappingInterval() {
+		return 1000;
+	}
+
+	@Override
+	public int getMaxChunksPerRun() {
+		return 20;
+	}
+
+	@Override
+	public boolean canMapChunk(World world, IChunk chunk){
+		return world.chunkExists(chunk.getPos().x, chunk.getPos().z - 1);
 	}
 }

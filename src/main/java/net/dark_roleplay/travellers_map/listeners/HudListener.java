@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map.listeners;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map.TravellersMap;
 import net.dark_roleplay.travellers_map.objects.huds.minimap.MinimapHUD;
 import net.minecraftforge.api.distmarker.Dist;
@@ -11,7 +12,18 @@ import net.minecraftforge.fml.common.Mod;
 public class HudListener {
 
 	@SubscribeEvent
+	public static void hudPreDraw(RenderGameOverlayEvent.Pre event){
+		if(event.getType() == RenderGameOverlayEvent.ElementType.POTION_ICONS){
+			RenderSystem.pushMatrix();
+			RenderSystem.translatef(-65, 0, 0);
+		}
+	}
+
+	@SubscribeEvent
 	public static void hudDraw(RenderGameOverlayEvent.Post event){
+		if(event.getType() == RenderGameOverlayEvent.ElementType.POTION_ICONS){
+			RenderSystem.popMatrix();
+		}
 		if(event.getType() != RenderGameOverlayEvent.ElementType.ALL) return;
 
 		MinimapHUD hud = MinimapHUD.INSTANCE;

@@ -2,6 +2,7 @@ package net.dark_roleplay.travellers_map.util;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.IChunk;
 
 import java.io.File;
@@ -16,6 +17,12 @@ public class MapSegmentUtil {
 	public static long getSegment(IChunk chunk){
 		return toSegment(chunk.getPos().x >> 5, chunk.getPos().z >> 5);
 	}
+
+
+	public static long getSegment(ChunkPos pos){
+		return toSegment(pos.x >> 5, pos.z >> 5);
+	}
+
 
 	public static long getSegment(PlayerEntity player){
 		return toSegment(player.getPosition().getX() >> 9, player.getPosition().getZ() >> 9);
