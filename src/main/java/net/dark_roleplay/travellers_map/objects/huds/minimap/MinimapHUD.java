@@ -2,6 +2,7 @@ package net.dark_roleplay.travellers_map.objects.huds.minimap;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map.TravellersMap;
+import net.dark_roleplay.travellers_map.objects.data.RenderTicket;
 import net.dark_roleplay.travellers_map.util.MapManager;
 import net.dark_roleplay.travellers_map.util.MapSegment;
 import net.dark_roleplay.travellers_map.util.MapSegmentUtil;
@@ -66,14 +67,14 @@ public class MinimapHUD extends AbstractGui {
 
 		segments.clear();
 		getAndDrawMapSegment(player, centerX, centerY, 0, 0);
-		getAndDrawMapSegment(player, centerX, centerY, -128, 0);
-		getAndDrawMapSegment(player, centerX, centerY, 128, 0);
-		getAndDrawMapSegment(player, centerX, centerY, 0, -128);
-		getAndDrawMapSegment(player, centerX, centerY, 0, 128);
-		getAndDrawMapSegment(player, centerX, centerY, -128, -128);
-		getAndDrawMapSegment(player, centerX, centerY, -128, 128);
-		getAndDrawMapSegment(player, centerX, centerY, 128, -128);
-		getAndDrawMapSegment(player, centerX, centerY, 128, 128);
+		getAndDrawMapSegment(player, centerX, centerY, -256, 0);
+		getAndDrawMapSegment(player, centerX, centerY, 256, 0);
+		getAndDrawMapSegment(player, centerX, centerY, 0, -256);
+		getAndDrawMapSegment(player, centerX, centerY, 0, 256);
+		getAndDrawMapSegment(player, centerX, centerY, -256, -256);
+		getAndDrawMapSegment(player, centerX, centerY, -256, 256);
+		getAndDrawMapSegment(player, centerX, centerY, 256, -256);
+		getAndDrawMapSegment(player, centerX, centerY, 256, 256);
 
 		//Reset Cutout
 		RenderSystem.depthFunc(518);
@@ -94,8 +95,10 @@ public class MinimapHUD extends AbstractGui {
 	}
 
 	private void getAndDrawMapSegment(PlayerEntity player, int centerX, int centerY, int offsetX, int offsetZ){
+		RenderTicket ticket = RenderTicket.getOrCreateTicket(offsetX, offsetZ);
 		MapSegment map = MapManager.getMapSegment(MapSegmentUtil.getSegment(player.getPosition().add(offsetX, 0, offsetZ)));
 		if(map != null && !segments.contains(map)){
+			map.addTicket(ticket);
 			segments.add(map);
 			drawMapSegment(map, player.getPositionVec(), centerX, centerY, offsetX, offsetZ);
 		}

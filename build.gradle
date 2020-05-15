@@ -139,9 +139,9 @@ curseforge {
     project {
         id = '360748'
         changelog = file('changelog.txt') // A file can also be set using: changelog = file('changelog.txt')
-        releaseType = 'alpha'
+        releaseType = 'beta'
         mainArtifact(jar) {
-            displayName = "Travellers Map - ${MC_VERSION} - v${MOD_VERSION} Alpha"
+            displayName = "Travellers Map - ${MC_VERSION} - v${MOD_VERSION}"
         }
     }
 }

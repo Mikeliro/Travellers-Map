@@ -1,3 +1,9 @@
+v0.2.1
+---
+* Minimap shouldn't unload other map parts as quickly anymore.
+
+v0.2.0
+---
 + Added Light based Mapping.
 Makes the minimap look like the Vanilla map.
 Improved how things work, less likely to crash with other mods now.

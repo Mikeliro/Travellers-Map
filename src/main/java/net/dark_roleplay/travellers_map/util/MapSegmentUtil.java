@@ -13,7 +13,6 @@ public class MapSegmentUtil {
 		return toSegment((player.getPosition().getX() + offsetX) >> 9, (player.getPosition().getZ() + offsetZ) >> 9);
 	}
 
-
 	public static long getSegment(IChunk chunk){
 		return toSegment(chunk.getPos().x >> 5, chunk.getPos().z >> 5);
 	}
