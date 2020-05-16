@@ -18,7 +18,6 @@ public class TravellersMap {
 
 	public static final String MODID = "travellers_map";
 
-
 	//TODO properly encapsulate fields
 //    public static Thread IO_THREAD;
 //    public static Thread MAPPING_THREAD;

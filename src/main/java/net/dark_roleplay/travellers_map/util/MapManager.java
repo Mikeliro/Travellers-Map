@@ -1,12 +1,18 @@
 package net.dark_roleplay.travellers_map.util;
 
 import net.dark_roleplay.travellers_map.features.MappingHelper;
+import net.dark_roleplay.travellers_map.features.waypoints.Waypoint;
 import net.dark_roleplay.travellers_map.objects.data.IMapSegmentTicket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.world.chunk.IChunk;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.SocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,7 +21,9 @@ public class MapManager {
 
     private static UUID WORLD_UUID = null;
     private static File WORLD_FOLDER = null;
+    private static File WAYPOINT_WORLD_FOLDER = null;
 
+    public static final List<Waypoint> WAYPOINTS = new ArrayList<>();
     private static Map<Long, MapSegment> MAPS = new ConcurrentHashMap<>();
 
     public static void setUpWorldUUIDForRemote(){
@@ -26,8 +34,40 @@ public class MapManager {
     public static void setWorldUUID(UUID uuid){
         WORLD_UUID = uuid;
         WORLD_FOLDER = IOHandler.getOrCreateUniqueFolder(uuid);
+        WAYPOINT_WORLD_FOLDER = new File(WORLD_FOLDER, "waypoints");
+        WAYPOINT_WORLD_FOLDER.mkdirs();
         MAPS.clear();
+        WAYPOINTS.clear();
+
+        File[] waypointFiles = WAYPOINT_WORLD_FOLDER.listFiles((dir, name) -> name.endsWith(".waypoint"));
+        for(File file : waypointFiles){
+            try {
+                CompoundNBT nbt = CompressedStreamTools.read(file);
+                Waypoint waypoint = new Waypoint(UUID.fromString(file.getName().replace(".waypoint", "")));
+                waypoint.deserializeNBT(nbt);
+                WAYPOINTS.add(waypoint);
+            } catch (IOException | IllegalArgumentException e) {
+                System.err.println("Unable to read Waypoint File '" + file.getName() + "' skipping it");
+            }
+        }
+
         MappingHelper.initMapper();
+    }
+
+    public static void saveWaypoint(Waypoint waypoint, boolean isNew){
+        File waypointFile = new File(WAYPOINT_WORLD_FOLDER, waypoint.uuid.toString() + ".waypoint");
+        try {
+            CompressedStreamTools.write(waypoint.serializeNBT(), waypointFile);
+            if(isNew) WAYPOINTS.add(waypoint);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteWaypoint(Waypoint waypoint){
+        File waypointFile = new File(WAYPOINT_WORLD_FOLDER, waypoint.uuid.toString() + ".waypoint");
+        waypointFile.delete();
+        WAYPOINTS.remove(waypoint);
     }
 
     public static MapSegment getMapSegment(long ident){

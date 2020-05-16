@@ -3,6 +3,7 @@ package net.dark_roleplay.travellers_map.objects.huds.minimap;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map.TravellersMap;
 import net.dark_roleplay.travellers_map.objects.data.RenderTicket;
+import net.dark_roleplay.travellers_map.util.BlendBlitHelper;
 import net.dark_roleplay.travellers_map.util.MapManager;
 import net.dark_roleplay.travellers_map.util.MapSegment;
 import net.dark_roleplay.travellers_map.util.MapSegmentUtil;
@@ -48,7 +49,7 @@ public class MinimapHUD extends AbstractGui {
 		RenderSystem.disableAlphaTest();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getInstance().getTextureManager().bindTexture(MINIMAP_TEXTURES);
-		blit2(centerX - 32, centerY - 32, 64, 64, 0, 0, 64, 64, 256, 256);
+		BlendBlitHelper.blit(centerX - 32, centerY - 32, 64, 64, 0, 0, 64, 64, 256, 256);
 		RenderSystem.disableBlend();
 		RenderSystem.enableAlphaTest();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -111,7 +112,7 @@ public class MinimapHUD extends AbstractGui {
 		int size =  (int)(256 * zoomLevels[currentZoomLevel]);
 		double relativeX = ((playerPos.x - (((int)(playerPos.x) + offsetX) >> 9) * 512 - 256) * (0.5F * zoomLevels[currentZoomLevel]));
 		double relativeZ = ((playerPos.z - (((int)(playerPos.z) + offsetZ) >> 9) * 512 - 256) * (0.5F * zoomLevels[currentZoomLevel]));
-		blit2(centerX - offset - relativeX, centerY - offset - relativeZ, size, size, 0, 0, 256, 256, 256, 256);
+		BlendBlitHelper.blit(centerX - offset - relativeX, centerY - offset - relativeZ, size, size, 0, 0, 256, 256, 256, 256);
 	}
 
 	private void drawPlayerMarker(int centerX, int centerY){
@@ -119,30 +120,12 @@ public class MinimapHUD extends AbstractGui {
 		vLine(centerX - 1, centerY -3, centerY +3, 0xFFFFFFFF);
 	}
 
-	public static void blit2(double x0, double y0, int destWidth, int destHeight, float u0, float v0, int srcWidth, int srcHeight, int texWidth, int texHeight) {
-		innerBlit2(x0, x0 + destWidth, y0, y0 + destHeight, 0, srcWidth, srcHeight, u0, v0, texWidth, texHeight);
-	}
-
-	private static void innerBlit2(double x0, double x1, double y0, double y1, int z, int width, int height, float u0, float v0, int texWidth, int texHeight) {
-		innerBlit2(x0, x1, y0, y1, z, (u0 + 0.0F) / (float)texWidth, (u0 + (float)width) / (float)texWidth, (v0 + 0.0F) / (float)texHeight, (v0 + (float)height) / (float)texHeight);
-	}
-
-	protected static void innerBlit2(double x0, double x1, double y0, double y1, int z, float u0, float u1, float v0, float v1) {
-		BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
-		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos(x0, y1, (double) z).tex(u0, v1).endVertex();
-		bufferbuilder.pos(x1, y1, (double) z).tex(u1, v1).endVertex();
-		bufferbuilder.pos(x1, y0, (double) z).tex(u1, v0).endVertex();
-		bufferbuilder.pos(x0, y0, (double) z).tex(u0, v0).endVertex();
-		bufferbuilder.finishDrawing();
-		WorldVertexBufferUploader.draw(bufferbuilder);
-	}
 
 	public static void increaseZoom(){
 		INSTANCE.currentZoomLevel = Math.max(0, INSTANCE.currentZoomLevel - 1);
 	}
 
 	public static void decreaseZoom(){
-		INSTANCE.currentZoomLevel = Math.min(3, INSTANCE.currentZoomLevel + 1);
+		INSTANCE.currentZoomLevel = Math.min(INSTANCE.zoomLevels.length - 1, INSTANCE.currentZoomLevel + 1);
 	}
 }

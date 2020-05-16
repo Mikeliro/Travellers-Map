@@ -2,6 +2,7 @@ package net.dark_roleplay.travellers_map.listeners;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map.TravellersMap;
+import net.dark_roleplay.travellers_map.objects.huds.compass.CompassHud;
 import net.dark_roleplay.travellers_map.objects.huds.minimap.MinimapHUD;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -17,11 +18,16 @@ public class HudListener {
 			RenderSystem.pushMatrix();
 			RenderSystem.translatef(-65, 0, 0);
 		}
+		else if(event.getType() == RenderGameOverlayEvent.ElementType.BOSSHEALTH){
+			RenderSystem.pushMatrix();
+			RenderSystem.translatef(0, 16, 0);
+		}
 	}
 
 	@SubscribeEvent
 	public static void hudDraw(RenderGameOverlayEvent.Post event){
-		if(event.getType() == RenderGameOverlayEvent.ElementType.POTION_ICONS){
+		if(event.getType() == RenderGameOverlayEvent.ElementType.POTION_ICONS ||
+				event.getType() == RenderGameOverlayEvent.ElementType.BOSSHEALTH){
 			RenderSystem.popMatrix();
 		}
 		if(event.getType() != RenderGameOverlayEvent.ElementType.ALL) return;
@@ -29,5 +35,9 @@ public class HudListener {
 		MinimapHUD hud = MinimapHUD.INSTANCE;
 		hud.setSize(event.getWindow().getScaledWidth(), event.getWindow().getScaledHeight());
 		hud.render(0, 0, event.getPartialTicks());
+
+		CompassHud compassHud = CompassHud.INSTANCE;
+		compassHud.setWindowSize(event.getWindow().getScaledWidth(), event.getWindow().getScaledHeight());
+		compassHud.render(0, 0, event.getPartialTicks());
 	}
 }

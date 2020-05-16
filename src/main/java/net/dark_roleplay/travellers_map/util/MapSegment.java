@@ -76,6 +76,10 @@ public class MapSegment {
         }
     }
 
+    public long getIdent(){
+        return this.identifier;
+    }
+
     public void update(){
         if(this.dirtyIO){
             try {
