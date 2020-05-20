@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map.TravellersMap;
 import net.dark_roleplay.travellers_map.objects.huds.compass.CompassHud;
 import net.dark_roleplay.travellers_map.objects.huds.minimap.MinimapHUD;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,6 +15,7 @@ public class HudListener {
 
 	@SubscribeEvent
 	public static void hudPreDraw(RenderGameOverlayEvent.Pre event){
+		if(Minecraft.getInstance().gameSettings.showDebugInfo) return;
 		if(event.getType() == RenderGameOverlayEvent.ElementType.POTION_ICONS){
 			RenderSystem.pushMatrix();
 			RenderSystem.translatef(-65, 0, 0);
@@ -26,6 +28,7 @@ public class HudListener {
 
 	@SubscribeEvent
 	public static void hudDraw(RenderGameOverlayEvent.Post event){
+		if(Minecraft.getInstance().gameSettings.showDebugInfo) return;
 		if(event.getType() == RenderGameOverlayEvent.ElementType.POTION_ICONS ||
 				event.getType() == RenderGameOverlayEvent.ElementType.BOSSHEALTH){
 			RenderSystem.popMatrix();

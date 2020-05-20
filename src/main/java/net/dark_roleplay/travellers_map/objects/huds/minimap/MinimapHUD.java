@@ -2,6 +2,7 @@ package net.dark_roleplay.travellers_map.objects.huds.minimap;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map.TravellersMap;
+import net.dark_roleplay.travellers_map.configs.ClientConfig;
 import net.dark_roleplay.travellers_map.objects.data.RenderTicket;
 import net.dark_roleplay.travellers_map.util.BlendBlitHelper;
 import net.dark_roleplay.travellers_map.util.MapManager;
@@ -37,9 +38,13 @@ public class MinimapHUD extends AbstractGui {
 	private final Set<MapSegment> segments = new HashSet<>();
 
 	public void render(int mouseX, int mouseY, float delta) {
+		int posX = ClientConfig.MINIMAP.ALIGNMENT.get().getX(width) + ClientConfig.MINIMAP.POS_X.get();
+		int posY = ClientConfig.MINIMAP.ALIGNMENT.get().getY(height) + ClientConfig.MINIMAP.POS_Y.get();
+		int mapWidth = ClientConfig.MINIMAP.WIDTH.get();
+		int mapHeight = ClientConfig.MINIMAP.HEIGHT.get();
+		int centerX = posX + mapWidth/2;
+		int centerY = posY + mapHeight/2;
 
-		int centerX = width - 33;
-		int centerY = 33;
 		World world = Minecraft.getInstance().world;
 		PlayerEntity player = Minecraft.getInstance().player;
 		BlockPos playerPos = player.getPosition();
@@ -49,7 +54,7 @@ public class MinimapHUD extends AbstractGui {
 		RenderSystem.disableAlphaTest();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getInstance().getTextureManager().bindTexture(MINIMAP_TEXTURES);
-		BlendBlitHelper.blit(centerX - 32, centerY - 32, 64, 64, 0, 0, 64, 64, 256, 256);
+		BlendBlitHelper.blit(posX, posY, mapWidth, mapHeight, 0, 0, 64, 64, 256, 256);
 		RenderSystem.disableBlend();
 		RenderSystem.enableAlphaTest();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -62,7 +67,7 @@ public class MinimapHUD extends AbstractGui {
 		fill(4680, 2260, -4680, -2260, 0xFFFFFFFF);
 		RenderSystem.translatef(0.0F, 0.0F, -950.0F);
 		RenderSystem.depthFunc(518);
-		blit(centerX - 32, centerY - 32, 64, 64, 64, 0, 64, 64, 256, 256);
+		blit(posX, posY, mapWidth, mapHeight, 64, 0, 64, 64, 256, 256);
 		RenderSystem.depthFunc(515);
 		RenderSystem.colorMask(true, true, true, true);
 
@@ -108,11 +113,18 @@ public class MinimapHUD extends AbstractGui {
 	private void drawMapSegment(MapSegment map, Vec3d playerPos, int centerX, int centerY, int offsetX, int offsetZ){
 		map.getDynTexture().bindTexture();
 		map.updadteGPU();
-		int offset = (int)(128 * zoomLevels[currentZoomLevel]);
-		int size =  (int)(256 * zoomLevels[currentZoomLevel]);
-		double relativeX = ((playerPos.x - (((int)(playerPos.x) + offsetX) >> 9) * 512 - 256) * (0.5F * zoomLevels[currentZoomLevel]));
-		double relativeZ = ((playerPos.z - (((int)(playerPos.z) + offsetZ) >> 9) * 512 - 256) * (0.5F * zoomLevels[currentZoomLevel]));
-		BlendBlitHelper.blit(centerX - offset - relativeX, centerY - offset - relativeZ, size, size, 0, 0, 256, 256, 256, 256);
+
+		//256/64 = 4, needs to be used as size for normal zoom
+		int sizeX = (int) (ClientConfig.MINIMAP.WIDTH.get() * 4 * zoomLevels[currentZoomLevel]);
+		int sizeZ = (int) (ClientConfig.MINIMAP.HEIGHT.get() * 4 * zoomLevels[currentZoomLevel]);
+
+		//+ has a higher priority than bitshifts
+		double offsetToPlayerX = (playerPos.x - ((int)playerPos.x + offsetX >> 9) * 512) * (ClientConfig.MINIMAP.WIDTH.get()/128F);
+		double offsetToPlayerZ = (playerPos.z - ((int)playerPos.z + offsetZ >> 9) * 512) * (ClientConfig.MINIMAP.HEIGHT.get()/128F);
+
+		offsetToPlayerX *= zoomLevels[currentZoomLevel];
+		offsetToPlayerZ *= zoomLevels[currentZoomLevel];
+		BlendBlitHelper.blit(centerX - offsetToPlayerX, centerY - offsetToPlayerZ, sizeX, sizeZ, 0, 0, 1, 1, 1, 1);
 	}
 
 	private void drawPlayerMarker(int centerX, int centerY){

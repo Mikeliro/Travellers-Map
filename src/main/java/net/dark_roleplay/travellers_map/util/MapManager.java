@@ -4,6 +4,7 @@ import net.dark_roleplay.travellers_map.features.MappingHelper;
 import net.dark_roleplay.travellers_map.features.waypoints.Waypoint;
 import net.dark_roleplay.travellers_map.objects.data.IMapSegmentTicket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.world.chunk.IChunk;
@@ -21,17 +22,26 @@ public class MapManager {
 
     private static UUID WORLD_UUID = null;
     private static File WORLD_FOLDER = null;
+    private static File DIMENSION_FOLDER = null;
     private static File WAYPOINT_WORLD_FOLDER = null;
 
     public static final List<Waypoint> WAYPOINTS = new ArrayList<>();
     private static Map<Long, MapSegment> MAPS = new ConcurrentHashMap<>();
 
-    public static void setUpWorldUUIDForRemote(){
-        SocketAddress adress = Minecraft.getInstance().getProxy().address();
-        System.out.println(adress);
+    public static void setupMappingFolders(){
+        if(Minecraft.getInstance().isIntegratedServerRunning()){
+            String name = Minecraft.getInstance().getIntegratedServer().getWorldName();
+            System.out.println("Test");
+        }else{
+            SocketAddress adress = Minecraft.getInstance().player.connection.getNetworkManager().getRemoteAddress();
+            String name = adress.toString();
+            System.out.println("Test");
+        }
     }
 
     public static void setWorldUUID(UUID uuid){
+
+        setupMappingFolders();
         WORLD_UUID = uuid;
         WORLD_FOLDER = IOHandler.getOrCreateUniqueFolder(uuid);
         WAYPOINT_WORLD_FOLDER = new File(WORLD_FOLDER, "waypoints");

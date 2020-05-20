@@ -18,6 +18,12 @@ public class IOHandler {
         }
     }
 
+    public static File getOrCreateSingleplayerFolder(String worldName){
+        File worldFile = new File(MOD_DATA_DIR, "/sp/" + worldName.toString());
+        worldFile.mkdirs();
+        return worldFile;
+    }
+
     public static File getOrCreateUniqueFolder(UUID uniqueID){
         File worldFile = new File(MOD_DATA_DIR, "/world_" + uniqueID.toString());
         worldFile.mkdirs();

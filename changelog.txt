@@ -1,3 +1,9 @@
+v0.3.1
+* Made waypoint Markers smoother when you're close to them
+* Hud Features are now hidden when in the Debug Menu
+* Fixed Error Message spamming the console when leaving a world
++ Added a Config, allowing you to scale the minimap & move it around.
+
 v0.3.0
 + Compass Hud
 + Waypoints

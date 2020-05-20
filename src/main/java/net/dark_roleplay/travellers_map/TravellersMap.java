@@ -1,12 +1,15 @@
 package net.dark_roleplay.travellers_map;
 
+import net.dark_roleplay.travellers_map.configs.ClientConfig;
 import net.dark_roleplay.travellers_map.handler.TravellersKeybinds;
 import net.dark_roleplay.travellers_map.handler.TravellersNetworking;
 import net.dark_roleplay.travellers_map.util.IOHandler;
 import net.dark_roleplay.travellers_map.util.MapManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -23,6 +26,9 @@ public class TravellersMap {
 //    public static Thread MAPPING_THREAD;
 
 	public TravellersMap() {
+		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.CLIENT_SPECS);
+		//Config.loadConfig(ClientConfig.CLIENT_SPECS, FMLPaths.CONFIGDIR.get().resolve("mytutorial-client.toml"));
+
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(IOHandler::clientSetup);
 

@@ -10,6 +10,7 @@ import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,12 +64,12 @@ public class CompassHud extends AbstractGui {
 	}
 
 	private float playerYaw;
-	private BlockPos playerPos;
+	private Vec3d playerPos;
 	private int renderedNames = 0;
 
 	private void resetMarkerRendering(float delta){
 		this.playerYaw = Math.floorMod((int) Minecraft.getInstance().player.getYaw(delta), 360);
-		this.playerPos = Minecraft.getInstance().player.getPosition();
+		this.playerPos = Minecraft.getInstance().player.getPositionVec();
 		this.renderedNames = 0;
 		Waypoint.widestNameWidth = 0;
 	}
@@ -105,12 +106,10 @@ public class CompassHud extends AbstractGui {
 	}
 
 	private float getYawForMarker(BlockPos pos){
-		BlockPos playerPos = Minecraft.getInstance().player.getPosition();
-		pos = pos.subtract(playerPos);
+		Vec3d pos2 = new Vec3d(pos.getX() - playerPos.getX(), 0, pos.getZ() - playerPos.getZ());
 
-		//IF error change pos.getZ() to -pos.getZ() and uncomment 2 lines bellow
-		float angle = (float) Math.toDegrees(Math.atan2(Math.abs(pos.getX()), -pos.getZ()));
-		if(pos.getX() < 0) angle = 360-angle;
+		float angle = (float) Math.toDegrees(Math.atan2(Math.abs(pos2.getX()), -pos2.getZ()));
+		if(pos2.getX() < 0) angle = 360-angle;
 		angle =  (angle + 180) % 360;
 
 		//Handle 360° conversion

@@ -37,6 +37,7 @@ public class RenderTicket implements IMapSegmentTicket {
 
 	@Override
 	public boolean isActive() {
+		if(Minecraft.getInstance().player == null) return false;
 		BlockPos playerPos = Minecraft.getInstance().player.getPosition();
 		return posX1 < playerPos.getX() && posX2 > playerPos.getX() && posZ1 < playerPos.getZ() && posZ2 > playerPos.getZ();
 	}

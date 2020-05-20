@@ -19,7 +19,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 
 version = "${MC_VERSION}-${MOD_VERSION}"
-group = 'net.dark-roleplay'
+group = 'net.dark_roleplay'
 archivesBaseName = 'travellers_map'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
