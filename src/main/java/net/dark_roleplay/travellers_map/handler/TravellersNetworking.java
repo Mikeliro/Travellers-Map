@@ -1,8 +1,8 @@
 package net.dark_roleplay.travellers_map.handler;
 
 import net.dark_roleplay.travellers_map.TravellersMap;
-import net.dark_roleplay.travellers_map.networking.world_uuid.WorldUUIDPacket;
-import net.dark_roleplay.travellers_map.networking.world_uuid.WorldUUIDPacketHandler;
+import net.dark_roleplay.travellers_map2.objects.packets.world_uuid.WorldUUIDPacket;
+import net.dark_roleplay.travellers_map2.objects.packets.world_uuid.WorldUUIDPacketHandler;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
