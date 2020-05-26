@@ -1,4 +1,4 @@
-package net.dark_roleplay.travellers_map.features.screens.full_map;
+package net.dark_roleplay.travellers_map2.objects.screens.waypoints;
 
 import net.dark_roleplay.travellers_map.mapping.waypoints.Waypoint;
 import net.dark_roleplay.travellers_map.util.MapManager;
@@ -17,7 +17,7 @@ public class WayPointCreationScreen extends Screen {
 	private TextFieldWidget nameTextField;
 	private Waypoint editedWaypoint;
 
-	protected WayPointCreationScreen(Screen parent, Waypoint editedWaypoint) {
+	public WayPointCreationScreen(Screen parent, Waypoint editedWaypoint) {
 		super(new TranslationTextComponent("screen.travellers_map.waypoint_creation"));
 		this.parent = parent;
 		this.editedWaypoint = editedWaypoint;

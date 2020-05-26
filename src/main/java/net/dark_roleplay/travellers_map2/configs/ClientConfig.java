@@ -16,11 +16,15 @@ public class ClientConfig {
 	public static PositioningConfig MINIMAP;
 	public static PositioningConfig COMPASS;
 
+	public static ForgeConfigSpec.BooleanValue SPIN_MINIMAP;
+
 	static{
 		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 
 		builder.comment("Settings for the Minimap").push("minimap");
 		MINIMAP = new PositioningConfig(builder, "Minimap", -65, 1, GuiAlignment.TOP_RIGHT);
+		SPIN_MINIMAP = builder.comment("Set this to true and the minimap will spin in the direction you're facing")
+				.define("Spin", false);
 		builder.pop();
 
 		builder.comment("Settings for the Compass (Unused right now)").push("compass");

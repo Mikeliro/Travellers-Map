@@ -18,6 +18,6 @@ public class PositioningConfig {
 		POS_Y = builder.comment("Y Position of the " + name)
 				.defineInRange("posY", posY, -500, 500);
 		SCALE = builder.comment("Scale of the " + name)
-				.defineInRange("Scale", 1.0, -0.5, 2.0);
+				.defineInRange("Scale", 1.0, 0.5, 2.0);
 	}
 }

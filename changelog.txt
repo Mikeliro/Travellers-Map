@@ -1,10 +1,9 @@
-v0.3.1
-* Made waypoint Markers smoother when you're close to them
-* Hud Features are now hidden when in the Debug Menu
-* Fixed Error Message spamming the console when leaving a world
-+ Added a Config, allowing you to scale the minimap & move it around.
-
-v0.3.0
-+ Compass Hud
-+ Waypoints
-+ Full Screen Map
+v0.4
+* Changed scaling option for the Minimap Config can now be scaled between 50% and 200% it's original size
+* Compass Hud will now be hidden when player list is open
++ Minimap can now spin (config option, disabled by default)
++ Added Minimap Settings GUI (can be accessed trough full screen map)
++ Waypoint List in the full screen map is now hidden by default and can be opened.
++ Added Minimap Styles
+-> Following Styles were added:
+Default, Daylight Mod, Minecraft Map

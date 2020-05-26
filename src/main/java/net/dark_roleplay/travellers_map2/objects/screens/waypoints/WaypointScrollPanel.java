@@ -1,7 +1,8 @@
-package net.dark_roleplay.travellers_map.features.screens.full_map;
+package net.dark_roleplay.travellers_map2.objects.screens.waypoints;
 
 import net.dark_roleplay.travellers_map.mapping.waypoints.Waypoint;
 import net.dark_roleplay.travellers_map.util.MapManager;
+import net.dark_roleplay.travellers_map2.objects.screens.full_map.FullMapScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;

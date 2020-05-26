@@ -3,7 +3,7 @@ package net.dark_roleplay.travellers_map2.listeners;
 import net.dark_roleplay.travellers_map.TravellersMap;
 import net.dark_roleplay.travellers_map.handler.TravellersNetworking;
 import net.dark_roleplay.travellers_map2.objects.packets.world_uuid.WorldUUIDPacket;
-import net.dark_roleplay.travellers_map.objects.data.WorldIdentifierData;
+import net.dark_roleplay.travellers_map2.objects.world_data.WorldIdentifierData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.server.ServerWorld;

@@ -1,4 +1,4 @@
-package net.dark_roleplay.travellers_map.objects.data;
+package net.dark_roleplay.travellers_map2.objects.world_data;
 
 import net.dark_roleplay.travellers_map.TravellersMap;
 import net.minecraft.nbt.CompoundNBT;

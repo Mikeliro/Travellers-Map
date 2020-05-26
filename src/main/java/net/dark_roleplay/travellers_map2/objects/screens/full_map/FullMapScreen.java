@@ -1,10 +1,11 @@
-package net.dark_roleplay.travellers_map.features.screens.full_map;
+package net.dark_roleplay.travellers_map2.objects.screens.full_map;
 
 import net.dark_roleplay.travellers_map.TravellersMap;
-import net.dark_roleplay.travellers_map.util.BlendBlitHelper;
-import net.dark_roleplay.travellers_map.util.MapManager;
-import net.dark_roleplay.travellers_map.util.MapSegment;
-import net.dark_roleplay.travellers_map.util.MapSegmentUtil;
+import net.dark_roleplay.travellers_map.util.*;
+import net.dark_roleplay.travellers_map2.objects.screens.SidePanelButton;
+import net.dark_roleplay.travellers_map2.objects.screens.minimap.settings.MinimapSettingsScreen;
+import net.dark_roleplay.travellers_map2.objects.screens.waypoints.WayPointCreationScreen;
+import net.dark_roleplay.travellers_map2.objects.screens.waypoints.WaypointScrollPanel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
@@ -19,7 +20,9 @@ public class FullMapScreen extends Screen {
     private float zOffset = 0;
     private int currentZoomLevel = 1;
 
-    private boolean isWaypointListOpen = true;
+
+    private Wrapper<Boolean> isWaypointListOpen = new Wrapper(false);
+
     private WaypointScrollPanel scrollPanel;
 
     private float[] zoomLevels = new float[]{2.0F, 1.0F, 0.5F, 0.25F};
@@ -34,11 +37,25 @@ public class FullMapScreen extends Screen {
     @Override
     protected void init() {
         scrollPanel = new WaypointScrollPanel(this.minecraft, this, 118, this.height - 35, 5, 5);
-        if(isWaypointListOpen)
-            this.children.add(scrollPanel);
-        //int widthIn, int heightIn, int width, int height, String text, Button.IPressable onPress
-        this.addButton(new Button(5, this.height - 25, 118, 20, "New Waypoint", button -> {
+        Button waypointButton = new Button(5, this.height - 25, 118, 20, "New Waypoint", button -> {
             this.minecraft.displayGuiScreen(new WayPointCreationScreen(this, null));
+        });
+
+        this.addButton(new SettingsButton(this.width - 13, 1, btn -> {
+            Minecraft.getInstance().displayGuiScreen(new MinimapSettingsScreen(this));
+        }));
+
+        this.addButton(new SidePanelButton(-2, (this.height - 15) / 2, isWaypointListOpen, btn -> {
+            if(isWaypointListOpen.get()){
+                this.children.add(scrollPanel);
+                this.addButton(waypointButton);
+                btn.x = 125;
+            }else{
+                this.children.remove(scrollPanel);
+                btn.x = -2;
+                this.buttons.remove(waypointButton);
+                this.children.remove(waypointButton);
+            }
         }));
     }
 
@@ -61,7 +78,7 @@ public class FullMapScreen extends Screen {
             }
         }
 
-        if(isWaypointListOpen){
+        if(isWaypointListOpen.get()){
             Minecraft.getInstance().getTextureManager().bindTexture(FullMapScreen.FULL_MAP_TEXTURES);
             blit(0, 0, 128, this.height, 0, 0, 128, 256, 256, 256);
             scrollPanel.render(mouseX, mouseY, delta);

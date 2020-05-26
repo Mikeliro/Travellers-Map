@@ -1,7 +1,8 @@
-package net.dark_roleplay.travellers_map.handler;
+package net.dark_roleplay.travellers_map2.handler;
 
 import net.dark_roleplay.travellers_map.TravellersMap;
-import net.dark_roleplay.travellers_map.features.screens.full_map.FullMapScreen;
+import net.dark_roleplay.travellers_map2.objects.screens.full_map.FullMapScreen;
+import net.dark_roleplay.travellers_map2.objects.screens.minimap.settings.MinimapSettingsScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;

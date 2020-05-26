@@ -1,7 +1,6 @@
-package net.dark_roleplay.travellers_map2.objects.huds;
+package net.dark_roleplay.travellers_map2.objects.huds.minimap;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.dark_roleplay.travellers_map.TravellersMap;
 import net.dark_roleplay.travellers_map2.configs.ClientConfig;
 import net.dark_roleplay.travellers_map.mapping.tickets.RenderTicket;
 import net.dark_roleplay.travellers_map.util.BlendBlitHelper;
@@ -9,13 +8,11 @@ import net.dark_roleplay.travellers_map.util.MapManager;
 import net.dark_roleplay.travellers_map.util.MapSegment;
 import net.dark_roleplay.travellers_map.util.MapSegmentUtil;
 import net.dark_roleplay.travellers_map2.handler.StyleManager;
+import net.dark_roleplay.travellers_map2.objects.huds.HudStyle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +30,6 @@ public class MinimapHUD extends AbstractGui {
 	private final Set<MapSegment> segments = new HashSet<>();
 
 	public void render(int mouseX, int mouseY, float delta) {
-		StyleManager.selectStyle(StyleManager.HUD_STYLES.get("Daylight"));
 		renderOverlay();
 		renderMap();
 	}
@@ -64,8 +60,6 @@ public class MinimapHUD extends AbstractGui {
 		blit(0, 0, style.getWidth(), style.getHeight(), 0, 0, 1, 1, 1, 1);
 		RenderSystem.depthFunc(515);
 		RenderSystem.colorMask(true, true, true, true);
-
-		RenderSystem.popMatrix();
 	}
 
 	private void renderMap(){
@@ -74,6 +68,11 @@ public class MinimapHUD extends AbstractGui {
 		RenderSystem.translatef(style.getWidth()/2, style.getHeight()/2, 0);
 
 		PlayerEntity player = Minecraft.getInstance().player;
+
+		RenderSystem.pushMatrix();
+		if(ClientConfig.SPIN_MINIMAP.get()){
+			RenderSystem.rotatef(-(player.getYaw(0) + 180), 0, 0, 1);
+		}
 
 		segments.clear();
 		getAndDrawMapSegment(player, 0, 0);
@@ -85,6 +84,7 @@ public class MinimapHUD extends AbstractGui {
 		getAndDrawMapSegment(player, -256, 256);
 		getAndDrawMapSegment(player, 256, -256);
 		getAndDrawMapSegment(player, 256, 256);
+		RenderSystem.popMatrix();
 
 		//Reset Minimap Mask
 		RenderSystem.depthFunc(518);
@@ -117,16 +117,14 @@ public class MinimapHUD extends AbstractGui {
 		map.updadteGPU();
 
 		HudStyle style = StyleManager.getSelectedMinimapStyle();
-		double scaledWidth = style.getWidth() * ClientConfig.MINIMAP.SCALE.get();
-		double scaledHeight = style.getWidth() * ClientConfig.MINIMAP.SCALE.get();
 
 		//256/64 = 4, needs to be used as size for normal zoom
-		int sizeX = (int) (scaledWidth * 4 * zoomLevels[currentZoomLevel]);
-		int sizeZ = (int) (scaledHeight * 4 * zoomLevels[currentZoomLevel]);
+		int sizeX = (int) (style.getWidth() * 4 * zoomLevels[currentZoomLevel]);
+		int sizeZ = (int) (style.getWidth() * 4 * zoomLevels[currentZoomLevel]);
 
 		//+ has a higher priority than bitshifts
-		double offsetToPlayerX = (playerPos.x - ((int)playerPos.x + offsetX >> 9) * 512) * (scaledWidth/128F);
-		double offsetToPlayerZ = (playerPos.z - ((int)playerPos.z + offsetZ >> 9) * 512) * (scaledHeight/128F);
+		double offsetToPlayerX = (playerPos.x - ((int)playerPos.x + offsetX >> 9) * 512) * (style.getWidth()/128F);
+		double offsetToPlayerZ = (playerPos.z - ((int)playerPos.z + offsetZ >> 9) * 512) * (style.getWidth()/128F);
 
 		offsetToPlayerX *= zoomLevels[currentZoomLevel];
 		offsetToPlayerZ *= zoomLevels[currentZoomLevel];
