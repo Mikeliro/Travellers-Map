@@ -78,14 +78,14 @@ public class CompassHud extends AbstractGui {
 		RenderSystem.enableAlphaTest();
 		Minecraft.getInstance().getTextureManager().bindTexture(COMPASS_TEXTURES);
 		float pos = HALF_WIDTH + waypoint.getLastRenderedOffset() - 3.5F;
-		BlendBlitHelper.blitColor(pos, 3, 7, 12, 0, 16, 7, 12, 256, 256, waypoint.getColor());
+		BlendBlitHelper.blitColor(pos, 2, 7, 12, 0, 16, 7, 12, 256, 256, waypoint.getColor());
 
 		return waypoint;
 	}
 
 	private void drawWaypointName(FontRenderer renderer, Waypoint waypoint){
-		fill(HALF_WIDTH - Waypoint.widestNameWidth/2 - 2, 17 + (renderedNames * 10), HALF_WIDTH + Waypoint.widestNameWidth/2 + 2, 27 + (renderedNames * 10), 0xA0333333);
-		renderer.drawString(waypoint.getName(), HALF_WIDTH - (renderer.getStringWidth(waypoint.getName()) / 2), 18 + (renderedNames * 10), waypoint.getColor());
+		fill(HALF_WIDTH - Waypoint.widestNameWidth/2 - 2, 16 + (renderedNames * 10), HALF_WIDTH + Waypoint.widestNameWidth/2 + 2, 26 + (renderedNames * 10), 0xA0333333);
+		renderer.drawString(waypoint.getName(), HALF_WIDTH - (renderer.getStringWidth(waypoint.getName()) / 2), 17 + (renderedNames * 10), waypoint.getColor());
 		renderedNames ++;
 	}
 
@@ -98,9 +98,9 @@ public class CompassHud extends AbstractGui {
 		float offset = ((markerYaw - playerYaw)/90) * 128;
 		if(offset > -128 && offset < 128){
 			float pos = HALF_WIDTH + offset;
-			BlendBlitHelper.vLine(pos - 1F, 3, 4.5F, 0xFF888888);
-			BlendBlitHelper.vLine(pos - 1F, 13.5F, 15, 0xFF888888);
-			renderer.drawString(markerName, pos - (renderer.getStringWidth(markerName) / 2), 5.5F, 0xFF888888);
+			BlendBlitHelper.vLine(pos - 1F, 2, 3.5F, 0xFF888888);
+			BlendBlitHelper.vLine(pos - 1F, 12.5F, 14, 0xFF888888);
+			renderer.drawString(markerName, pos - (renderer.getStringWidth(markerName) / 2), 4.5F, 0xFF888888);
 		}
 	}
 

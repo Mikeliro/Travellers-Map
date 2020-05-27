@@ -1,3 +1,9 @@
+v0.4.1
+* Fixed compass not hiding when having the debug menu open
+* Fixed bugged waypoint list after adding waypoint
+* Fixed compass hud markers being offset by 1 pixel downwards
+* Compass hud can now be properly resized
+
 v0.4
 * Changed scaling option for the Minimap Config can now be scaled between 50% and 200% it's original size
 * Compass Hud will now be hidden when player list is open

@@ -45,7 +45,7 @@ public class FullMapScreen extends Screen {
             Minecraft.getInstance().displayGuiScreen(new MinimapSettingsScreen(this));
         }));
 
-        this.addButton(new SidePanelButton(-2, (this.height - 15) / 2, isWaypointListOpen, btn -> {
+        this.addButton(new SidePanelButton(isWaypointListOpen.get() ? 125 : -2, (this.height - 15) / 2, isWaypointListOpen, btn -> {
             if(isWaypointListOpen.get()){
                 this.children.add(scrollPanel);
                 this.addButton(waypointButton);
@@ -57,6 +57,11 @@ public class FullMapScreen extends Screen {
                 this.children.remove(waypointButton);
             }
         }));
+
+        if(isWaypointListOpen.get()){
+            this.children.add(scrollPanel);
+            this.addButton(waypointButton);
+        }
     }
 
     @Override
