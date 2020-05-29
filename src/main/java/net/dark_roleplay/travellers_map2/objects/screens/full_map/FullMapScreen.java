@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map2.objects.screens.full_map;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map.TravellersMap;
 import net.dark_roleplay.travellers_map.util.*;
 import net.dark_roleplay.travellers_map2.objects.screens.SidePanelButton;
@@ -20,18 +21,15 @@ public class FullMapScreen extends Screen {
     private float zOffset = 0;
     private int currentZoomLevel = 1;
 
-
     private Wrapper<Boolean> isWaypointListOpen = new Wrapper(false);
 
     private WaypointScrollPanel scrollPanel;
 
-    private float[] zoomLevels = new float[]{2.0F, 1.0F, 0.5F, 0.25F};
+    private float[] zoomLevels = new float[]{2.0F, 1.0F, 0.5F, 0.5F};
 
     public FullMapScreen(){
         super(new TranslationTextComponent("screen.travellers_map.full_map"));
         BlockPos playerPos = Minecraft.getInstance().player.getPosition();
-        this.xOffset = (playerPos.getX()) * zoomLevels[currentZoomLevel];
-        this.zOffset = (playerPos.getZ()) * zoomLevels[currentZoomLevel];
     }
 
     @Override
@@ -66,22 +64,31 @@ public class FullMapScreen extends Screen {
 
     @Override
     public void render(int mouseX, int mouseY, float delta) {
-
         this.renderDirtBackground(0);
 
+        RenderSystem.pushMatrix();
+
+        float halfWidth = this.width/2F;
+        float halfHeight = this.height/2F;
+
+        RenderSystem.translatef(halfWidth, halfHeight, 0);
+        RenderSystem.scalef(zoomLevels[currentZoomLevel], zoomLevels[currentZoomLevel], 1);
+
         BlockPos playerPos = Minecraft.getInstance().player.getPosition();
+        MapRenderer renderer = new MapRenderer();
 
-        int xSegmentCount = (int) Math.ceil(width / (512F * zoomLevels[currentZoomLevel])) + 1;
-        int zSegmentCount = (int) Math.ceil(width / (512F * zoomLevels[currentZoomLevel])) + 1;
+        float zoom = zoomLevels[currentZoomLevel];
+        renderer.renderMap(
+              playerPos.add(xOffset, 0, zOffset),
+              (int)(-halfWidth * zoom),
+              (int)(-halfHeight * zoom),
+              (int)(halfWidth * zoom),
+              (int)(halfHeight * zoom), zoomLevels[currentZoomLevel]);
 
-        int segX0 = (int)(xOffset - (width/2) * (1/zoomLevels[currentZoomLevel])) >> 9;
-        int segZ0 = (int)(zOffset - (width/2) * (1/zoomLevels[currentZoomLevel])) >> 9;
-        for(int x = 0; x < xSegmentCount; x++){
-            for(int z = 0; z < zSegmentCount; z++) {
-                MapSegment map = MapManager.getMapSegment(MapSegmentUtil.toSegment(segX0 + x, segZ0 + z));
-                renderSegment(map);
-            }
-        }
+        fill((int)-xOffset-1, (int)-zOffset-1, (int)-xOffset+2, (int)-zOffset+2, 0xFF000000);
+
+
+        RenderSystem.popMatrix();
 
         if(isWaypointListOpen.get()){
             Minecraft.getInstance().getTextureManager().bindTexture(FullMapScreen.FULL_MAP_TEXTURES);
@@ -92,15 +99,6 @@ public class FullMapScreen extends Screen {
         super.render(mouseX, mouseY, delta);
     }
 
-    public void renderSegment(MapSegment map){
-        if(map != null ) {
-            map.getDynTexture().bindTexture();
-            map.updadteGPU();
-            float segX = ((int)((map.getIdent() >> 32) & 0xFFFFFFFFL)) * (512 * zoomLevels[currentZoomLevel]);
-            float segZ = ((int)(map.getIdent() & 0xFFFFFFFFL)) * (512 * zoomLevels[currentZoomLevel]);
-            BlendBlitHelper.blit((width / 2) - xOffset + segX, (height / 2) - zOffset + segZ, (int) (512 * zoomLevels[currentZoomLevel]), (int) (512 * zoomLevels[currentZoomLevel]), 0, 0, 256, 256, 256, 256);
-        }
-    }
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int mouseButton, double deltaX, double deltaY) {
@@ -128,8 +126,8 @@ public class FullMapScreen extends Screen {
     public void increaseZoom(){
         if(this.currentZoomLevel > 0){
             this.currentZoomLevel -= 1;
-            this.xOffset *= 2;
-            this.zOffset *= 2;
+            //this.xOffset *= 2;
+            //this.zOffset *= 2;
         }
 
     }
@@ -137,8 +135,8 @@ public class FullMapScreen extends Screen {
     public void decreaseZoom(){
         if(this.currentZoomLevel < this.zoomLevels.length - 1){
             this.currentZoomLevel += 1;
-            this.xOffset /= 2;
-            this.zOffset /= 2;
+            //this.xOffset /= 2;
+           // this.zOffset /= 2;
         }
     }
 }

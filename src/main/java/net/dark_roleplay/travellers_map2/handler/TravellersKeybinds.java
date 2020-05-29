@@ -18,10 +18,10 @@ import org.lwjgl.glfw.GLFW;
 @Mod.EventBusSubscriber(modid = TravellersMap.MODID, value = Dist.CLIENT)
 public class TravellersKeybinds {
 
-    public static KeyBinding ZOOM = new KeyBinding("travellers_map.zoom", KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_KP_0, "key.categories.misc");
-    public static KeyBinding ZOOM_IN = new KeyBinding("travellers_map.zoom.in", KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.categories.misc");
-    public static KeyBinding ZOOM_OUT = new KeyBinding("travellers_map.zoom.out", KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.categories.misc");
-    public static KeyBinding OPEN_MAP = new KeyBinding("travellers_map.map.open", GLFW.GLFW_KEY_M, "key.categories.misc");
+    public static KeyBinding ZOOM = new KeyBinding("key.travellers_map.zoom", KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_KP_0, "key.categories.travellers_map");
+    public static KeyBinding ZOOM_IN = new KeyBinding("key.travellers_map.zoom.in", KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.categories.travellers_map");
+    public static KeyBinding ZOOM_OUT = new KeyBinding("key.travellers_map.zoom.out", KeyConflictContext.IN_GAME, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.categories.travellers_map");
+    public static KeyBinding OPEN_MAP = new KeyBinding("key.travellers_map.map.open", GLFW.GLFW_KEY_M, "key.categories.travellers_map");
 
     @SubscribeEvent
     public static void keyListeners(InputEvent.KeyInputEvent event){

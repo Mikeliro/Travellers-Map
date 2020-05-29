@@ -1,3 +1,8 @@
+v0.4.2
+* Fixed largest bugs in full screen Map, still not perfect but improved drastically
+* Added rudimentary Player marker to full screen map, will be replaced in the future
+* Fixed missing translation file
+
 v0.4.1
 * Fixed compass not hiding when having the debug menu open
 * Fixed bugged waypoint list after adding waypoint
