@@ -136,17 +136,17 @@ idea {
     }
 }
 
-curseforge {
-    apiKey = System.getenv('CURSE_API_KEY') // This should really be in a gradle.properties file
-    project {
-        id = '360748'
-        changelog = file('changelog.txt') // A file can also be set using: changelog = file('changelog.txt')
-        releaseType = 'beta'
-        mainArtifact(jar) {
-            displayName = "Travellers Map - ${MC_VERSION} - v${MOD_VERSION}"
-        }
-    }
-}
+//curseforge {
+//    apiKey = System.getenv('CURSE_API_KEY') // This should really be in a gradle.properties file
+//    project {
+//        id = '360748'
+//        changelog = file('changelog.txt') // A file can also be set using: changelog = file('changelog.txt')
+//        releaseType = 'beta'
+//        mainArtifact(jar) {
+//            displayName = "Travellers Map - ${MC_VERSION} - v${MOD_VERSION}"
+//        }
+//    }
+//}
 
 def reobfFile = file("$buildDir/reobfJar/output.jar")
 def reobfArtifact = artifacts.add('default', reobfFile) {

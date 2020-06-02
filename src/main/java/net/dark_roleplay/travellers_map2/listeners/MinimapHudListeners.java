@@ -4,6 +4,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map.TravellersMap;
 import net.dark_roleplay.travellers_map2.objects.huds.compass.CompassHud;
 import net.dark_roleplay.travellers_map2.configs.ClientConfig;
+import net.dark_roleplay.travellers_map2.objects.huds.hud.Hud;
+import net.dark_roleplay.travellers_map2.objects.huds.hud.HudHelper;
 import net.dark_roleplay.travellers_map2.objects.huds.minimap.MinimapHUD;
 import net.dark_roleplay.travellers_map2.handler.TravellersKeybinds;
 import net.dark_roleplay.travellers_map2.objects.screens.minimap.settings.MinimapSettingsScreen;
@@ -17,23 +19,25 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = TravellersMap.MODID, value = Dist.CLIENT)
 public class MinimapHudListeners {
 
+	private static HudHelper[] HUDS = new HudHelper[]{
+			new HudHelper(
+					MinimapHUD.INSTANCE,
+					MinimapHudListeners::hideWhenDebug,
+					v -> !(Minecraft.getInstance().currentScreen instanceof MinimapSettingsScreen)
+			)
+	};
+
 	@SubscribeEvent
 	public static void hudDraw(RenderGameOverlayEvent.Post event){
 		if(event.getType() != RenderGameOverlayEvent.ElementType.ALL) return;
 		if (Minecraft.getInstance().gameSettings.hideGUI) return;
 
-		if (!Minecraft.getInstance().gameSettings.showDebugInfo && !(Minecraft.getInstance().currentScreen instanceof MinimapSettingsScreen)){
-			RenderSystem.pushMatrix();
-			int posX = ClientConfig.MINIMAP.ALIGNMENT.get().getX(event.getWindow().getScaledWidth()) + ClientConfig.MINIMAP.POS_X.get();
-			int posY = ClientConfig.MINIMAP.ALIGNMENT.get().getY(event.getWindow().getScaledHeight()) + ClientConfig.MINIMAP.POS_Y.get();
-			RenderSystem.translatef(posX, posY, 0);
+		int width = event.getWindow().getScaledWidth();
+		int height = event.getWindow().getScaledHeight();
+		float partialTicks = event.getPartialTicks();
 
-			MinimapHUD hud = MinimapHUD.INSTANCE;
-			hud.setSize(event.getWindow().getScaledWidth(), event.getWindow().getScaledHeight());
-			hud.render(0, 0, event.getPartialTicks());
-
-			RenderSystem.popMatrix();
-		}
+		for(HudHelper helper : HUDS)
+			helper.render(width, height, partialTicks);
 
 		if(!Minecraft.getInstance().gameSettings.showDebugInfo && !Minecraft.getInstance().ingameGUI.getTabList().visible){
 			RenderSystem.pushMatrix();
@@ -61,5 +65,9 @@ public class MinimapHudListeners {
 			}
 			event.setCanceled(true);
 		}
+	}
+
+	private static boolean hideWhenDebug(Void v){
+		return !Minecraft.getInstance().gameSettings.showDebugInfo;
 	}
 }

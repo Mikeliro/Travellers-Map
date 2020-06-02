@@ -1,6 +1,7 @@
 package net.dark_roleplay.travellers_map2.objects.screens.minimap.settings;
 
 import net.dark_roleplay.travellers_map.util.Wrapper;
+import net.dark_roleplay.travellers_map2.objects.huds.minimap.MinimapHUD;
 import net.dark_roleplay.travellers_map2.objects.screens.SidePanelButton;
 import net.dark_roleplay.travellers_map2.objects.screens.full_map.FullMapScreen;
 import net.minecraft.client.Minecraft;
@@ -25,9 +26,9 @@ public class MinimapSettingsScreen extends Screen {
 	@Override
 	protected void init() {
 		if(mover != null) mover.onClose();
-		stylePanel = new StylesPanel(this.minecraft, 5, 5, 118, this.height - 10);
-		this.addButton(mover = new MinimapMover("screen.travellers_map.minimap_positioning"));
-		this.addButton(new SidePanelButton(-2, (this.height - 15) / 2, isStlyeListOpen, btn -> {
+		stylePanel = new StylesPanel(this.minecraft, 5, 5, 118, this.height - 10, MinimapHUD.INSTANCE);
+		this.addButton(mover = new MinimapMover(MinimapHUD.INSTANCE));
+		this.addButton(new SidePanelButton(-2, (this.height - 23) / 2, isStlyeListOpen, btn -> {
 			if(isStlyeListOpen.get()){
 				this.children.add(stylePanel);
 				btn.x = 125;

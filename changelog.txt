@@ -1,20 +1,18 @@
-v0.4.2
-* Fixed largest bugs in full screen Map, still not perfect but improved drastically
-* Added rudimentary Player marker to full screen map, will be replaced in the future
-* Fixed missing translation file
+v0.5.0
+* Bug Fix/Change, + Addition, - Removal
 
-v0.4.1
-* Fixed compass not hiding when having the debug menu open
-* Fixed bugged waypoint list after adding waypoint
-* Fixed compass hud markers being offset by 1 pixel downwards
-* Compass hud can now be properly resized
+Full Screen Map
+├ * Dragging now works as expected on zoomed in/out maps
+├ * Made Button for the side panel slightly larger
+└ + Added a player marker
 
-v0.4
-* Changed scaling option for the Minimap Config can now be scaled between 50% and 200% it's original size
-* Compass Hud will now be hidden when player list is open
-+ Minimap can now spin (config option, disabled by default)
-+ Added Minimap Settings GUI (can be accessed trough full screen map)
-+ Waypoint List in the full screen map is now hidden by default and can be opened.
-+ Added Minimap Styles
--> Following Styles were added:
-Default, Daylight Mod, Minecraft Map
+Minimap & Compass
+├ * (Minimap only) Can no longer be moved out of screen (only affects when changed in gui)
+├ * Styles are now persistent between sessions
+├ * Can now be scaled from 25% up to 400% (prior to 50% and 200%)
+├ + Can now be hidden trough config
+└ + Added better player marker
+
+General
+├ * Fixed Torches generating black spots on the map
+├ * Fixed small lighting inconsistency

@@ -5,8 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
-import net.dark_roleplay.travellers_map2.handler.StyleManager;
-import net.dark_roleplay.travellers_map2.objects.huds.HudStyle;
+import net.dark_roleplay.travellers_map2.objects.huds.hud.HudStyle;
+import net.dark_roleplay.travellers_map2.objects.huds.minimap.MinimapHUD;
 import net.minecraft.client.Minecraft;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IFutureReloadListener;
@@ -19,6 +19,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -41,7 +43,7 @@ public class ResourceReloadListener {
 	}
 
 	private static CompletableFuture<Void> reload(IFutureReloadListener.IStage stage, IResourceManager resourceManager, IProfiler preparationsProfiler, IProfiler reloadProfiler, Executor backgroundExecutor, Executor gameExecutor){
-		StyleManager.initalizeStyles();
+		Set<HudStyle> styles = new HashSet<>();
 		return CompletableFuture.<Void>supplyAsync(() -> {
 			Collection<ResourceLocation> minimapStyles = resourceManager.getAllResourceLocations("travellers_map/styles/minimap", val -> true);
 
@@ -50,7 +52,7 @@ public class ResourceReloadListener {
 					IResource resource = resourceManager.getResource(styleLoc);
 					try (JsonReader reader = new JsonReader(new BufferedReader(new InputStreamReader(resource.getInputStream())))) {
 						HudStyle style = GSON.fromJson(reader, HudStyle.class);
-						StyleManager.HUD_STYLES.put(style.getStyleName(), style);
+						styles.add(style);
 					}catch (JsonIOException | JsonSyntaxException e){
 						e.printStackTrace();
 					}
@@ -59,6 +61,7 @@ public class ResourceReloadListener {
 				}
 			}
 
+			MinimapHUD.INSTANCE.refreshStyles(styles);
 			return null;
 		}).thenCompose(stage::markCompleteAwaitingOthers);
 	}

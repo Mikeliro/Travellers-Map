@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map2.objects.screens.full_map;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map.TravellersMap;
 import net.dark_roleplay.travellers_map.util.*;
@@ -25,7 +26,7 @@ public class FullMapScreen extends Screen {
 
     private WaypointScrollPanel scrollPanel;
 
-    private float[] zoomLevels = new float[]{2.0F, 1.0F, 0.5F, 0.5F};
+    private float[] zoomLevels = new float[]{2.0F, 1.0F, 0.5F, 0.25F};
 
     public FullMapScreen(){
         super(new TranslationTextComponent("screen.travellers_map.full_map"));
@@ -43,7 +44,7 @@ public class FullMapScreen extends Screen {
             Minecraft.getInstance().displayGuiScreen(new MinimapSettingsScreen(this));
         }));
 
-        this.addButton(new SidePanelButton(isWaypointListOpen.get() ? 125 : -2, (this.height - 15) / 2, isWaypointListOpen, btn -> {
+        this.addButton(new SidePanelButton(isWaypointListOpen.get() ? 125 : -2, (this.height - 23) / 2, isWaypointListOpen, btn -> {
             if(isWaypointListOpen.get()){
                 this.children.add(scrollPanel);
                 this.addButton(waypointButton);
@@ -85,13 +86,14 @@ public class FullMapScreen extends Screen {
               (int)(halfWidth * zoom),
               (int)(halfHeight * zoom), zoomLevels[currentZoomLevel]);
 
-        fill((int)-xOffset-1, (int)-zOffset-1, (int)-xOffset+2, (int)-zOffset+2, 0xFF000000);
-
+        Minecraft.getInstance().getTextureManager().bindTexture(FullMapScreen.FULL_MAP_TEXTURES);
+        RenderSystem.translatef((int)-xOffset, (int)-zOffset, 0);
+        RenderSystem.rotatef(Minecraft.getInstance().player.getYaw(delta) - 180, 0, 0, 1);
+        blit(-2, -4, 158, 0, 5, 7);
 
         RenderSystem.popMatrix();
 
         if(isWaypointListOpen.get()){
-            Minecraft.getInstance().getTextureManager().bindTexture(FullMapScreen.FULL_MAP_TEXTURES);
             blit(0, 0, 128, this.height, 0, 0, 128, 256, 256, 256);
             scrollPanel.render(mouseX, mouseY, delta);
         }
@@ -105,8 +107,8 @@ public class FullMapScreen extends Screen {
         boolean success = super.mouseDragged(mouseX, mouseY, mouseButton, deltaX, deltaY);
         if(success) return success;
 
-        xOffset -= deltaX;
-        zOffset -= deltaY;
+        xOffset -= deltaX / zoomLevels[currentZoomLevel];
+        zOffset -= deltaY / zoomLevels[currentZoomLevel];
         return true;
     }
 

@@ -3,14 +3,16 @@ package net.dark_roleplay.travellers_map2.objects.screens.minimap.settings;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map.util.BlendBlitHelper;
 import net.dark_roleplay.travellers_map2.configs.ClientConfig;
-import net.dark_roleplay.travellers_map2.handler.StyleManager;
 import net.dark_roleplay.travellers_map2.objects.huds.GuiAlignment;
-import net.dark_roleplay.travellers_map2.objects.huds.HudStyle;
+import net.dark_roleplay.travellers_map2.objects.huds.hud.Hud;
+import net.dark_roleplay.travellers_map2.objects.huds.hud.HudStyle;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.Widget;
 
 public class MinimapMover extends Widget {
+
+	Hud hud;
 
 	int posX;
 	int posY;
@@ -19,8 +21,9 @@ public class MinimapMover extends Widget {
 	double initOffsetX = 0;
 	double initOffsetY = 0;
 
-	public MinimapMover(String name) {
-		super(0, 0, name);
+	public MinimapMover(Hud hud) {
+		super(0, 0, hud.getUnlocalizedName() + ".mover");
+		this.hud = hud;
 
 		MainWindow window = Minecraft.getInstance().getMainWindow();
 		this.alignment = ClientConfig.MINIMAP.ALIGNMENT.get();
@@ -38,14 +41,15 @@ public class MinimapMover extends Widget {
 
 	@Override
 	public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
-		posX = (int)(mouseX + initOffsetX);
-		posY = (int)(mouseY + initOffsetY);
+		HudStyle style = this.hud.getStyle();
+		posX = Math.min(Math.max(0, (int)(mouseX + initOffsetX)), Minecraft.getInstance().getMainWindow().getScaledWidth() - style.getWidth());
+		posY = Math.min(Math.max(0, (int)(mouseY + initOffsetY)), Minecraft.getInstance().getMainWindow().getScaledHeight() - style.getHeight());
 	}
 
 	@Override
 	public void renderButton(int mouseX, int mouseY, float delta) {
 		MainWindow window = Minecraft.getInstance().getMainWindow();
-		HudStyle style = StyleManager.getSelectedMinimapStyle();
+		HudStyle style = this.hud.getStyle();
 
 		this.width = (int)(style.getWidth() * ClientConfig.MINIMAP.SCALE.get());
 		this.height = (int)(style.getWidth() * ClientConfig.MINIMAP.SCALE.get());

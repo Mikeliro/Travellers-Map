@@ -1,4 +1,4 @@
-package net.dark_roleplay.travellers_map2.objects.huds;
+package net.dark_roleplay.travellers_map2.objects.huds.hud;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

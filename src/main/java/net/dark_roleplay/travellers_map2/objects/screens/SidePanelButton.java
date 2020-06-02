@@ -13,7 +13,7 @@ public class SidePanelButton extends Button {
 	private IPressable additionalCallback;
 
 	public SidePanelButton(int posX, int posY, Wrapper<Boolean> value, IPressable additionalCallback) {
-		super(posX, posY, 11, 15, "", SidePanelButton::toggleActive);
+		super(posX, posY, 15, 23, "", SidePanelButton::toggleActive);
 		this.value = value;
 		this.additionalCallback = additionalCallback;
 	}
@@ -28,8 +28,8 @@ public class SidePanelButton extends Button {
 		Minecraft minecraft = Minecraft.getInstance();
 		minecraft.getTextureManager().bindTexture(FullMapScreen.FULL_MAP_TEXTURES);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
-		int x = this.isHovered() ? 11 : 0;
-		int y = this.value.get() ? 15 : 0;
+		int x = this.isHovered() ? 15 : 0;
+		int y = this.value.get() ? 23 : 0;
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
