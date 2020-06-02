@@ -7,7 +7,7 @@ Full Screen Map
 └ + Added a player marker
 
 Minimap & Compass
-├ * (Minimap only) Can no longer be moved out of screen (only affects when changed in gui)
+├ * (Minimap only) Can no longer be moved out of screen (only works when changed in gui)
 ├ * Styles are now persistent between sessions
 ├ * Can now be scaled from 25% up to 400% (prior to 50% and 200%)
 ├ + Can now be hidden trough config
@@ -15,4 +15,4 @@ Minimap & Compass
 
 General
 ├ * Fixed Torches generating black spots on the map
-├ * Fixed small lighting inconsistency
+└ * Fixed small lighting inconsistency

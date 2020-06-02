@@ -6,7 +6,10 @@ public class MonoColorPalette extends ColorPalette {
 
 	private int[][] colors;
 
-	public MonoColorPalette() {
+	public MonoColorPalette(int colorMult) {
+		int multR = colorMult >> 16 & 0xFF;
+		int multG = colorMult >> 8 & 0xFF;
+		int multB = colorMult & 0xFF;
 		colors = new int[MaterialColor.COLORS.length][];
 
 		for (int i = 0; i < MaterialColor.COLORS.length; i++) {
@@ -20,7 +23,10 @@ public class MonoColorPalette extends ColorPalette {
 					float blue = color & 0xFF;
 
 					int grayColor = (int) (0.21 * red + 0.72 * green + 0.07 * blue);
-					colors[i][j] = 0xFF000000 | grayColor << 16 | grayColor << 8 | grayColor;
+					int redChannel = (grayColor * (multR/256)) << 16 ;
+					int greenChannel = (grayColor * (multG/256))  << 8;
+					int blueChannel = grayColor * (multB/256);
+					colors[i][j] = 0xFF000000 | redChannel | greenChannel | blueChannel =;
 				}
 			}
 		}
