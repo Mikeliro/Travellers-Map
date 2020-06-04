@@ -25,8 +25,7 @@ public class HudHelper {
         int posX = config.ALIGNMENT.get().getX(width) + config.POS_X.get();
         int posY = config.ALIGNMENT.get().getY(height) + config.POS_Y.get();
         RenderSystem.translatef(posX, posY, 0);
-        MinimapHUD hud = MinimapHUD.INSTANCE;
-        hud.setSize(width, height);
+        hud.setWindowSize(width, height);
         hud.render(0, 0, partialTicks);
 
         RenderSystem.popMatrix();

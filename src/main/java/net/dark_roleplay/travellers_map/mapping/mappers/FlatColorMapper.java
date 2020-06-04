@@ -14,7 +14,7 @@ import net.minecraft.world.gen.Heightmap;
 
 public class FlatColorMapper extends   Mapper{
 	public static Mapper INSTANCE_COLOR = new FlatColorMapper(new DefaultColorPalette());
-	public static Mapper INSTANCE_GRAYSCALE = new FlatColorMapper(new MonoColorPalette());
+	public static Mapper INSTANCE_GRAYSCALE = new FlatColorMapper(new MonoColorPalette(0xFFFFFFFF));
 
 	private ColorPalette palette;
 

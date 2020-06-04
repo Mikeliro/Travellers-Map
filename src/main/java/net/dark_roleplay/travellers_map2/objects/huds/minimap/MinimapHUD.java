@@ -33,6 +33,7 @@ public class MinimapHUD extends Hud {
 
 	private final Set<MapSegment> segments = new HashSet<>();
 
+	@Override
 	public void render(int mouseX, int mouseY, float delta) {
 		renderOverlay();
 		renderMap();

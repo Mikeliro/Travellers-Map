@@ -26,7 +26,7 @@ public class MonoColorPalette extends ColorPalette {
 					int redChannel = (grayColor * (multR/256)) << 16 ;
 					int greenChannel = (grayColor * (multG/256))  << 8;
 					int blueChannel = grayColor * (multB/256);
-					colors[i][j] = 0xFF000000 | redChannel | greenChannel | blueChannel =;
+					colors[i][j] = 0xFF000000 | redChannel | greenChannel | blueChannel;
 				}
 			}
 		}

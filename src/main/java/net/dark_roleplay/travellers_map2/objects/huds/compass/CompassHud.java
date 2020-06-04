@@ -5,6 +5,9 @@ import net.dark_roleplay.travellers_map.TravellersMap;
 import net.dark_roleplay.travellers_map.mapping.waypoints.Waypoint;
 import net.dark_roleplay.travellers_map.util.BlendBlitHelper;
 import net.dark_roleplay.travellers_map.util.MapManager;
+import net.dark_roleplay.travellers_map2.configs.ClientConfig;
+import net.dark_roleplay.travellers_map2.objects.huds.hud.Hud;
+import net.dark_roleplay.travellers_map2.objects.huds.hud.HudStyle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
@@ -12,29 +15,27 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class CompassHud extends AbstractGui {
+public class CompassHud extends Hud {
 	public static final CompassHud INSTANCE = new CompassHud();
 
-	private static ResourceLocation COMPASS_TEXTURES = new ResourceLocation(TravellersMap.MODID, "textures/guis/compass.png");
-
-	private int width, height;
+	private static ResourceLocation WAYPOINT_ICONS = new ResourceLocation(TravellersMap.MODID, "textures/guis/waypoint_icons.png");
 
 	private static final int HALF_WIDTH = 128;
 
-	private CompassHud() {}
-
-	public void setWindowSize(int width, int height) {
-		this.width = width;
-		this.height = height;
+	private CompassHud() {
+		super(ClientConfig.COMPASS, "hud." + TravellersMap.MODID + ".compass" ,
+				new HudStyle("Default", 256, 16, "travellers_map:textures/styles/compass/default_mask.png", "travellers_map:textures/styles/compass/default_overlay.png"));
 	}
 
+	@Override
 	public void render(int mouseX, int mouseY, float delta) {
+		HudStyle style = getStyle();
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.disableAlphaTest();
 
-		Minecraft.getInstance().getTextureManager().bindTexture(COMPASS_TEXTURES);
-		BlendBlitHelper.blit(0, 0, 256, 16, 0, 0, 256, 16, 256, 256);
+		Minecraft.getInstance().getTextureManager().bindTexture(style.getOverlay());
+		BlendBlitHelper.blit(0, 0, 256, 16, 0, 0, 1, 1, 1, 1);
 
 		resetMarkerRendering(delta);
 
@@ -76,9 +77,9 @@ public class CompassHud extends AbstractGui {
 	private Waypoint drawWaypointMarker(Waypoint waypoint){
 		//Rudimentary culling;
 		RenderSystem.enableAlphaTest();
-		Minecraft.getInstance().getTextureManager().bindTexture(COMPASS_TEXTURES);
+		Minecraft.getInstance().getTextureManager().bindTexture(WAYPOINT_ICONS);
 		float pos = HALF_WIDTH + waypoint.getLastRenderedOffset() - 3.5F;
-		BlendBlitHelper.blitColor(pos, 2, 7, 12, 0, 16, 7, 12, 256, 256, waypoint.getColor());
+		BlendBlitHelper.blitColor(pos, 2, 7, 12, 0, 0, 7, 12, 140, 120, waypoint.getColor());
 
 		return waypoint;
 	}

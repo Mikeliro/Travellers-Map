@@ -24,6 +24,11 @@ public class MinimapHudListeners {
 					MinimapHUD.INSTANCE,
 					MinimapHudListeners::hideWhenDebug,
 					v -> !(Minecraft.getInstance().currentScreen instanceof MinimapSettingsScreen)
+			),
+			new HudHelper(
+					CompassHud.INSTANCE,
+					MinimapHudListeners::hideWhenDebug,
+					v -> !Minecraft.getInstance().ingameGUI.getTabList().visible
 			)
 	};
 

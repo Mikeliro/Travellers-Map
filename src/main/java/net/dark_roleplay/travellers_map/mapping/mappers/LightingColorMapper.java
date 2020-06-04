@@ -17,7 +17,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public class LightingColorMapper extends Mapper{
 	public static Mapper INSTANCE = new LightingColorMapper(new DefaultColorPalette());
-	public static Mapper INSTANCE_GRAYSCALE = new LightingColorMapper(new MonoColorPalette());
+	public static Mapper INSTANCE_GRAYSCALE = new LightingColorMapper(new MonoColorPalette(0xFFFFFFFF));
 
 	private ColorPalette palette;
 

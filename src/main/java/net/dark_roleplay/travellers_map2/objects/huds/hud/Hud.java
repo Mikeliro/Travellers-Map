@@ -7,12 +7,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Hud extends AbstractGui {
+public abstract class Hud extends AbstractGui {
 
     public final Map<String, HudStyle> STYLES = new HashMap<>();
 
     private HudStyle selectedStyle = null;
     private final HudStyle fallbackStyle;
+
+    protected int wWidth;
+    protected int wHeight;
 
     protected HudConfig config;
     private String unlocalizedName;
@@ -49,5 +52,12 @@ public class Hud extends AbstractGui {
     public String getUnlocalizedName() {
         return unlocalizedName;
     }
+
+    public void setWindowSize(int width, int height) {
+        this.wWidth = width;
+        this.wHeight = height;
+    }
+
+    public abstract void render(int mouseX, int mouseY, float delta);
 }
 
