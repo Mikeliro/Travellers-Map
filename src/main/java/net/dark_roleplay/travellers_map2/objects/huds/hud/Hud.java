@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map2.objects.huds.hud;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dark_roleplay.travellers_map2.configs.client.HudConfig;
 import net.minecraft.client.gui.AbstractGui;
 
@@ -58,6 +59,6 @@ public abstract class Hud extends AbstractGui {
         this.wHeight = height;
     }
 
-    public abstract void render(int mouseX, int mouseY, float delta);
+    public abstract void render(MatrixStack matrix, int mouseX, int mouseY, float delta);
 }
 

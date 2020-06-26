@@ -16,9 +16,11 @@ public class RenderTicket implements IMapSegmentTicket {
 
 	private int posX1, posX2, posZ1, posZ2;
 
+	//func_233580_cy_ == player#getPosition()
+
 	public static RenderTicket getOrCreateTicket(int offsetX, int offsetZ){
-		int segX = (Minecraft.getInstance().player.getPosition().getX() + offsetX) >> 9;
-		int segZ = (Minecraft.getInstance().player.getPosition().getZ() + offsetZ) >> 9;
+		int segX = (Minecraft.getInstance().player.func_233580_cy_().getX() + offsetX) >> 9;
+		int segZ = (Minecraft.getInstance().player.func_233580_cy_().getZ() + offsetZ) >> 9;
 		long ident = MapSegmentUtil.toSegment(segX, segZ);
 		RenderTicket ticket = TICKETS.get(ident);
 		if(ticket == null) {
@@ -38,7 +40,7 @@ public class RenderTicket implements IMapSegmentTicket {
 	@Override
 	public boolean isActive() {
 		if(Minecraft.getInstance().player == null) return false;
-		BlockPos playerPos = Minecraft.getInstance().player.getPosition();
+		BlockPos playerPos = Minecraft.getInstance().player.func_233580_cy_();
 		return posX1 < playerPos.getX() && posX2 > playerPos.getX() && posZ1 < playerPos.getZ() && posZ2 > playerPos.getZ();
 	}
 }

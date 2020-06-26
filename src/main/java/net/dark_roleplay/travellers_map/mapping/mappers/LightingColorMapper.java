@@ -28,7 +28,7 @@ public class LightingColorMapper extends Mapper{
 	@Override
 	public void mapChunk(World world, IChunk chunk, NativeImage img) {
 		ChunkPos chunkPos = chunk.getPos();
-		BlockPos.PooledMutable pos = BlockPos.PooledMutable.retain();
+		BlockPos.Mutable pos = new BlockPos.Mutable();
 		int x = chunkPos.x * 16, z = chunkPos.z * 16;
 		for(int x2 = x; x2 < x + 16; x2++){
 			for(int z2 = z; z2 < z + 16; z2++){
@@ -49,7 +49,6 @@ public class LightingColorMapper extends Mapper{
 				}
 			}
 		}
-		pos.close();
 	}
 
 	@Override

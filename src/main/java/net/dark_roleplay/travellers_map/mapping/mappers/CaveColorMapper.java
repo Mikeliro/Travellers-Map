@@ -14,8 +14,8 @@ public class CaveColorMapper extends Mapper{
 
 	@Override
 	public void mapChunk(World world, IChunk chunk, NativeImage img) {
-		BlockPos.PooledMutable pos = BlockPos.PooledMutable.retain();
-		BlockPos.PooledMutable worker = BlockPos.PooledMutable.retain();
+		BlockPos.Mutable pos = new BlockPos.Mutable();
+		BlockPos.Mutable worker = new BlockPos.Mutable();
 		int x = Math.floorMod(chunk.getPos().x, 32) * 16, z = Math.floorMod(chunk.getPos().z, 32) * 16;
 		for(int x2 = 0; x2 < 16; x2++){
 			for(int z2 = 0; z2 < 16; z2++){
@@ -30,7 +30,6 @@ public class CaveColorMapper extends Mapper{
 
 			}
 		}
-		pos.close();
 	}
 
 	@Override
@@ -49,7 +48,7 @@ public class CaveColorMapper extends Mapper{
 				&& world.chunkExists(chunk.getPos().x - 1, chunk.getPos().z) && world.chunkExists(chunk.getPos().x + 1, chunk.getPos().z);
 	}
 
-	private boolean isVisible(IChunk chunk, BlockPos center, BlockPos.PooledMutable worker){
+	private boolean isVisible(IChunk chunk, BlockPos center, BlockPos.Mutable worker){
 		if(chunk.getBlockState(worker.setPos(center.getX(), center.getY(), center.getZ() - 1)).getMaterialColor(Minecraft.getInstance().world, worker) == MaterialColor.AIR) return true;
 		if(chunk.getBlockState(worker.setPos(center.getX() - 1, center.getY(), center.getZ())).getMaterialColor(Minecraft.getInstance().world, worker) == MaterialColor.AIR) return true;
 		if(chunk.getBlockState(worker.setPos(center.getX(), center.getY(), center.getZ() + 1)).getMaterialColor(Minecraft.getInstance().world, worker) == MaterialColor.AIR) return true;

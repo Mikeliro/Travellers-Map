@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map2.objects.huds.hud;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map2.configs.client.HudConfig;
 import net.dark_roleplay.travellers_map2.objects.huds.minimap.MinimapHUD;
@@ -18,7 +19,7 @@ public class HudHelper {
         this.predicates = predicates;
     }
 
-    public void render(int width, int height, float partialTicks){
+    public void render(MatrixStack matrix, int width, int height, float partialTicks){
         if(!shouldRender()) return;
 
         RenderSystem.pushMatrix();

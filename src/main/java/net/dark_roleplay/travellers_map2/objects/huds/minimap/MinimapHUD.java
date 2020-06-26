@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map2.objects.huds.minimap;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map.TravellersMap;
 import net.dark_roleplay.travellers_map2.configs.ClientConfig;
@@ -13,7 +14,7 @@ import net.dark_roleplay.travellers_map2.objects.huds.hud.HudStyle;
 import net.dark_roleplay.travellers_map2.objects.screens.full_map.FullMapScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,7 +35,7 @@ public class MinimapHUD extends Hud {
 	private final Set<MapSegment> segments = new HashSet<>();
 
 	@Override
-	public void render(int mouseX, int mouseY, float delta) {
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float delta) {
 		renderOverlay();
 		renderMap();
 
@@ -120,7 +121,7 @@ public class MinimapHUD extends Hud {
 
 	private void getAndDrawMapSegment(PlayerEntity player, int offsetX, int offsetZ){
 		RenderTicket ticket = RenderTicket.getOrCreateTicket(offsetX, offsetZ);
-		MapSegment map = MapManager.getMapSegment(MapSegmentUtil.getSegment(player.getPosition().add(offsetX, 0, offsetZ)));
+		MapSegment map = MapManager.getMapSegment(MapSegmentUtil.getSegment(player.func_233580_cy_().add(offsetX, 0, offsetZ)));//Player#getPosition -> BlockPos
 		if(map != null && !segments.contains(map)){
 			map.addTicket(ticket);
 			segments.add(map);
@@ -128,7 +129,7 @@ public class MinimapHUD extends Hud {
 		}
 	}
 
-	private void drawMapSegment(MapSegment map, Vec3d playerPos, int offsetX, int offsetZ){
+	private void drawMapSegment(MapSegment map, Vector3d playerPos, int offsetX, int offsetZ){
 		map.getDynTexture().bindTexture();
 		map.updadteGPU();
 

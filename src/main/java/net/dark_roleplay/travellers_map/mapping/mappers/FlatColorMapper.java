@@ -24,7 +24,7 @@ public class FlatColorMapper extends   Mapper{
 
 	@Override
 	public void mapChunk(World world, IChunk chunk, NativeImage img) {
-		BlockPos.PooledMutable pos = BlockPos.PooledMutable.retain();
+		BlockPos.Mutable pos = new BlockPos.Mutable();
 		int x = Math.floorMod(chunk.getPos().x, 32) * 16, z = Math.floorMod(chunk.getPos().z, 32) * 16;
 		for(int x2 = 0; x2 < 16; x2++){
 			for(int z2 = 0; z2 < 16; z2++){
@@ -35,7 +35,6 @@ public class FlatColorMapper extends   Mapper{
 					img.setPixelRGBA(x + x2, z + z2, (palette.getRGBA(color.colorIndex)));
 			}
 		}
-		pos.close();
 	}
 
 	@Override

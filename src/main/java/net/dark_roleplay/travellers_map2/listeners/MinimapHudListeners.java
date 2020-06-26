@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map2.listeners;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map.TravellersMap;
 import net.dark_roleplay.travellers_map2.objects.huds.compass.CompassHud;
@@ -41,8 +42,10 @@ public class MinimapHudListeners {
 		int height = event.getWindow().getScaledHeight();
 		float partialTicks = event.getPartialTicks();
 
+		MatrixStack stack = new MatrixStack();
+
 		for(HudHelper helper : HUDS)
-			helper.render(width, height, partialTicks);
+			helper.render(stack, width, height, partialTicks);
 
 		if(!Minecraft.getInstance().gameSettings.showDebugInfo && !Minecraft.getInstance().ingameGUI.getTabList().visible){
 			RenderSystem.pushMatrix();
@@ -53,7 +56,7 @@ public class MinimapHudListeners {
 
 			CompassHud compassHud = CompassHud.INSTANCE;
 			compassHud.setWindowSize(event.getWindow().getScaledWidth(), event.getWindow().getScaledHeight());
-			compassHud.render(0, 0, event.getPartialTicks());
+			compassHud.render(stack,0, 0, event.getPartialTicks());
 
 			RenderSystem.popMatrix();
 		}

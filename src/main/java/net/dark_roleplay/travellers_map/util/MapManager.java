@@ -29,7 +29,7 @@ public class MapManager {
 
     public static void setupMappingFolders(){
         if(Minecraft.getInstance().isIntegratedServerRunning()){
-            String name = Minecraft.getInstance().getIntegratedServer().getWorldName();
+            String name = Minecraft.getInstance().getIntegratedServer().getName();
             System.out.println("Test");
         }else{
             SocketAddress adress = Minecraft.getInstance().player.connection.getNetworkManager().getRemoteAddress();

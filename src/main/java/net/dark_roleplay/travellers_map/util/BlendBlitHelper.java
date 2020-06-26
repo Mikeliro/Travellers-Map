@@ -3,6 +3,8 @@ package net.dark_roleplay.travellers_map.util;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.TransformationMatrix;
 
 public class BlendBlitHelper {
 

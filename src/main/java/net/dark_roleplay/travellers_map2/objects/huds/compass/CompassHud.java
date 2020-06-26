@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map2.objects.huds.compass;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map.TravellersMap;
 import net.dark_roleplay.travellers_map.mapping.waypoints.Waypoint;
@@ -9,13 +10,14 @@ import net.dark_roleplay.travellers_map2.configs.ClientConfig;
 import net.dark_roleplay.travellers_map2.objects.huds.hud.Hud;
 import net.dark_roleplay.travellers_map2.objects.huds.hud.HudStyle;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 public class CompassHud extends Hud {
+
+	//func_238405_a_ => drawString
 	public static final CompassHud INSTANCE = new CompassHud();
 
 	private static ResourceLocation WAYPOINT_ICONS = new ResourceLocation(TravellersMap.MODID, "textures/guis/waypoint_icons.png");
@@ -28,7 +30,7 @@ public class CompassHud extends Hud {
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float delta) {
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float delta) {
 		HudStyle style = getStyle();
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
@@ -39,10 +41,10 @@ public class CompassHud extends Hud {
 
 		resetMarkerRendering(delta);
 
-		drawDirectionMarker(0, "S");
-		drawDirectionMarker(90, "W");
-		drawDirectionMarker(180, "N");
-		drawDirectionMarker(270, "E");
+		drawDirectionMarker(matrix,0, "S");
+		drawDirectionMarker(matrix,90, "W");
+		drawDirectionMarker(matrix,180, "N");
+		drawDirectionMarker(matrix,270, "E");
 		RenderSystem.disableBlend();
 
 		FontRenderer renderer = Minecraft.getInstance().fontRenderer;
@@ -53,18 +55,18 @@ public class CompassHud extends Hud {
 			float waypointOffset = ((waypointYaw - playerYaw)/90) * 128;
 			waypoint.setLastRenderedData(waypointYaw, waypointOffset);
 			if(waypoint.getLastRenderedOffset() < -128 || waypoint.getLastRenderedOffset() > 128) continue;
-			drawWaypointMarker(waypoint);
+			drawWaypointMarker(matrix, waypoint);
 			if(waypoint.getLastRenderedYaw() - 3 < playerYaw && waypoint.getLastRenderedYaw() + 3 > playerYaw)
 				waypoint.initNameWidth(renderer);
 		}
 
 		for(Waypoint waypoint : MapManager.WAYPOINTS)
 			if(waypoint.isVisible() && waypoint.getLastRenderedYaw() - 3 < playerYaw && waypoint.getLastRenderedYaw() + 3 > playerYaw)
-				drawWaypointName(renderer, waypoint);
+				drawWaypointName(matrix, renderer, waypoint);
 	}
 
 	private float playerYaw;
-	private Vec3d playerPos;
+	private Vector3d playerPos;
 	private int renderedNames = 0;
 
 	private void resetMarkerRendering(float delta){
@@ -74,7 +76,7 @@ public class CompassHud extends Hud {
 		Waypoint.widestNameWidth = 0;
 	}
 
-	private Waypoint drawWaypointMarker(Waypoint waypoint){
+	private Waypoint drawWaypointMarker(MatrixStack matrix,Waypoint waypoint){
 		//Rudimentary culling;
 		RenderSystem.enableAlphaTest();
 		Minecraft.getInstance().getTextureManager().bindTexture(WAYPOINT_ICONS);
@@ -84,13 +86,13 @@ public class CompassHud extends Hud {
 		return waypoint;
 	}
 
-	private void drawWaypointName(FontRenderer renderer, Waypoint waypoint){
+	private void drawWaypointName(MatrixStack matrix, FontRenderer renderer, Waypoint waypoint){
 		fill(HALF_WIDTH - Waypoint.widestNameWidth/2 - 2, 16 + (renderedNames * 10), HALF_WIDTH + Waypoint.widestNameWidth/2 + 2, 26 + (renderedNames * 10), 0xA0333333);
-		renderer.drawString(waypoint.getName(), HALF_WIDTH - (renderer.getStringWidth(waypoint.getName()) / 2), 17 + (renderedNames * 10), waypoint.getColor());
+		renderer.func_238405_a_(matrix, waypoint.getName(), HALF_WIDTH - (renderer.getStringWidth(waypoint.getName()) / 2), 17 + (renderedNames * 10), waypoint.getColor());
 		renderedNames ++;
 	}
 
-	private void drawDirectionMarker(float markerYaw, String markerName){
+	private void drawDirectionMarker(MatrixStack matrix, float markerYaw, String markerName){
 		FontRenderer renderer = Minecraft.getInstance().fontRenderer;
 
 		if(markerYaw > 270 && playerYaw < 180) markerYaw -= 360;
@@ -101,12 +103,12 @@ public class CompassHud extends Hud {
 			float pos = HALF_WIDTH + offset;
 			BlendBlitHelper.vLine(pos - 1F, 2, 3.5F, 0xFF888888);
 			BlendBlitHelper.vLine(pos - 1F, 12.5F, 14, 0xFF888888);
-			renderer.drawString(markerName, pos - (renderer.getStringWidth(markerName) / 2), 4.5F, 0xFF888888);
+			renderer.func_238405_a_(matrix,markerName, pos - (renderer.getStringWidth(markerName) / 2), 4.5F, 0xFF888888);
 		}
 	}
 
 	private float getYawForMarker(BlockPos pos){
-		Vec3d pos2 = new Vec3d(pos.getX() - playerPos.getX(), 0, pos.getZ() - playerPos.getZ());
+		Vector3d pos2 = new Vector3d(pos.getX() - playerPos.getX(), 0, pos.getZ() - playerPos.getZ());
 
 		float angle = (float) Math.toDegrees(Math.atan2(Math.abs(pos2.getX()), -pos2.getZ()));
 		if(pos2.getX() < 0) angle = 360-angle;
