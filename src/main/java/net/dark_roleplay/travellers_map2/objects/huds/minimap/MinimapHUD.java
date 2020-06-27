@@ -36,8 +36,8 @@ public class MinimapHUD extends Hud {
 
 	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float delta) {
-		renderOverlay();
-		renderMap();
+		renderOverlay(matrix);
+		renderMap(matrix);
 
 		HudStyle style = getStyle();
 		RenderSystem.pushMatrix();
@@ -47,11 +47,11 @@ public class MinimapHUD extends Hud {
 		RenderSystem.scalef(zoom, zoom, zoom);
 		if(!ClientConfig.SPIN_MINIMAP.get())
 			RenderSystem.rotatef(Minecraft.getInstance().player.getYaw(delta) - 180, 0, 0, 1);
-		blit(-2, -4, 158, 0, 5, 7);
+		func_238474_b_(matrix, -2, -4, 158, 0, 5, 7);
 		RenderSystem.popMatrix();
 	}
 
-	private void renderOverlay(){
+	private void renderOverlay(MatrixStack matrix){
 		HudStyle style = getStyle();
 
 		RenderSystem.pushMatrix();
@@ -71,15 +71,15 @@ public class MinimapHUD extends Hud {
 		RenderSystem.enableDepthTest();
 		RenderSystem.translatef(0.0F, 0.0F, 950.0F);
 		RenderSystem.colorMask(false, false, false, false);
-		fill(4680, 2260, -4680, -2260, 0xFFFFFFFF);
+		func_238467_a_(matrix, 4680, 2260, -4680, -2260, 0xFFFFFFFF);
 		RenderSystem.translatef(0.0F, 0.0F, -950.0F);
 		RenderSystem.depthFunc(518);
-		blit(0, 0, style.getWidth(), style.getHeight(), 0, 0, 1, 1, 1, 1);
+		func_238466_a_(matrix, 0, 0, style.getWidth(), style.getHeight(), 0, 0, 1, 1, 1, 1);
 		RenderSystem.depthFunc(515);
 		RenderSystem.colorMask(true, true, true, true);
 	}
 
-	private void renderMap(){
+	private void renderMap(MatrixStack matrix){
 		HudStyle style = getStyle();
 
 		RenderSystem.translatef(style.getWidth()/2, style.getHeight()/2, 0);
@@ -107,7 +107,7 @@ public class MinimapHUD extends Hud {
 		RenderSystem.depthFunc(518);
 		RenderSystem.translatef(0.0F, 0.0F, -950.0F);
 		RenderSystem.colorMask(false, false, false, false);
-		fill(4680, 2260, -4680, -2260, -16777216);
+		func_238467_a_(matrix, 4680, 2260, -4680, -2260, -16777216);
 		RenderSystem.colorMask(true, true, true, true);
 		RenderSystem.translatef(0.0F, 0.0F, 950.0F);
 		RenderSystem.depthFunc(515);
@@ -148,9 +148,9 @@ public class MinimapHUD extends Hud {
 		BlendBlitHelper.blit(-offsetToPlayerX, -offsetToPlayerZ, sizeX, sizeZ, 0, 0, 1, 1, 1, 1);
 	}
 
-	private void drawPlayerMarker(int centerX, int centerY){
-		hLine(centerX -3, centerX +1, centerY, 0xFFFFFFFF);
-		vLine(centerX - 1, centerY -3, centerY +3, 0xFFFFFFFF);
+	private void drawPlayerMarker(MatrixStack matrix, int centerX, int centerY){
+		func_238465_a_(matrix, centerX -3, centerX +1, centerY, 0xFFFFFFFF);
+		func_238473_b_(matrix, centerX - 1, centerY -3, centerY +3, 0xFFFFFFFF);
 	}
 
 

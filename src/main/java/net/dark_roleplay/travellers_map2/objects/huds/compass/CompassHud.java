@@ -87,7 +87,7 @@ public class CompassHud extends Hud {
 	}
 
 	private void drawWaypointName(MatrixStack matrix, FontRenderer renderer, Waypoint waypoint){
-		fill(HALF_WIDTH - Waypoint.widestNameWidth/2 - 2, 16 + (renderedNames * 10), HALF_WIDTH + Waypoint.widestNameWidth/2 + 2, 26 + (renderedNames * 10), 0xA0333333);
+		func_238467_a_(matrix, HALF_WIDTH - Waypoint.widestNameWidth/2 - 2, 16 + (renderedNames * 10), HALF_WIDTH + Waypoint.widestNameWidth/2 + 2, 26 + (renderedNames * 10), 0xA0333333);
 		renderer.func_238405_a_(matrix, waypoint.getName(), HALF_WIDTH - (renderer.getStringWidth(waypoint.getName()) / 2), 17 + (renderedNames * 10), waypoint.getColor());
 		renderedNames ++;
 	}

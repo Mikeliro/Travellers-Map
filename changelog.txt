@@ -1,5 +1,7 @@
-v0.5.0
+v0.5.0 (same as version 1.15.2 - 0.4.3 published simultaneusly)
 * Bug Fix/Change, + Addition, - Removal
+
+* Ported to 1.16
 
 Full Screen Map
 ├ * Dragging now works as expected on zoomed in/out maps

@@ -3,6 +3,7 @@ package net.dark_roleplay.travellers_map2.objects.huds.hud;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dark_roleplay.travellers_map2.configs.client.HudConfig;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraftforge.registries.DeferredRegister;
 
 import java.util.Collection;
 import java.util.HashMap;

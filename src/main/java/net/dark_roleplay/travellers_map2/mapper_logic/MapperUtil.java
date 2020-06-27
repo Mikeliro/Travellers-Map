@@ -11,7 +11,7 @@ public class MapperUtil {
         pos.setY(startHeight);
 
         MaterialColor color = null;
-        while(pos.getY() >= minHeight && color == null){
+        while(pos.getY() >= minHeight && (color == null || color == MaterialColor.AIR)){
             if(world.isAirBlock(pos)) {
                 pos.move(0, -1, 0);
                 continue;
@@ -19,7 +19,7 @@ public class MapperUtil {
 
             BlockState state = world.getBlockState(pos);
             color = state.getMaterialColor(world, pos);
-            if(color == null) {
+            if(color == null || color == MaterialColor.AIR) {
                 pos.move(0, -1, 0);
                 continue;
             }

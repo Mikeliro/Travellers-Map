@@ -1,0 +1,51 @@
+
+field_230706_i_     minecraft
+field_230708_k_     width
+field_230709_l_     height
+field_230704_d_     title
+func_231160_c_      protected void init()
+
+func_238467_a_ => fill
+func_238474_b_ => blit (6 args)
+func_238466_a_ => blit2 (10 args)
+func_238465_a_ => hLine
+func_238473_b_ => vLine
+
+func_231160_c_ => init
+
+field_230712_o_ => font
+field_230706_i_ => minecraft
+field_230708_k_ => width
+field_230709_l_ => height
+
+func_230430_a_ => render
+func_231175_as__ => onClose
+
+field_230705_e_ => children
+func_230480_a_ => addButton
+func_230446_a_ => renderBackground
+func_231165_f_ => renderDirtBackground
+
+func_231045_a_ => mouseDragged
+func_231043_a_ => mouseScrolled
+
+
+FontRenderer
+func_238421_b_ => drawString
+
+Button
+field_230688_j_ => width
+field_230689_k_ => height
+field_230690_l_ => x
+field_230691_m_ => y
+func_230431_b_ => renderButton
+func_230449_g_ => isHovered
+func_230441_a_ => renderBG
+
+func_230982_a_ => onClick
+func_230983_a_ => onDrag
+
+field_230695_q_ => alpha
+
+field_233558_ap_ => Entity Position
+func_233580_cy_ => getPosition()

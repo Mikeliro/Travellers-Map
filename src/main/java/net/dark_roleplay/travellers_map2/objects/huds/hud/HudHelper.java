@@ -27,7 +27,7 @@ public class HudHelper {
         int posY = config.ALIGNMENT.get().getY(height) + config.POS_Y.get();
         RenderSystem.translatef(posX, posY, 0);
         hud.setWindowSize(width, height);
-        hud.render(0, 0, partialTicks);
+        hud.render(matrix, 0, 0, partialTicks);
 
         RenderSystem.popMatrix();
     }

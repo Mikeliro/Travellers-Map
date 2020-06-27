@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map2.objects.screens.waypoints;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dark_roleplay.travellers_map.mapping.waypoints.Waypoint;
 import net.dark_roleplay.travellers_map.util.MapManager;
 import net.minecraft.client.Minecraft;
@@ -24,36 +25,36 @@ public class WayPointCreationScreen extends Screen {
 	}
 
 	@Override
-	public void onClose() {
-		this.minecraft.displayGuiScreen(parent);
+	public void func_231175_as__() {
+		this.field_230706_i_.displayGuiScreen(parent);
 	}
 
 	@Override
-	protected void init() {
+	protected void func_231160_c_() {
 		//FontRenderer fontIn, int xIn, int yIn, int widthIn, int heightIn, String msg
-		this.nameTextField = new TextFieldWidget(this.font, this.width / 2 - 64, this.height / 2 - 24, 128, 12, "Waypoint");
-		TextFieldWidget x = new TextFieldWidget(this.font, this.width / 2 - 64, this.height / 2 - 9, 40, 12, "x");
-		TextFieldWidget y = new TextFieldWidget(this.font, this.width / 2 - 20, this.height / 2 - 9, 40, 12, "y");
-		TextFieldWidget z = new TextFieldWidget(this.font, this.width / 2 + 24, this.height / 2 - 9, 40, 12, "z");
+		this.nameTextField = new TextFieldWidget(this.field_230712_o_, this.field_230708_k_ / 2 - 64, this.field_230709_l_ / 2 - 24, 128, 12, new TranslationTextComponent("Waypoint"));
+		TextFieldWidget x = new TextFieldWidget(this.field_230712_o_, this.field_230708_k_ / 2 - 64, this.field_230709_l_ / 2 - 9, 40, 12, new TranslationTextComponent("x"));
+		TextFieldWidget y = new TextFieldWidget(this.field_230712_o_, this.field_230708_k_ / 2 - 20, this.field_230709_l_ / 2 - 9, 40, 12, new TranslationTextComponent("y"));
+		TextFieldWidget z = new TextFieldWidget(this.field_230712_o_, this.field_230708_k_ / 2 + 24, this.field_230709_l_ / 2 - 9, 40, 12, new TranslationTextComponent("z"));
 
 
-		this.addButton(this.nameTextField);
-		this.addButton(x);
-		this.addButton(y);
-		this.addButton(z);
+		this.func_230480_a_(this.nameTextField);
+		this.func_230480_a_(x);
+		this.func_230480_a_(y);
+		this.func_230480_a_(z);
 
 		x.setValidator(str -> str.matches("^-?[0-9]*$") || str.isEmpty());
 		y.setValidator(str -> str.matches("^[0-9]*$") || str.isEmpty());
 		z.setValidator(str -> str.matches("^-?[0-9]*$") || str.isEmpty());
 
-		BlockPos playerPos = Minecraft.getInstance().player.getPosition();
+		BlockPos playerPos = Minecraft.getInstance().player.func_233580_cy_();
 
 		if (this.editedWaypoint == null) {
 			nameTextField.setText("Waypoint");
 			x.setText(playerPos.getX() + "");
 			y.setText(playerPos.getY() + "");
 			z.setText(playerPos.getZ() + "");
-			this.addButton(new Button(this.width / 2 - 65, this.height / 2 + 17, 130, 20, "Create New", button -> {
+			this.func_230480_a_(new Button(this.field_230708_k_ / 2 - 65, this.field_230709_l_ / 2 + 17, 130, 20, new TranslationTextComponent("Create New"), button -> {
 				MapManager.saveWaypoint(
 						new Waypoint(
 								UUID.randomUUID(),
@@ -68,7 +69,7 @@ public class WayPointCreationScreen extends Screen {
 						),
 						this.editedWaypoint == null
 				);
-				this.onClose();
+				this.func_231175_as__();
 			}));
 		} else {
 			nameTextField.setText(editedWaypoint.getName());
@@ -76,7 +77,7 @@ public class WayPointCreationScreen extends Screen {
 			y.setText(editedWaypoint.getPos().getY() + "");
 			z.setText(editedWaypoint.getPos().getZ() + "");
 
-			this.addButton(new Button(this.width / 2 - 65, this.height / 2 + 6, 65, 20, "Save Changes", button -> {
+			this.func_230480_a_(new Button(this.field_230708_k_ / 2 - 65, this.field_230709_l_ / 2 + 6, 65, 20, new TranslationTextComponent("Save Changes"), button -> {
 				this.editedWaypoint.update(
 						nameTextField.getText(),
 						new BlockPos(
@@ -90,20 +91,20 @@ public class WayPointCreationScreen extends Screen {
 						this.editedWaypoint,
 						this.editedWaypoint == null
 				);
-				this.onClose();
+				this.func_231175_as__();
 			}));
 
-			this.addButton(new Button(this.width / 2 + 1, this.height / 2 + 6, 65, 20, "Delete Waypoint", button -> {
+			this.func_230480_a_(new Button(this.field_230708_k_ / 2 + 1, this.field_230709_l_ / 2 + 6, 65, 20, new TranslationTextComponent("Delete Waypoint"), button -> {
 				MapManager.deleteWaypoint(this.editedWaypoint);
-				this.onClose();
+				this.func_231175_as__();
 			}));
 		}
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float delta) {
-		parent.render(-500, -500, delta);
-		renderBackground();
-		super.render(mouseX, mouseY, delta);
+	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float delta) {
+		parent.func_230430_a_(matrix, -500, -500, delta);
+		func_230446_a_(matrix);
+		super.func_230430_a_(matrix, mouseX, mouseY, delta);
 	}
 }

@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map2.objects.screens.minimap.settings;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dark_roleplay.travellers_map.util.BlendBlitHelper;
 import net.dark_roleplay.travellers_map2.objects.huds.hud.Hud;
 import net.dark_roleplay.travellers_map2.objects.huds.hud.HudStyle;
@@ -28,7 +29,7 @@ public class StylesPanel extends ScrollPanel {
 	}
 
 	@Override
-	protected void drawPanel(int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY) {
+	protected void drawPanel(MatrixStack matrix, int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY) {
 		int offset = 5;
 		for(HudStyle style : this.hud.STYLES.values()){
 			int elemTop = (int)(this.top + offset - this.scrollDistance);
@@ -38,7 +39,7 @@ public class StylesPanel extends ScrollPanel {
 			Minecraft.getInstance().getTextureManager().bindTexture(style.getOverlay());
 
 			if(mouseX >= this.left && mouseX <= this.right  - 6 && mouseY >= elemTop - 2 && mouseY <= elemTop + style.getHeight() + 2){
-				fill(this.left, elemTop - 2, this.right, elemTop + style.getHeight() + 2, 0xFF202020);
+				func_238467_a_(matrix, this.left, elemTop - 2, this.right, elemTop + style.getHeight() + 2, 0xFF202020);
 			}
 
 			BlendBlitHelper.blit(this.left + (this.width - style.getWidth()) / 2, elemTop, style.getWidth(), style.getHeight(), 0, 0, 1, 1, 1, 1);

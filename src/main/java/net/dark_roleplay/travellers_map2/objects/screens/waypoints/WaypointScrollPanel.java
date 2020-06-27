@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map2.objects.screens.waypoints;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dark_roleplay.travellers_map.mapping.waypoints.Waypoint;
 import net.dark_roleplay.travellers_map.util.MapManager;
 import net.dark_roleplay.travellers_map2.objects.screens.full_map.FullMapScreen;
@@ -25,7 +26,7 @@ public class WaypointScrollPanel extends ScrollPanel {
 	}
 
 	@Override
-	protected void drawPanel(int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY) {
+	protected void drawPanel(MatrixStack matrix, int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY) {
 		int offset = 0;
 		for(Waypoint waypoint : MapManager.WAYPOINTS){
 			int elemTop = (int)(this.top + 3 + offset - this.scrollDistance);
@@ -36,15 +37,15 @@ public class WaypointScrollPanel extends ScrollPanel {
 			}
 
 			if(mouseX >= this.left && mouseX <= this.right  - 6 && mouseY >= elemTop && mouseY <= elemTop + elementHeight){
-				fill(this.left, elemTop, this.right, elemTop + elementHeight, 0xFF202020);
+				func_238467_a_(matrix, this.left, elemTop, this.right, elemTop + elementHeight, 0xFF202020);
 			}
 
 			FontRenderer renderer = Minecraft.getInstance().fontRenderer;
-			renderer.drawString(waypoint.getName(), this.left + 3, elemTop + 3, waypoint.getColor());
-			renderer.drawString(String.format("x: %d, y: %d, z: %d", waypoint.getPos().getX(), waypoint.getPos().getY(), waypoint.getPos().getZ()), this.left + 3, elemTop + 13, 0xFFA0A0A0);
+			renderer.func_238421_b_(matrix, waypoint.getName(), this.left + 3, elemTop + 3, waypoint.getColor());
+			renderer.func_238421_b_(matrix, String.format("x: %d, y: %d, z: %d", waypoint.getPos().getX(), waypoint.getPos().getY(), waypoint.getPos().getZ()), this.left + 3, elemTop + 13, 0xFFA0A0A0);
 
 			Minecraft.getInstance().getTextureManager().bindTexture(FullMapScreen.FULL_MAP_TEXTURES);
-			blit(this.right - 21, elemTop + 3, 14, 7, 242, waypoint.isVisible() ? 0 : 7, 14, 7, 256, 256);
+			func_238466_a_(matrix, this.right - 21, elemTop + 3, 14, 7, 242, waypoint.isVisible() ? 0 : 7, 14, 7, 256, 256);
 
 			offset += elementHeight;
 		}

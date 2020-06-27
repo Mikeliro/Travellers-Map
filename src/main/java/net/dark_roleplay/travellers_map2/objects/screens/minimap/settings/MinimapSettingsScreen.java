@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map2.objects.screens.minimap.settings;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dark_roleplay.travellers_map.util.Wrapper;
 import net.dark_roleplay.travellers_map2.objects.huds.minimap.MinimapHUD;
 import net.dark_roleplay.travellers_map2.objects.screens.SidePanelButton;
@@ -24,37 +25,37 @@ public class MinimapSettingsScreen extends Screen {
 	}
 
 	@Override
-	protected void init() {
+	protected void func_231160_c_() {
 		if(mover != null) mover.onClose();
-		stylePanel = new StylesPanel(this.minecraft, 5, 5, 118, this.height - 10, MinimapHUD.INSTANCE);
-		this.addButton(mover = new MinimapMover(MinimapHUD.INSTANCE));
-		this.addButton(new SidePanelButton(-2, (this.height - 23) / 2, isStlyeListOpen, btn -> {
+		stylePanel = new StylesPanel(this.field_230706_i_, 5, 5, 118, this.field_230709_l_ - 10, MinimapHUD.INSTANCE);
+		this.func_230480_a_(mover = new MinimapMover(MinimapHUD.INSTANCE));
+		this.func_230480_a_(new SidePanelButton(-2, (this.field_230709_l_ - 23) / 2, isStlyeListOpen, btn -> {
 			if(isStlyeListOpen.get()){
-				this.children.add(stylePanel);
-				btn.x = 125;
+				this.field_230705_e_.add(stylePanel);
+				btn.field_230690_l_ = 125;
 			}else{
-				this.children.remove(stylePanel);
-				btn.x = -2;
+				this.func_231039_at__().remove(stylePanel);
+				btn.field_230690_l_ = -2;
 			}
 		}));
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float delta) {
+	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float delta) {
 		//this.renderDirtBackground(0);
 
-		super.render(mouseX, mouseY, delta);
+		super.func_230430_a_(matrix, mouseX, mouseY, delta);
 
 		if(isStlyeListOpen.get()){
 			Minecraft.getInstance().getTextureManager().bindTexture(FullMapScreen.FULL_MAP_TEXTURES);
-			blit(0, 0, 128, this.height, 0, 0, 128, 256, 256, 256);
-			stylePanel.render(mouseX, mouseY, delta);
+			func_238466_a_(matrix, 0, 0, 128, this.field_230709_l_, 0, 0, 128, 256, 256, 256);
+			stylePanel.func_230430_a_(matrix, mouseX, mouseY, delta);
 		}
 	}
 
 	@Override
-	public void onClose() {
+	public void func_231175_as__() {
 		if(mover != null) mover.onClose();
-		this.minecraft.displayGuiScreen(parentScreen);
+		this.field_230706_i_.displayGuiScreen(parentScreen);
 	}
 }
