@@ -22,6 +22,7 @@ public class MinimapMover extends Widget {
 
 	double initOffsetX = 0;
 	double initOffsetY = 0;
+	double scale = 0;
 
 	public MinimapMover(Hud hud) {
 		super(0, 0, 200, 20, new TranslationTextComponent(hud.getUnlocalizedName() + ".mover"));
@@ -31,6 +32,7 @@ public class MinimapMover extends Widget {
 		this.alignment = ClientConfig.MINIMAP.ALIGNMENT.get();
 		this.posX = (int)(ClientConfig.MINIMAP.POS_X.get() + alignment.getX(window.getScaledWidth()));
 		this.posY = (int)(ClientConfig.MINIMAP.POS_Y.get() + alignment.getY(window.getScaledHeight()));
+		this.scale = ClientConfig.MINIMAP.SCALE.get();
 	}
 
 	@Override
@@ -44,8 +46,14 @@ public class MinimapMover extends Widget {
 	@Override
 	public void func_230983_a_(double mouseX, double mouseY, double deltaX, double deltaY) {
 		HudStyle style = this.hud.getStyle();
-		posX = Math.min(Math.max(0, (int)(mouseX + initOffsetX)), Minecraft.getInstance().getMainWindow().getScaledWidth() - style.getWidth());
-		posY = Math.min(Math.max(0, (int)(mouseY + initOffsetY)), Minecraft.getInstance().getMainWindow().getScaledHeight() - style.getHeight());
+		posX = (int)Math.min(Math.max(0, mouseX + initOffsetX), Minecraft.getInstance().getMainWindow().getScaledWidth() - Math.floor(style.getWidth() * this.scale));
+		posY = (int)Math.min(Math.max(0, mouseY + initOffsetY), Minecraft.getInstance().getMainWindow().getScaledHeight() - Math.floor(style.getHeight() * this.scale));
+	}
+
+	@Override
+	public boolean func_231043_a_(double mouseX, double mouseY, double delta){
+		this.scale = Math.max(0.25, Math.min(4, scale + (delta * 0.1)));
+		return true;
 	}
 
 	@Override
@@ -53,16 +61,15 @@ public class MinimapMover extends Widget {
 		MainWindow window = Minecraft.getInstance().getMainWindow();
 		HudStyle style = this.hud.getStyle();
 
-		this.field_230688_j_ = (int)(style.getWidth() * ClientConfig.MINIMAP.SCALE.get());
-		this.field_230689_k_ = (int)(style.getWidth() * ClientConfig.MINIMAP.SCALE.get());
+		this.field_230688_j_ = (int)(style.getWidth() * this.scale);
+		this.field_230689_k_ = (int)(style.getWidth() * this.scale);
 
 		this.field_230690_l_ = posX;
 		this.field_230691_m_ = posY;
 
 		RenderSystem.pushMatrix();
-		RenderSystem.scaled(ClientConfig.MINIMAP.SCALE.get(), ClientConfig.MINIMAP.SCALE.get(), 1);
-
 		RenderSystem.translatef(field_230690_l_, field_230691_m_, 0);
+		RenderSystem.scaled(this.scale, this.scale, 1);
 		Minecraft.getInstance().getTextureManager().bindTexture(style.getOverlay());
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
@@ -98,6 +105,7 @@ public class MinimapMover extends Widget {
 		int newX = posX - alignment.getX(window.getScaledWidth());
 		int newY = posY - alignment.getY(window.getScaledHeight());
 
+		ClientConfig.MINIMAP.SCALE.set(this.scale);
 		ClientConfig.MINIMAP.ALIGNMENT.set(alignment);
 		ClientConfig.MINIMAP.POS_X.set(newX);
 		ClientConfig.MINIMAP.POS_Y.set(newY);

@@ -1,20 +1,17 @@
-v0.5.0 (same as version 1.15.2 - 0.4.3 published simultaneusly)
+v0.5.1 (same as version 1.15.2 - 0.4.3 published simultaneusly)
 * Bug Fix/Change, + Addition, - Removal
 
 * Ported to 1.16
 
 Full Screen Map
-├ * Dragging now works as expected on zoomed in/out maps
-├ * Made Button for the side panel slightly larger
-└ + Added a player marker
 
-Minimap & Compass
-├ * (Minimap only) Can no longer be moved out of screen (only works when changed in gui)
-├ * Styles are now persistent between sessions
-├ * Can now be scaled from 25% up to 400% (prior to 50% and 200%)
-├ + Can now be hidden trough config
-└ + Added better player marker
+
+Minimap
++ Minimap can now be resized trough scrolling in settings menu
+* Player Marker now get's positioned correctly on scaled minimap
+- Removed old player marker for default style minimap
+
+Compass
+
 
 General
-├ * Fixed Torches generating black spots on the map
-└ * Fixed small lighting inconsistency

@@ -41,6 +41,7 @@ public class MinimapHUD extends Hud {
 
 		HudStyle style = getStyle();
 		RenderSystem.pushMatrix();
+		RenderSystem.scaled(ClientConfig.MINIMAP.SCALE.get(), ClientConfig.MINIMAP.SCALE.get(), 1);
 		RenderSystem.translatef(style.getWidth()/2F, style.getHeight()/2F, 0);
 		Minecraft.getInstance().getTextureManager().bindTexture(FullMapScreen.FULL_MAP_TEXTURES);
 		float zoom = zoomLevels[currentZoomLevel]/2;
