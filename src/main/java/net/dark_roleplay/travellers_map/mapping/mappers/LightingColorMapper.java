@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.Heightmap;
 import org.apache.commons.lang3.tuple.Pair;
@@ -63,6 +64,6 @@ public class LightingColorMapper extends Mapper{
 
 	@Override
 	public boolean canMapChunk(World world, IChunk chunk){
-		return world.chunkExists(chunk.getPos().x, chunk.getPos().z - 1);
+		return world.getChunk(chunk.getPos().x, chunk.getPos().z - 1, ChunkStatus.FULL, false) != null;
 	}
 }

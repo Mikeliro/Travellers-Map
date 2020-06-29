@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.IChunk;
 
 public class CaveColorMapper extends Mapper{
@@ -44,8 +45,10 @@ public class CaveColorMapper extends Mapper{
 
 	@Override
 	public boolean canMapChunk(World world, IChunk chunk){
-		return world.chunkExists(chunk.getPos().x, chunk.getPos().z - 1) && world.chunkExists(chunk.getPos().x, chunk.getPos().z + 1)
-				&& world.chunkExists(chunk.getPos().x - 1, chunk.getPos().z) && world.chunkExists(chunk.getPos().x + 1, chunk.getPos().z);
+		return world.getChunk(chunk.getPos().x, chunk.getPos().z - 1, ChunkStatus.FULL, false) != null &&
+				world.getChunk(chunk.getPos().x, chunk.getPos().z + 1, ChunkStatus.FULL, false) != null &&
+				world.getChunk(chunk.getPos().x - 1, chunk.getPos().z, ChunkStatus.FULL, false) != null &&
+				world.getChunk(chunk.getPos().x + 1, chunk.getPos().z, ChunkStatus.FULL, false) != null;
 	}
 
 	private boolean isVisible(IChunk chunk, BlockPos center, BlockPos.Mutable worker){

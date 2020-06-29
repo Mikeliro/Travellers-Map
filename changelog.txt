@@ -1,7 +1,5 @@
-v0.5.1 (same as version 1.15.2 - 0.4.3 published simultaneusly)
+v0.5.1
 * Bug Fix/Change, + Addition, - Removal
-
-* Ported to 1.16
 
 Full Screen Map
 
@@ -15,3 +13,4 @@ Compass
 
 
 General
+* Fixed brighter lines generating on the map
