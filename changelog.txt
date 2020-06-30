@@ -2,7 +2,7 @@ v0.5.1
 * Bug Fix/Change, + Addition, - Removal
 
 Full Screen Map
-
+* Map Segment Culling massivly improved
 
 Minimap
 + Minimap can now be resized trough scrolling in settings menu

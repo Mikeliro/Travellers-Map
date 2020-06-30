@@ -1,10 +1,10 @@
 package net.dark_roleplay.travellers_map2.objects.screens.full_map;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map.TravellersMap;
-import net.dark_roleplay.travellers_map.util.*;
+import net.dark_roleplay.travellers_map.api.util.MapRenderInfo;
+import net.dark_roleplay.travellers_map.util.Wrapper;
 import net.dark_roleplay.travellers_map2.objects.screens.SidePanelButton;
 import net.dark_roleplay.travellers_map2.objects.screens.minimap.settings.MinimapSettingsScreen;
 import net.dark_roleplay.travellers_map2.objects.screens.waypoints.WayPointCreationScreen;
@@ -14,6 +14,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class FullMapScreen extends Screen {
@@ -22,6 +23,8 @@ public class FullMapScreen extends Screen {
     private float xOffset = 0;
     private float zOffset = 0;
     private int currentZoomLevel = 1;
+
+    private MapRenderInfo mapRenderInfo = new MapRenderInfo();
 
     private Wrapper<Boolean> isWaypointListOpen = new Wrapper(false);
 
@@ -68,28 +71,45 @@ public class FullMapScreen extends Screen {
     public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float delta) {
         this.func_231165_f_(0);
 
-        RenderSystem.pushMatrix();
-
         float halfWidth = this.field_230708_k_/2F;
         float halfHeight = this.field_230709_l_/2F;
 
-        RenderSystem.translatef(halfWidth, halfHeight, 0);
-        RenderSystem.scalef(zoomLevels[currentZoomLevel], zoomLevels[currentZoomLevel], 1);
+        float scale = zoomLevels[currentZoomLevel];
 
+
+        matrix.push();
+        matrix.translate(halfWidth, halfHeight, 0);
+        matrix.scale(scale, scale, scale);
+
+        //Map
         BlockPos playerPos = Minecraft.getInstance().player.func_233580_cy_();
         MapRenderer renderer = new MapRenderer();
 
-        float zoom = zoomLevels[currentZoomLevel];
-        renderer.renderMap(
-              playerPos.add(xOffset, 0, zOffset),
-              this.field_230708_k_, this.field_230709_l_, zoomLevels[currentZoomLevel]);
+        mapRenderInfo.update(this.field_230708_k_, field_230709_l_, scale, playerPos.add(xOffset, 0 , zOffset));
 
+        renderer.renderMap(matrix, mapRenderInfo);
+
+        //Player Marker
         Minecraft.getInstance().getTextureManager().bindTexture(FullMapScreen.FULL_MAP_TEXTURES);
-        RenderSystem.translatef((int)-xOffset, (int)-zOffset, 0);
-        RenderSystem.rotatef(Minecraft.getInstance().player.getYaw(delta) - 180, 0, 0, 1);
+
+        matrix.translate(-xOffset, -zOffset, 0);
+
+        //TODO Get Player Marker rotation working plz
+        float yaw = (float) Math.toRadians(Minecraft.getInstance().player.getYaw(delta) - 180) /2F;
+        //matrix.rotate(new Quaternion(0, 0, (float)Math.sin(yaw), (float)Math.cos(yaw)));
+        matrix.rotate(new Quaternion(0, 0, (float)Math.sin(yaw), (float)Math.cos(yaw)));
         func_238474_b_(matrix, -2, -4, 158, 0, 5, 7);
 
-        RenderSystem.popMatrix();
+//
+//        q.w = (cz*1*1));
+//        q.x = 0;
+//        q.y = 0;
+//        q.z = (sz*1*1);
+
+        matrix.pop();
+
+
+
 
         if(isWaypointListOpen.get()){
             func_238466_a_(matrix, 0, 0, 128, this.field_230709_l_, 0, 0, 128, 256, 256, 256);
