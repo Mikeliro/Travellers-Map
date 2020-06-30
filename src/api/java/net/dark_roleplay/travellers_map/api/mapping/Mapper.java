@@ -1,4 +1,4 @@
-package net.dark_roleplay.travellers_map.mapping.mappers;
+package net.dark_roleplay.travellers_map.api.mapping;
 
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.world.World;

@@ -1,12 +1,12 @@
 package net.dark_roleplay.travellers_map.mapping.mappers;
 
+import net.dark_roleplay.travellers_map.api.mapping.Mapper;
 import net.dark_roleplay.travellers_map.features.color_palettes.ColorPalette;
 import net.dark_roleplay.travellers_map.features.color_palettes.DefaultColorPalette;
 import net.dark_roleplay.travellers_map.features.color_palettes.MonoColorPalette;
 import net.dark_roleplay.travellers_map2.mapper_logic.MapperUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -14,9 +14,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.Heightmap;
-import org.apache.commons.lang3.tuple.Pair;
 
-public class LightingColorMapper extends Mapper{
+public class LightingColorMapper extends Mapper {
 	public static Mapper INSTANCE = new LightingColorMapper(new DefaultColorPalette());
 	public static Mapper INSTANCE_GRAYSCALE = new LightingColorMapper(new MonoColorPalette(0xFFFFFFFF));
 

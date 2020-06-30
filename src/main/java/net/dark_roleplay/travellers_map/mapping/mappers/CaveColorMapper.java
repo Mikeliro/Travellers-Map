@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map.mapping.mappers;
 
+import net.dark_roleplay.travellers_map.api.mapping.Mapper;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.NativeImage;
@@ -8,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.IChunk;
 
-public class CaveColorMapper extends Mapper{
+public class CaveColorMapper extends Mapper {
 	public static Mapper INSTANCE = new CaveColorMapper();
 
 	private static int height = 32;

@@ -1,7 +1,7 @@
 package net.dark_roleplay.travellers_map2.mapper_logic;
 
 import net.dark_roleplay.travellers_map.mapping.MappingHelper;
-import net.dark_roleplay.travellers_map.mapping.mappers.Mapper;
+import net.dark_roleplay.travellers_map.api.mapping.Mapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.chunk.IChunk;
 import org.apache.commons.lang3.tuple.Pair;

@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map.mapping.mappers;
 
+import net.dark_roleplay.travellers_map.api.mapping.Mapper;
 import net.dark_roleplay.travellers_map.features.color_palettes.ColorPalette;
 import net.dark_roleplay.travellers_map.features.color_palettes.DefaultColorPalette;
 import net.dark_roleplay.travellers_map.features.color_palettes.MonoColorPalette;
@@ -12,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.Heightmap;
 
-public class FlatColorMapper extends   Mapper{
+public class FlatColorMapper extends Mapper {
 	public static Mapper INSTANCE_COLOR = new FlatColorMapper(new DefaultColorPalette());
 	public static Mapper INSTANCE_GRAYSCALE = new FlatColorMapper(new MonoColorPalette(0xFFFFFFFF));
 

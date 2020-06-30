@@ -82,10 +82,7 @@ public class FullMapScreen extends Screen {
         float zoom = zoomLevels[currentZoomLevel];
         renderer.renderMap(
               playerPos.add(xOffset, 0, zOffset),
-              (int)(-halfWidth * zoom),
-              (int)(-halfHeight * zoom),
-              (int)(halfWidth * zoom),
-              (int)(halfHeight * zoom), zoomLevels[currentZoomLevel]);
+              this.field_230708_k_, this.field_230709_l_, zoomLevels[currentZoomLevel]);
 
         Minecraft.getInstance().getTextureManager().bindTexture(FullMapScreen.FULL_MAP_TEXTURES);
         RenderSystem.translatef((int)-xOffset, (int)-zOffset, 0);
