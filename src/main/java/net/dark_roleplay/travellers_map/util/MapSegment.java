@@ -1,9 +1,8 @@
 package net.dark_roleplay.travellers_map.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.dark_roleplay.travellers_map.mapping.mappers.CaveColorMapper;
 import net.dark_roleplay.travellers_map.mapping.mappers.LightingColorMapper;
-import net.dark_roleplay.travellers_map.mapping.tickets.IMapSegmentTicket;
+import net.dark_roleplay.travellers_map.api.mapping.IMapSegmentTicket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.NativeImage;

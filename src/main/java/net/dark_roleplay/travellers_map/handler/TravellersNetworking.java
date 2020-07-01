@@ -9,20 +9,19 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public class TravellersNetworking {
 
-    public static SimpleChannel CHANNEL;
+	public static SimpleChannel CHANNEL;
 
-    public static void initNetworking() {
-        CHANNEL = NetworkRegistry.ChannelBuilder
-                .named(new ResourceLocation(TravellersMap.MODID, "main_channel"))
-                .clientAcceptedVersions("1.0"::equals)
-                .serverAcceptedVersions("1.0"::equals)
-                .networkProtocolVersion(() -> "1.0")
-                .simpleChannel();
+	public static void initNetworking() {
+		CHANNEL = NetworkRegistry.ChannelBuilder
+				.named(new ResourceLocation(TravellersMap.MODID, "main_channel"))
+				.clientAcceptedVersions("1.0"::equals)
+				.serverAcceptedVersions("1.0"::equals)
+				.networkProtocolVersion(() -> "1.0")
+				.simpleChannel();
+		registerPackets();
+	}
 
-        registerPackets();
-    }
-
-    private static void registerPackets() {
-        CHANNEL.registerMessage(0, WorldUUIDPacket.class, WorldUUIDPacketHandler::encode, WorldUUIDPacketHandler::decode, WorldUUIDPacketHandler::onMessage);
-    }
+	private static void registerPackets() {
+		CHANNEL.registerMessage(0, WorldUUIDPacket.class, WorldUUIDPacketHandler::encode, WorldUUIDPacketHandler::decode, WorldUUIDPacketHandler::onMessage);
+	}
 }

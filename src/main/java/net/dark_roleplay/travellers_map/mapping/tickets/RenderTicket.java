@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map.mapping.tickets;
 
+import net.dark_roleplay.travellers_map.api.mapping.IMapSegmentTicket;
 import net.dark_roleplay.travellers_map.util.MapSegmentUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;

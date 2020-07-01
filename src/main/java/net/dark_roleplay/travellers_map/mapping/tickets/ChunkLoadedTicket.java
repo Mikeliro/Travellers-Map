@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map.mapping.tickets;
 
+import net.dark_roleplay.travellers_map.api.mapping.IMapSegmentTicket;
 import net.dark_roleplay.travellers_map.util.MapSegmentUtil;
 import net.minecraft.world.chunk.IChunk;
 
@@ -8,7 +9,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class ChunkLoadedTicket implements IMapSegmentTicket{
+public class ChunkLoadedTicket implements IMapSegmentTicket {
 
 	private static final Map<Long, ChunkLoadedTicket> TICKETS = new HashMap<>();
 

@@ -2,7 +2,7 @@ package net.dark_roleplay.travellers_map.util;
 
 import net.dark_roleplay.travellers_map.mapping.MappingHelper;
 import net.dark_roleplay.travellers_map.mapping.waypoints.Waypoint;
-import net.dark_roleplay.travellers_map.mapping.tickets.IMapSegmentTicket;
+import net.dark_roleplay.travellers_map.api.mapping.IMapSegmentTicket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
