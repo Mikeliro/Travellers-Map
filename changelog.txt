@@ -3,6 +3,7 @@ v0.5.1
 
 Full Screen Map
 * Map Segment Culling massivly improved
+* Map Segments stay loaded properly now
 
 Minimap
 + Minimap can now be resized trough scrolling in settings menu
@@ -10,7 +11,8 @@ Minimap
 - Removed old player marker for default style minimap
 
 Compass
-
+• No Changes
 
 General
 * Fixed brighter lines generating on the map
+* Reworked map storage mechanic, now works properly on servers without the mod

@@ -1,10 +1,8 @@
 package net.dark_roleplay.travellers_map;
 
+import net.dark_roleplay.travellers_map.util.MapManager;
 import net.dark_roleplay.travellers_map2.configs.ClientConfig;
 import net.dark_roleplay.travellers_map2.handler.TravellersKeybinds;
-import net.dark_roleplay.travellers_map.handler.TravellersNetworking;
-import net.dark_roleplay.travellers_map.util.IOHandler;
-import net.dark_roleplay.travellers_map.util.MapManager;
 import net.dark_roleplay.travellers_map2.listeners.ResourceReloadListener;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -33,9 +31,6 @@ public class TravellersMap {
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> ResourceReloadListener::run);
 
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(IOHandler::clientSetup);
-
-		TravellersNetworking.initNetworking();
 	}
 
 	public void clientSetup(FMLClientSetupEvent event) {

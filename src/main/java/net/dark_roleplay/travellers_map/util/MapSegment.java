@@ -19,10 +19,19 @@ import java.util.Set;
 
 public class MapSegment {
 
+    public static MapSegment EMPTY = new MapSegment("empty", null, 0L){
+        @Override
+        public boolean isEmpty(){
+            return true;
+        }
+    };
+
     //IO Parts
     private File mapFile;
     private long identifier;
 
+    private int segX;
+    private int segZ;
 
     private DynamicTexture dynTexture;
     private NativeImage mapImage;
@@ -36,8 +45,10 @@ public class MapSegment {
         this.segmentName = segmentName;
         this.mapFile = mapFile;
         this.identifier = identifier;
+        this.segX = (int) (identifier >> 32 & 0xFFFFFFFF);
+        this.segZ = (int) (identifier & 0xFFFFFFFF);
         try {
-            if(mapFile.exists()) this.mapImage = NativeImage.read(new FileInputStream(mapFile));
+            if(mapFile != null && mapFile.exists()) this.mapImage = NativeImage.read(new FileInputStream(mapFile));
             else this.mapImage = new NativeImage(NativeImage.PixelFormat.RGBA, 512, 512, true);
         } catch (IOException e) {
             e.printStackTrace();
@@ -102,5 +113,17 @@ public class MapSegment {
     public void free(){
         RenderSystem.recordRenderCall(() -> Minecraft.getInstance().getTextureManager().deleteTexture(this.mapLocation));
         MapManager.freeMapSegment(this.identifier);
+    }
+
+    public int getSegX() {
+        return segX;
+    }
+
+    public int getSegZ() {
+        return segZ;
+    }
+
+    public boolean isEmpty(){
+        return false;
     }
 }

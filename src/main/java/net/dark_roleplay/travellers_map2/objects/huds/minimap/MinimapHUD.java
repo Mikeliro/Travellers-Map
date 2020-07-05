@@ -123,7 +123,7 @@ public class MinimapHUD extends Hud {
 	private void getAndDrawMapSegment(PlayerEntity player, int offsetX, int offsetZ){
 		RenderTicket ticket = RenderTicket.getOrCreateTicket(offsetX, offsetZ);
 		MapSegment map = MapManager.getMapSegment(MapSegmentUtil.getSegment(player.func_233580_cy_().add(offsetX, 0, offsetZ)));//Player#getPosition -> BlockPos
-		if(map != null && !segments.contains(map)){
+		if(map != null && !map.isEmpty() && !segments.contains(map)){
 			map.addTicket(ticket);
 			segments.add(map);
 			drawMapSegment(map, player.getPositionVec(), offsetX, offsetZ);

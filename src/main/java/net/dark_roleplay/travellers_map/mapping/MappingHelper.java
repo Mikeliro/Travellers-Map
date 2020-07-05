@@ -2,6 +2,7 @@ package net.dark_roleplay.travellers_map.mapping;
 
 import net.dark_roleplay.travellers_map.mapping.mappers.CaveColorMapper;
 import net.dark_roleplay.travellers_map.mapping.mappers.LightingColorMapper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.ChunkPos;
 
 import java.util.HashSet;
@@ -16,12 +17,17 @@ public class MappingHelper {
 	private static Timer chunkMapper;
 
 	public static void initMapper(){
+		if(chunkMapper != null) return;
 		activeMappers.add(new MapperQueue(LightingColorMapper.INSTANCE));
 
 		chunkMapper = new Timer("TravellersMap - Chunk Mapper", true);
 		chunkMapper.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
+				if(Minecraft.getInstance().world == null){
+					killMapper();
+					return;
+				}
 				for(MapperQueue mapper : activeMappers)
 					mapper.processLoadedChunksQueue();
 			}
@@ -33,8 +39,10 @@ public class MappingHelper {
 
 	public static void killMapper(){
 		chunkMapper.cancel();
+		chunkMapper = null;
 		for(MapperQueue mapper : activeMappers)
 			mapper.stopMapper();
+		activeMappers.clear();
 	}
 
 	public static void scheduleLoadedChunk(ChunkPos pos){
