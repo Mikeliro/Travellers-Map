@@ -27,16 +27,16 @@ public class SidePanelButton extends Button {
 	}
 
 	@Override
-	public void func_230431_b_(MatrixStack matrix, int p_renderButton_1_, int p_renderButton_2_, float p_renderButton_3_) {
+	public void renderButton(MatrixStack matrix, int p_renderButton_1_, int p_renderButton_2_, float p_renderButton_3_) {
 		Minecraft minecraft = Minecraft.getInstance();
 		minecraft.getTextureManager().bindTexture(FullMapScreen.FULL_MAP_TEXTURES);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.field_230695_q_);
-		int x = this.func_230449_g_() ? 15 : 0;
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
+		int x = this.isHovered() ? 15 : 0;
 		int y = this.value.get() ? 23 : 0;
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		this.func_238474_b_(matrix, this.field_230690_l_, this.field_230691_m_, 128 + x, y, this.field_230688_j_, this.field_230689_k_);
-		this.func_230441_a_(matrix, minecraft, p_renderButton_1_, p_renderButton_2_);
+		this.blit(matrix, this.x, this.y, 128 + x, y, this.width, this.height);
+		this.renderBg(matrix, minecraft, p_renderButton_1_, p_renderButton_2_);
 	}
 }

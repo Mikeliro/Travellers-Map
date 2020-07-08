@@ -26,7 +26,7 @@ public class MapRenderer {
 	private void drawSegment(MatrixStack matrix, MapSegment map, int offsetX, int offsetZ){
 		if(map != null && !map.isEmpty()) {
 			map.getDynTexture().bindTexture();
-			AbstractGui.func_238466_a_(matrix, offsetX, offsetZ, 512, 512, 0, 0, 1, 1, 1, 1);
+			AbstractGui.blit(matrix, offsetX, offsetZ, 512, 512, 0, 0, 1, 1, 1, 1);
 		}
 	}
 }

@@ -48,7 +48,7 @@ public class MinimapHUD extends Hud {
 		RenderSystem.scalef(zoom, zoom, zoom);
 		if(!ClientConfig.SPIN_MINIMAP.get())
 			RenderSystem.rotatef(Minecraft.getInstance().player.getYaw(delta) - 180, 0, 0, 1);
-		func_238474_b_(matrix, -2, -4, 158, 0, 5, 7);
+		blit(matrix, -2, -4, 158, 0, 5, 7);
 		RenderSystem.popMatrix();
 	}
 
@@ -72,10 +72,10 @@ public class MinimapHUD extends Hud {
 		RenderSystem.enableDepthTest();
 		RenderSystem.translatef(0.0F, 0.0F, 950.0F);
 		RenderSystem.colorMask(false, false, false, false);
-		func_238467_a_(matrix, 4680, 2260, -4680, -2260, 0xFFFFFFFF);
+		fill(matrix, 4680, 2260, -4680, -2260, 0xFFFFFFFF);
 		RenderSystem.translatef(0.0F, 0.0F, -950.0F);
 		RenderSystem.depthFunc(518);
-		func_238466_a_(matrix, 0, 0, style.getWidth(), style.getHeight(), 0, 0, 1, 1, 1, 1);
+		blit(matrix, 0, 0, style.getWidth(), style.getHeight(), 0, 0, 1, 1, 1, 1);
 		RenderSystem.depthFunc(515);
 		RenderSystem.colorMask(true, true, true, true);
 	}
@@ -108,7 +108,7 @@ public class MinimapHUD extends Hud {
 		RenderSystem.depthFunc(518);
 		RenderSystem.translatef(0.0F, 0.0F, -950.0F);
 		RenderSystem.colorMask(false, false, false, false);
-		func_238467_a_(matrix, 4680, 2260, -4680, -2260, -16777216);
+		fill(matrix, 4680, 2260, -4680, -2260, -16777216);
 		RenderSystem.colorMask(true, true, true, true);
 		RenderSystem.translatef(0.0F, 0.0F, 950.0F);
 		RenderSystem.depthFunc(515);
@@ -148,12 +148,6 @@ public class MinimapHUD extends Hud {
 		offsetToPlayerZ *= zoomLevels[currentZoomLevel];
 		BlendBlitHelper.blit(-offsetToPlayerX, -offsetToPlayerZ, sizeX, sizeZ, 0, 0, 1, 1, 1, 1);
 	}
-
-	private void drawPlayerMarker(MatrixStack matrix, int centerX, int centerY){
-		func_238465_a_(matrix, centerX -3, centerX +1, centerY, 0xFFFFFFFF);
-		func_238473_b_(matrix, centerX - 1, centerY -3, centerY +3, 0xFFFFFFFF);
-	}
-
 
 	public static void increaseZoom(){
 		INSTANCE.currentZoomLevel = Math.max(0, INSTANCE.currentZoomLevel - 1);

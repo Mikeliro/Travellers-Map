@@ -39,7 +39,7 @@ public class StylesPanel extends ScrollPanel {
 			Minecraft.getInstance().getTextureManager().bindTexture(style.getOverlay());
 
 			if(mouseX >= this.left && mouseX <= this.right  - 6 && mouseY >= elemTop - 2 && mouseY <= elemTop + style.getHeight() + 2){
-				func_238467_a_(matrix, this.left, elemTop - 2, this.right, elemTop + style.getHeight() + 2, 0xFF202020);
+				fill(matrix, this.left, elemTop - 2, this.right, elemTop + style.getHeight() + 2, 0xFF202020);
 			}
 
 			BlendBlitHelper.blit(this.left + (this.width - style.getWidth()) / 2, elemTop, style.getWidth(), style.getHeight(), 0, 0, 1, 1, 1, 1);

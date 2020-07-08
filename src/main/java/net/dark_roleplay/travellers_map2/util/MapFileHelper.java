@@ -1,5 +1,6 @@
 package net.dark_roleplay.travellers_map2.util;
 
+import net.dark_roleplay.travellers_map.util.MapManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.SaveFormat;
@@ -28,19 +29,33 @@ public class MapFileHelper {
 	}
 
 	public static void setupBaseMapFolder(ResourceLocation dimensionLoc){
+		boolean refreshWaypoints = false;
 		if(Minecraft.getInstance().isIntegratedServerRunning()){
 			SaveFormat.LevelSave saveFile = Minecraft.getInstance().getIntegratedServer().anvilConverterForAnvilFile;
-			ACTIVE_FOLDER = new File(SP_FOLDER, saveFile.func_237282_a_());
+			File tmpFolder = new File(SP_FOLDER, saveFile.func_237282_a_());
+			if(!tmpFolder.equals(ACTIVE_FOLDER)){
+				refreshWaypoints = true;
+				ACTIVE_FOLDER = tmpFolder;
+			}
 		}else{
 			SocketAddress socket = Minecraft.getInstance().getConnection().getNetworkManager().getRemoteAddress();
 			if(socket instanceof InetSocketAddress){
 				InetSocketAddress inet = (InetSocketAddress) socket;
-				ACTIVE_FOLDER = new File(MP_FOLDER, inet.getHostName() + "_" +  inet.getPort());
+				File tmpFolder = new File(MP_FOLDER, inet.getHostName() + "_" +  inet.getPort());
+				if(!tmpFolder.equals(ACTIVE_FOLDER)){
+					refreshWaypoints = true;
+					ACTIVE_FOLDER = tmpFolder;
+				}
 			}
 		}
 
 		WAYPOINT_FOLDER = new File(ACTIVE_FOLDER, "waypoints");
 		WAYPOINT_FOLDER.mkdirs();
+
+		if(refreshWaypoints){
+			MapManager.WAYPOINTS.clear();
+			MapManager.loadWaypoints(WAYPOINT_FOLDER);
+		}
 
 		DIM_FOLDER = new File(ACTIVE_FOLDER, dimensionLoc.getNamespace() + "_" + dimensionLoc.getPath() + "/default_mapper");
 		DIM_FOLDER.mkdirs();

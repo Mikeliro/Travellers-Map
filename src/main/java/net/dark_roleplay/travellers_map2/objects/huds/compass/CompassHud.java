@@ -87,8 +87,8 @@ public class CompassHud extends Hud {
 	}
 
 	private void drawWaypointName(MatrixStack matrix, FontRenderer renderer, Waypoint waypoint){
-		func_238467_a_(matrix, HALF_WIDTH - Waypoint.widestNameWidth/2 - 2, 16 + (renderedNames * 10), HALF_WIDTH + Waypoint.widestNameWidth/2 + 2, 26 + (renderedNames * 10), 0xA0333333);
-		renderer.func_238405_a_(matrix, waypoint.getName(), HALF_WIDTH - (renderer.getStringWidth(waypoint.getName()) / 2), 17 + (renderedNames * 10), waypoint.getColor());
+		fill(matrix, HALF_WIDTH - Waypoint.widestNameWidth/2 - 2, 16 + (renderedNames * 10), HALF_WIDTH + Waypoint.widestNameWidth/2 + 2, 26 + (renderedNames * 10), 0xA0333333);
+		renderer.drawStringWithShadow(matrix, waypoint.getName(), HALF_WIDTH - (renderer.getStringWidth(waypoint.getName()) / 2), 17 + (renderedNames * 10), waypoint.getColor());
 		renderedNames ++;
 	}
 
@@ -103,7 +103,7 @@ public class CompassHud extends Hud {
 			float pos = HALF_WIDTH + offset;
 			BlendBlitHelper.vLine(pos - 1F, 2, 3.5F, 0xFF888888);
 			BlendBlitHelper.vLine(pos - 1F, 12.5F, 14, 0xFF888888);
-			renderer.func_238405_a_(matrix,markerName, pos - (renderer.getStringWidth(markerName) / 2), 4.5F, 0xFF888888);
+			renderer.drawStringWithShadow(matrix,markerName, pos - (renderer.getStringWidth(markerName) / 2), 4.5F, 0xFF888888);
 		}
 	}
 

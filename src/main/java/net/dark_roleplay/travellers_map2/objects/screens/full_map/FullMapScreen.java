@@ -38,41 +38,41 @@ public class FullMapScreen extends Screen {
     }
 
     @Override
-    protected void func_231160_c_() {
-        scrollPanel = new WaypointScrollPanel(this.field_230706_i_, this, 118, this.field_230709_l_ - 35, 5, 5);
-        Button waypointButton = new Button(5, this.field_230709_l_ - 25, 118, 20, new TranslationTextComponent("New Waypoint"), button -> {
-            this.field_230706_i_.displayGuiScreen(new WayPointCreationScreen(this, null));
+    protected void init() {
+        scrollPanel = new WaypointScrollPanel(this.minecraft, this, 118, this.height - 35, 5, 5);
+        Button waypointButton = new Button(5, this.height - 25, 118, 20, new TranslationTextComponent("New Waypoint"), button -> {
+            this.minecraft.displayGuiScreen(new WayPointCreationScreen(this, null));
         });
 
-        this.func_230480_a_(new SettingsButton(this.field_230708_k_ - 13, 1, btn -> {
+        this.addButton(new SettingsButton(this.width - 13, 1, btn -> {
             Minecraft.getInstance().displayGuiScreen(new MinimapSettingsScreen(this));
         }));
 
-        this.func_230480_a_(new SidePanelButton(isWaypointListOpen.get() ? 125 : -2, (this.field_230709_l_ - 23) / 2, isWaypointListOpen, btn -> {
+        this.addButton(new SidePanelButton(isWaypointListOpen.get() ? 125 : -2, (this.height - 23) / 2, isWaypointListOpen, btn -> {
             if(isWaypointListOpen.get()){
-                this.field_230705_e_.add(scrollPanel);
-                this.func_230480_a_(waypointButton);
-                btn.field_230690_l_ = 125;
+                this.children.add(scrollPanel);
+                this.addButton(waypointButton);
+                btn.x = 125;
             }else{
-                this.func_231039_at__().remove(scrollPanel);
-                btn.field_230690_l_ = -2;
-                this.func_231039_at__().remove(waypointButton);
-                this.func_231039_at__().remove(waypointButton);
+                this.buttons.remove(scrollPanel);
+                btn.x = -2;
+                this.buttons.remove(waypointButton);
+                this.buttons.remove(waypointButton);
             }
         }));
 
         if(isWaypointListOpen.get()){
-            this.field_230705_e_.add(scrollPanel);
-            this.func_230480_a_(waypointButton);
+            this.children.add(scrollPanel);
+            this.addButton(waypointButton);
         }
     }
 
     @Override
-    public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float delta) {
-        this.func_231165_f_(0);
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float delta) {
+        this.renderDirtBackground(0);
 
-        float halfWidth = this.field_230708_k_/2F;
-        float halfHeight = this.field_230709_l_/2F;
+        float halfWidth = this.width/2F;
+        float halfHeight = this.height/2F;
 
         float scale = zoomLevels[currentZoomLevel];
 
@@ -85,7 +85,7 @@ public class FullMapScreen extends Screen {
         BlockPos playerPos = Minecraft.getInstance().player.func_233580_cy_();
         MapRenderer renderer = new MapRenderer();
 
-        mapRenderInfo.update(this.field_230708_k_, field_230709_l_, scale, playerPos.add(xOffset, 0 , zOffset));
+        mapRenderInfo.update(this.width, height, scale, playerPos.add(xOffset, 0 , zOffset));
 
         renderer.renderMap(matrix, mapRenderInfo);
 
@@ -98,7 +98,7 @@ public class FullMapScreen extends Screen {
         float yaw = (float) Math.toRadians(Minecraft.getInstance().player.getYaw(delta) - 180) /2F;
         //matrix.rotate(new Quaternion(0, 0, (float)Math.sin(yaw), (float)Math.cos(yaw)));
         matrix.rotate(new Quaternion(0, 0, (float)Math.sin(yaw), (float)Math.cos(yaw)));
-        func_238474_b_(matrix, -2, -4, 158, 0, 5, 7);
+        blit(matrix, -2, -4, 158, 0, 5, 7);
 
 //
 //        q.w = (cz*1*1));
@@ -112,17 +112,17 @@ public class FullMapScreen extends Screen {
 
 
         if(isWaypointListOpen.get()){
-            func_238466_a_(matrix, 0, 0, 128, this.field_230709_l_, 0, 0, 128, 256, 256, 256);
-            scrollPanel.func_230430_a_(matrix, mouseX, mouseY, delta);
+            blit(matrix, 0, 0, 128, this.height, 0, 0, 128, 256, 256, 256);
+            scrollPanel.render(matrix, mouseX, mouseY, delta);
         }
 
-        super.func_230430_a_(matrix, mouseX, mouseY, delta);
+        super.render(matrix, mouseX, mouseY, delta);
     }
 
 
     @Override
-    public boolean func_231045_a_(double mouseX, double mouseY, int mouseButton, double deltaX, double deltaY) {
-        boolean success = super.func_231045_a_(mouseX, mouseY, mouseButton, deltaX, deltaY);
+    public boolean mouseDragged(double mouseX, double mouseY, int mouseButton, double deltaX, double deltaY) {
+        boolean success = super.mouseDragged(mouseX, mouseY, mouseButton, deltaX, deltaY);
         if(success) return success;
 
         xOffset -= deltaX / zoomLevels[currentZoomLevel];
@@ -131,8 +131,8 @@ public class FullMapScreen extends Screen {
     }
 
     @Override
-    public boolean func_231043_a_(double mouseX, double mouseY, double scroll) {
-        boolean success = super.func_231043_a_(mouseX, mouseY, scroll);
+    public boolean mouseScrolled(double mouseX, double mouseY, double scroll) {
+        boolean success = super.mouseScrolled(mouseX, mouseY, scroll);
         if(success) return success;
 
         if(scroll > 0){
@@ -146,8 +146,6 @@ public class FullMapScreen extends Screen {
     public void increaseZoom(){
         if(this.currentZoomLevel > 0){
             this.currentZoomLevel -= 1;
-            //this.xOffset *= 2;
-            //this.zOffset *= 2;
         }
 
     }
@@ -155,8 +153,6 @@ public class FullMapScreen extends Screen {
     public void decreaseZoom(){
         if(this.currentZoomLevel < this.zoomLevels.length - 1){
             this.currentZoomLevel += 1;
-            //this.xOffset /= 2;
-           // this.zOffset /= 2;
         }
     }
 }

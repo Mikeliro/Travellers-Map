@@ -37,15 +37,15 @@ public class WaypointScrollPanel extends ScrollPanel {
 			}
 
 			if(mouseX >= this.left && mouseX <= this.right  - 6 && mouseY >= elemTop && mouseY <= elemTop + elementHeight){
-				func_238467_a_(matrix, this.left, elemTop, this.right, elemTop + elementHeight, 0xFF202020);
+				fill(matrix, this.left, elemTop, this.right, elemTop + elementHeight, 0xFF202020);
 			}
 
 			FontRenderer renderer = Minecraft.getInstance().fontRenderer;
-			renderer.func_238421_b_(matrix, waypoint.getName(), this.left + 3, elemTop + 3, waypoint.getColor());
-			renderer.func_238421_b_(matrix, String.format("x: %d, y: %d, z: %d", waypoint.getPos().getX(), waypoint.getPos().getY(), waypoint.getPos().getZ()), this.left + 3, elemTop + 13, 0xFFA0A0A0);
+			renderer.drawString(matrix, waypoint.getName(), this.left + 3, elemTop + 3, waypoint.getColor());
+			renderer.drawString(matrix, String.format("x: %d, y: %d, z: %d", waypoint.getPos().getX(), waypoint.getPos().getY(), waypoint.getPos().getZ()), this.left + 3, elemTop + 13, 0xFFA0A0A0);
 
 			Minecraft.getInstance().getTextureManager().bindTexture(FullMapScreen.FULL_MAP_TEXTURES);
-			func_238466_a_(matrix, this.right - 21, elemTop + 3, 14, 7, 242, waypoint.isVisible() ? 0 : 7, 14, 7, 256, 256);
+			blit(matrix, this.right - 21, elemTop + 3, 14, 7, 242, waypoint.isVisible() ? 0 : 7, 14, 7, 256, 256);
 
 			offset += elementHeight;
 		}

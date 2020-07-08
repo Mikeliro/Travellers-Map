@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MapManager {
@@ -25,6 +26,24 @@ public class MapManager {
             if(isNew) WAYPOINTS.add(waypoint);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void loadWaypoints(File waypointFolder){
+        File[] children = waypointFolder.listFiles();
+
+        for(File file : children){
+            if(file.isDirectory()) loadWaypoints(file);
+            else{
+                try{
+                    System.out.println(file.getName());
+                    Waypoint wp = new Waypoint(UUID.fromString(file.getName().substring(0, file.getName().lastIndexOf('.'))));
+                    wp.deserializeNBT(CompressedStreamTools.read(file));
+                    WAYPOINTS.add(wp);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

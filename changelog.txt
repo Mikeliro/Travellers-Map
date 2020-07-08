@@ -1,18 +1,4 @@
-v0.5.1
+v0.5.2
 * Bug Fix/Change, + Addition, - Removal
 
-Full Screen Map
-* Map Segment Culling massivly improved
-* Map Segments stay loaded properly now
-
-Minimap
-+ Minimap can now be resized trough scrolling in settings menu
-* Player Marker now get's positioned correctly on scaled minimap
-- Removed old player marker for default style minimap
-
-Compass
-• No Changes
-
-General
-* Fixed brighter lines generating on the map
-* Reworked map storage mechanic, now works properly on servers without the mod
+* Fixed Waypoinst not getting loaded properly

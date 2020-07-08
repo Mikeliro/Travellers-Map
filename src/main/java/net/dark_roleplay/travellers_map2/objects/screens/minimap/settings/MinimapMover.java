@@ -14,61 +14,58 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class MinimapMover extends Widget {
 
-	Hud hud;
+	private Hud hud;
 
-	int posX;
-	int posY;
-	GuiAlignment alignment;
+	private int posX;
+	private int posY;
 
-	double initOffsetX = 0;
-	double initOffsetY = 0;
-	double scale = 0;
+	private double initOffsetX = 0;
+	private double initOffsetY = 0;
+	private double scale = 0;
 
 	public MinimapMover(Hud hud) {
 		super(0, 0, 200, 20, new TranslationTextComponent(hud.getUnlocalizedName() + ".mover"));
 		this.hud = hud;
 
 		MainWindow window = Minecraft.getInstance().getMainWindow();
-		this.alignment = ClientConfig.MINIMAP.ALIGNMENT.get();
-		this.posX = (int)(ClientConfig.MINIMAP.POS_X.get() + alignment.getX(window.getScaledWidth()));
-		this.posY = (int)(ClientConfig.MINIMAP.POS_Y.get() + alignment.getY(window.getScaledHeight()));
+		GuiAlignment alignment = ClientConfig.MINIMAP.ALIGNMENT.get();
+		this.posX = ClientConfig.MINIMAP.POS_X.get() + alignment.getX(window.getScaledWidth());
+		this.posY = ClientConfig.MINIMAP.POS_Y.get() + alignment.getY(window.getScaledHeight());
 		this.scale = ClientConfig.MINIMAP.SCALE.get();
 	}
 
 	@Override
-	public void func_230982_a_(double mouseX, double mouseY) {
-		MainWindow window = Minecraft.getInstance().getMainWindow();
-
+	public void onClick(double mouseX, double mouseY) {
 		initOffsetX = posX - mouseX;
 		initOffsetY = posY - mouseY;
 	}
 
 	@Override
-	public void func_230983_a_(double mouseX, double mouseY, double deltaX, double deltaY) {
+	public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
 		HudStyle style = this.hud.getStyle();
 		posX = (int)Math.min(Math.max(0, mouseX + initOffsetX), Minecraft.getInstance().getMainWindow().getScaledWidth() - Math.floor(style.getWidth() * this.scale));
 		posY = (int)Math.min(Math.max(0, mouseY + initOffsetY), Minecraft.getInstance().getMainWindow().getScaledHeight() - Math.floor(style.getHeight() * this.scale));
 	}
 
 	@Override
-	public boolean func_231043_a_(double mouseX, double mouseY, double delta){
+	public boolean mouseScrolled(double mouseX, double mouseY, double delta){
 		this.scale = Math.max(0.25, Math.min(4, scale + (delta * 0.1)));
 		return true;
 	}
 
 	@Override
-	public void func_230431_b_(MatrixStack matrix, int mouseX, int mouseY, float delta) {
+	public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float delta) {
 		MainWindow window = Minecraft.getInstance().getMainWindow();
 		HudStyle style = this.hud.getStyle();
 
-		this.field_230688_j_ = (int)(style.getWidth() * this.scale);
-		this.field_230689_k_ = (int)(style.getWidth() * this.scale);
+		this.width = (int)(style.getWidth() * this.scale);
+		this.height = (int)(style.getWidth() * this.scale);
 
-		this.field_230690_l_ = posX;
-		this.field_230691_m_ = posY;
+		this.x = posX;
+		this.y = posY;
 
 		RenderSystem.pushMatrix();
-		RenderSystem.translatef(field_230690_l_, field_230691_m_, 0);
+		RenderSystem.translatef(x, y, 0);
 		RenderSystem.scaled(this.scale, this.scale, 1);
 		Minecraft.getInstance().getTextureManager().bindTexture(style.getOverlay());
 		RenderSystem.enableBlend();
