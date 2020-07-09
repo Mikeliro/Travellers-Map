@@ -42,24 +42,8 @@ public class MinimapHudListeners {
 		int height = event.getWindow().getScaledHeight();
 		float partialTicks = event.getPartialTicks();
 
-		MatrixStack stack = new MatrixStack();
-
 		for(HudHelper helper : HUDS)
-			helper.render(stack, width, height, partialTicks);
-
-		if(!Minecraft.getInstance().gameSettings.showDebugInfo && !Minecraft.getInstance().ingameGUI.getTabList().visible){
-			RenderSystem.pushMatrix();
-			int posX = ClientConfig.COMPASS.ALIGNMENT.get().getX(event.getWindow().getScaledWidth()) + ClientConfig.COMPASS.POS_X.get();
-			int posY = ClientConfig.COMPASS.ALIGNMENT.get().getY(event.getWindow().getScaledHeight()) + ClientConfig.COMPASS.POS_Y.get();
-			RenderSystem.translatef(posX, posY, 0);
-			RenderSystem.scaled(ClientConfig.COMPASS.SCALE.get(), ClientConfig.COMPASS.SCALE.get(), 1);
-
-			CompassHud compassHud = CompassHud.INSTANCE;
-			compassHud.setWindowSize(event.getWindow().getScaledWidth(), event.getWindow().getScaledHeight());
-			compassHud.render(stack,0, 0, event.getPartialTicks());
-
-			RenderSystem.popMatrix();
-		}
+			helper.render(event.getMatrixStack(), width, height, partialTicks);
 	}
 
 	@SubscribeEvent

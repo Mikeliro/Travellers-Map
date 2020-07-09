@@ -4,9 +4,35 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dark_roleplay.travellers_map.api.util.MapRenderInfo;
 import net.minecraft.client.gui.AbstractGui;
 
-public class IMapLayer extends AbstractGui {
+public abstract class IMapLayer extends AbstractGui {
 
-	public void renderLayer(MatrixStack matrix, MapRenderInfo renderInfo){
+	protected boolean canBeDisabled;
+	protected boolean isEnabled;
 
+	public IMapLayer(boolean canBeDisabled){
+		this.canBeDisabled = canBeDisabled;
+		this.isEnabled = true;
+	}
+
+	public abstract void renderLayer(MatrixStack matrix, MapRenderInfo renderInfo, MapType mapType, boolean isRotated, float delta);
+
+	public void disable(){
+		if(canBeDisabled) isEnabled = false;
+	}
+
+	public void enable(){
+		if(canBeDisabled) isEnabled = true;
+	}
+
+	public boolean canBeDisabled(){
+		return this.canBeDisabled;
+	}
+
+	public boolean isEnabled(){
+		return this.isEnabled;
+	}
+
+	public boolean canRenderIn(MapType type){
+		return true;
 	}
 }

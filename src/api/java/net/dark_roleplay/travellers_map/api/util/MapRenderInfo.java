@@ -6,22 +6,32 @@ public class MapRenderInfo {
 
 	private int width;
 	private int height;
+	private int scaledWidth;
+	private int scaledHeight;
 	private int offsetX;
 	private int offsetZ;
+	private float scale;
+	private float centerX;
+	private float centerZ;
 	private Long[][] segments;
 
 	public void update(int width, int height, double scale, BlockPos center) {
 		this.width = width;
 		this.height = height;
-		scale = 1/scale;
+		this.scale = (float) scale;
 
-		int dX = (int) (width * scale) + 2;
-		int dZ = (int) (height * scale) + 2;
+		System.out.println(scale);
 
-		int minSegX = (center.getX() - dX) >> 9;
-		int minSegZ = (center.getZ() - dZ) >> 9;
-		int maxSegX = (center.getX() + dX) >> 9;
-		int maxSegZ = (center.getZ() + dZ) >> 9;
+		scaledWidth = (int) (width / this.scale) + 2;
+		scaledHeight = (int) (height / this.scale) + 2;
+
+		this.centerX = center.getX();
+		this.centerZ = center.getZ();
+
+		int minSegX = (center.getX() - scaledWidth) >> 9;
+		int minSegZ = (center.getZ() - scaledHeight) >> 9;
+		int maxSegX = (center.getX() + scaledWidth) >> 9;
+		int maxSegZ = (center.getZ() + scaledHeight) >> 9;
 
 		this.offsetX = -(center.getX() - minSegX * 512);
 		this.offsetZ = -(center.getZ() - minSegZ * 512);
@@ -51,7 +61,27 @@ public class MapRenderInfo {
 		return offsetZ;
 	}
 
+	public float getScale() {
+		return scale;
+	}
+
 	public Long[][] getSegments() {
 		return segments;
+	}
+
+	public float getCenterX() {
+		return centerX;
+	}
+
+	public float getCenterZ() {
+		return centerZ;
+	}
+
+	public int getScaledWidth() {
+		return scaledWidth;
+	}
+
+	public int getScaledHeight() {
+		return scaledHeight;
 	}
 }
