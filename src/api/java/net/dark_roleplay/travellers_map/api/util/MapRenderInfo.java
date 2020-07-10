@@ -20,8 +20,6 @@ public class MapRenderInfo {
 		this.height = height;
 		this.scale = (float) scale;
 
-		System.out.println(scale);
-
 		scaledWidth = (int) (width / this.scale) + 2;
 		scaledHeight = (int) (height / this.scale) + 2;
 

@@ -30,16 +30,12 @@ public class MinimapHUD extends Hud {
 	private float[] zoomLevels = new float[]{0.25F, 0.5F, 1.0F, 2.0F};
 	private int currentZoomLevel = 1;
 
-	private int width, height;
-
 	private MapRenderInfo mapRenderInfo = new MapRenderInfo();
 
 	private MinimapHUD() {
 		super(ClientConfig.MINIMAP, "hud." + TravellersMap.MODID + ".minimap" ,
 				new HudStyle("Default", 64, 64, "travellers_map:textures/styles/minimap/default_mask.png", "travellers_map:textures/styles/minimap/default_overlay.png"));
 	}
-
-	//private final Set<MapSegment> segments = new HashSet<>();
 
 	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float delta) {
@@ -64,71 +60,38 @@ public class MinimapHUD extends Hud {
 		RenderSystem.enableAlphaTest();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
+		MatrixStack stack = new MatrixStack();
+
 		Minecraft.getInstance().getTextureManager().bindTexture(style.getMask());
 		RenderSystem.enableDepthTest();
 		RenderSystem.translatef(0.0F, 0.0F, 950.0F);
 		RenderSystem.colorMask(false, false, false, false);
-		fill(matrix, 4680, 2260, -4680, -2260, 0xFFFFFFFF);
+		fill(stack, 4680, 2260, -4680, -2260, 0xFFFFFFFF);
 		RenderSystem.translatef(0.0F, 0.0F, -950.0F);
 		RenderSystem.depthFunc(518);
-		blit(matrix, 0, 0, style.getWidth(), style.getHeight(), 0, 0, 1, 1, 1, 1);
+		blit(stack, 0, 0, style.getWidth(), style.getHeight(), 0, 0, 1, 1, 1, 1);
 		RenderSystem.depthFunc(515);
 		RenderSystem.colorMask(true, true, true, true);
 	}
 
 	private void renderMap(MatrixStack matrix, float delta){
 		HudStyle style = getStyle();
+		MatrixStack stack = new MatrixStack();
 
 		BlockPos playerPos = Minecraft.getInstance().player.func_233580_cy_();
 		mapRenderInfo.update(style.getWidth(), style.getHeight(), zoomLevels[currentZoomLevel], playerPos);
 		MapRenderer.renderMap(matrix, mapRenderInfo, MapType.MINIMAP, true, delta);
 
 
-		RenderSystem.pushMatrix();
 		RenderSystem.translatef(style.getWidth()/2, style.getHeight()/2, 0);
-		//Reset Minimap Mask
+//		//Reset Minimap Mask
 		RenderSystem.depthFunc(518);
 		RenderSystem.translatef(0.0F, 0.0F, -950.0F);
 		RenderSystem.colorMask(false, false, false, false);
-		fill(matrix, 4680, 2260, -4680, -2260, -16777216);
+		fill(stack, 4680, 2260, -4680, -2260, -16777216);
 		RenderSystem.colorMask(true, true, true, true);
-		RenderSystem.translatef(0.0F, 0.0F, 950.0F);
 		RenderSystem.depthFunc(515);
 		RenderSystem.popMatrix();
-	}
-
-	public void setSize(int width, int height) {
-		this.width = width;
-		this.height = height;
-	}
-
-	private void getAndDrawMapSegment(PlayerEntity player, int offsetX, int offsetZ){
-//		RenderTicket ticket = RenderTicket.getOrCreateTicket(offsetX, offsetZ);
-//		MapSegment map = MapManager.getMapSegment(MapSegmentUtil.getSegment(player.func_233580_cy_().add(offsetX, 0, offsetZ)));//Player#getPosition -> BlockPos
-//		if(map != null && !map.isEmpty() && !segments.contains(map)){
-//			map.addTicket(ticket);
-//			segments.add(map);
-//			drawMapSegment(map, player.getPositionVec(), offsetX, offsetZ);
-//		}
-	}
-
-	private void drawMapSegment(MapSegment map, Vector3d playerPos, int offsetX, int offsetZ){
-		map.getDynTexture().bindTexture();
-		map.updadteGPU();
-
-		HudStyle style = getStyle();
-
-		//256/64 = 4, needs to be used as size for normal zoom
-		int sizeX = (int) (style.getWidth() * 4 * zoomLevels[currentZoomLevel]);
-		int sizeZ = (int) (style.getWidth() * 4 * zoomLevels[currentZoomLevel]);
-
-		//+ has a higher priority than bitshifts
-		double offsetToPlayerX = (playerPos.x - ((int)playerPos.x + offsetX >> 9) * 512) * (style.getWidth()/128F);
-		double offsetToPlayerZ = (playerPos.z - ((int)playerPos.z + offsetZ >> 9) * 512) * (style.getWidth()/128F);
-
-		offsetToPlayerX *= zoomLevels[currentZoomLevel];
-		offsetToPlayerZ *= zoomLevels[currentZoomLevel];
-		BlendBlitHelper.blit(-offsetToPlayerX, -offsetToPlayerZ, sizeX, sizeZ, 0, 0, 1, 1, 1, 1);
 	}
 
 	public static void increaseZoom(){

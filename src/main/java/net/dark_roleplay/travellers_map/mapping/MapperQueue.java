@@ -61,7 +61,7 @@ public final class MapperQueue {
 					if(mapper.canMapChunk(world, chunk)){
 						IMapSegmentTicket ticket = ChunkLoadedTicket.loadChunk(chunk);
 						MapSegment segment = MapManager.getOrCreateMapSegment(chunk, ticket);
-						if(segment == null) return;
+						if(segment == null || segment.isEmpty()) return;
 						segment.updateChunk(world, chunk);
 						segment.markDirty();
 					}else{

@@ -94,8 +94,8 @@ public class FullMapScreen extends Screen {
         boolean success = super.mouseDragged(mouseX, mouseY, mouseButton, deltaX, deltaY);
         if(success) return success;
 
-        xOffset -= deltaX / zoomLevels[currentZoomLevel];
-        zOffset -= deltaY / zoomLevels[currentZoomLevel];
+        xOffset -= deltaX * zoomLevels[currentZoomLevel];
+        zOffset -= deltaY * zoomLevels[currentZoomLevel];
         return true;
     }
 
@@ -113,15 +113,15 @@ public class FullMapScreen extends Screen {
     }
 
     public void increaseZoom(){
-        if(this.currentZoomLevel > 0){
-            this.currentZoomLevel -= 1;
+        if(this.currentZoomLevel < this.zoomLevels.length - 1){
+            this.currentZoomLevel += 1;
         }
 
     }
 
     public void decreaseZoom(){
-        if(this.currentZoomLevel < this.zoomLevels.length - 1){
-            this.currentZoomLevel += 1;
+        if(this.currentZoomLevel > 0){
+            this.currentZoomLevel -= 1;
         }
     }
 }

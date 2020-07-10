@@ -4,7 +4,7 @@ import net.dark_roleplay.travellers_map.api.mapping.Mapper;
 import net.dark_roleplay.travellers_map.features.color_palettes.ColorPalette;
 import net.dark_roleplay.travellers_map.features.color_palettes.DefaultColorPalette;
 import net.dark_roleplay.travellers_map.features.color_palettes.MonoColorPalette;
-import net.dark_roleplay.travellers_map2.mapper_logic.MapperUtil;
+import net.dark_roleplay.travellers_map2.util.MapperUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.renderer.texture.NativeImage;

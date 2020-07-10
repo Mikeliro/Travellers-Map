@@ -23,9 +23,12 @@ public class MapLayer extends IMapLayer {
 		for(int x = 0; x < maps.length; x++){
 			for(int z = 0; z < maps[x].length; z++){
 				MapSegment map = MapManager.getMapOrTryLoad(maps[x][z]);
+				if(map.isEmpty()) continue;
 
 				IMapSegmentTicket ticket = RenderTicket.getOrCreateTicket(map.getSegX(), map.getSegZ());
 				map.addTicket(ticket);
+
+				map.updadteGPU();
 
 				drawSegment(matrix, map, renderInfo.getOffsetX() + (x * 512), renderInfo.getOffsetZ() + (z * 512));
 			}
