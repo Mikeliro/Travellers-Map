@@ -33,18 +33,18 @@ public class MinimapHUD extends Hud {
 	private MapRenderInfo mapRenderInfo = new MapRenderInfo();
 
 	private MinimapHUD() {
-		super(ClientConfig.MINIMAP, "hud." + TravellersMap.MODID + ".minimap" ,
+		super(ClientConfig.MINIMAP, "hud." + TravellersMap.MODID + ".minimap",
 				new HudStyle("Default", 64, 64, "travellers_map:textures/styles/minimap/default_mask.png", "travellers_map:textures/styles/minimap/default_overlay.png"));
 	}
 
 	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float delta) {
-		if(Minecraft.getInstance().currentScreen instanceof FullMapScreen) return;
+		if (Minecraft.getInstance().currentScreen instanceof FullMapScreen) return;
 		renderOverlay(matrix);
 		renderMap(matrix, delta);
 	}
 
-	private void renderOverlay(MatrixStack matrix){
+	private void renderOverlay(MatrixStack matrix) {
 		HudStyle style = getStyle();
 
 		RenderSystem.pushMatrix();
@@ -74,7 +74,7 @@ public class MinimapHUD extends Hud {
 		RenderSystem.colorMask(true, true, true, true);
 	}
 
-	private void renderMap(MatrixStack matrix, float delta){
+	private void renderMap(MatrixStack matrix, float delta) {
 		HudStyle style = getStyle();
 		MatrixStack stack = new MatrixStack();
 
@@ -83,7 +83,7 @@ public class MinimapHUD extends Hud {
 		MapRenderer.renderMap(matrix, mapRenderInfo, MapType.MINIMAP, true, delta);
 
 
-		RenderSystem.translatef(style.getWidth()/2, style.getHeight()/2, 0);
+		RenderSystem.translatef(style.getWidth() / 2, style.getHeight() / 2, 0);
 //		//Reset Minimap Mask
 		RenderSystem.depthFunc(518);
 		RenderSystem.translatef(0.0F, 0.0F, -950.0F);
@@ -94,12 +94,11 @@ public class MinimapHUD extends Hud {
 		RenderSystem.popMatrix();
 	}
 
-	public static void increaseZoom(){
-		INSTANCE.currentZoomLevel = Math.max(0, INSTANCE.currentZoomLevel - 1);
+	public static void increaseZoom() {
+		INSTANCE.currentZoomLevel = Math.min(INSTANCE.zoomLevels.length - 1, INSTANCE.currentZoomLevel + 1);
 	}
 
-	public static void decreaseZoom(){
-		INSTANCE.currentZoomLevel = Math.min(INSTANCE.zoomLevels.length - 1, INSTANCE.currentZoomLevel + 1);
-
+	public static void decreaseZoom() {
+		INSTANCE.currentZoomLevel = Math.max(0, INSTANCE.currentZoomLevel - 1);
 	}
 }

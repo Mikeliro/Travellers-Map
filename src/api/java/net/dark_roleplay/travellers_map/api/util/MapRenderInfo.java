@@ -14,8 +14,24 @@ public class MapRenderInfo {
 	private float centerX;
 	private float centerZ;
 	private Long[][] segments;
+	private boolean hasMouse;
+	private double mouseX;
+	private double mouseY;
+	private double scaledMouseX;
+	private double scaledMouseY;
+
+
+	public void update(int width, int height, double scale, BlockPos center, double mouseX, double mouseY) {
+		this.update(width, height, scale, center);
+		this.hasMouse = true;
+		this.mouseX = mouseX - width / 2F;
+		this.mouseY = mouseY - height / 2F;
+		this.scaledMouseX = this.mouseX / this.scale;
+		this.scaledMouseY = this.mouseY / this.scale;
+	}
 
 	public void update(int width, int height, double scale, BlockPos center) {
+		this.hasMouse = false;
 		this.width = width;
 		this.height = height;
 		this.scale = (float) scale;
@@ -81,5 +97,25 @@ public class MapRenderInfo {
 
 	public int getScaledHeight() {
 		return scaledHeight;
+	}
+
+	public boolean hasMouse() {
+		return hasMouse;
+	}
+
+	public double getMouseX() {
+		return mouseX;
+	}
+
+	public double getMouseY() {
+		return mouseY;
+	}
+
+	public double getScaledMouseX() {
+		return scaledMouseX;
+	}
+
+	public double getScaledMouseY() {
+		return scaledMouseY;
 	}
 }

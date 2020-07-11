@@ -81,7 +81,7 @@ public class MapSegment {
     }
 
     public void updadteGPU() {
-        if(this.dirtyGPU){
+        if(this.dirtyGPU && this.dynTexture != null){
             this.dynTexture.updateDynamicTexture();
             this.dirtyGPU = false;
         }

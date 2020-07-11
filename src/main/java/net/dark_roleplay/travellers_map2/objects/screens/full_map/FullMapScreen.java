@@ -36,7 +36,6 @@ public class FullMapScreen extends Screen {
 
     public FullMapScreen(){
         super(new TranslationTextComponent("screen.travellers_map.full_map"));
-        BlockPos playerPos = Minecraft.getInstance().player.func_233580_cy_();
     }
 
     @Override
@@ -75,10 +74,9 @@ public class FullMapScreen extends Screen {
 
         //Map
         BlockPos playerPos = Minecraft.getInstance().player.func_233580_cy_();
-        mapRenderInfo.update(this.width, this.height, 1/zoomLevels[currentZoomLevel], playerPos.add(xOffset, 0 , zOffset));
+        mapRenderInfo.update(this.width, this.height, 1/zoomLevels[currentZoomLevel], playerPos.add(xOffset, 0 , zOffset), mouseX, mouseY);
 
         MapRenderer.renderMap(matrix, mapRenderInfo, MapType.FULL_MAP, false, delta);
-
 
         if(isWaypointListOpen.get()){
             blit(matrix, 0, 0, 128, this.height, 0, 0, 128, 256, 256, 256);
@@ -92,7 +90,7 @@ public class FullMapScreen extends Screen {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int mouseButton, double deltaX, double deltaY) {
         boolean success = super.mouseDragged(mouseX, mouseY, mouseButton, deltaX, deltaY);
-        if(success) return success;
+        if(success || mouseButton != 0) return success;
 
         xOffset -= deltaX * zoomLevels[currentZoomLevel];
         zOffset -= deltaY * zoomLevels[currentZoomLevel];
@@ -109,6 +107,21 @@ public class FullMapScreen extends Screen {
         }else if(scroll < 0){
             this.decreaseZoom();
         }
+        return true;
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int btn) {
+        boolean result = super.mouseClicked(mouseX, mouseY, btn);
+        if(result || btn == 0) return result;
+
+        BlockPos playerPos = Minecraft.getInstance().player.func_233580_cy_().add(xOffset, 0, zOffset);
+        double worldX = playerPos.getX() + (( mouseX - (this.width/2)) / zoomLevels[currentZoomLevel]);
+        double worldZ = playerPos.getZ() + (( mouseY - (this.height/2)) / zoomLevels[currentZoomLevel]);
+        xOffset = 0;
+        zOffset = 0;
+        Minecraft.getInstance().player.sendChatMessage("/tp " + worldX + " 255 " + worldZ);
+        System.out.println(worldX  + " " + worldZ);
         return true;
     }
 

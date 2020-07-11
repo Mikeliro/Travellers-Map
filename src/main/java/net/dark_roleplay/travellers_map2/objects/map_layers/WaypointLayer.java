@@ -28,22 +28,32 @@ public class WaypointLayer extends IMapLayer {
 								waypoint.getPos().getZ() > posZ && waypoint.getPos().getZ() < posZ2
 				)
 				.forEach(waypoint -> {
-					if(isRotated){
+					double waypointX = waypoint.getPos().getX() - renderInfo.getCenterX();
+					double waypointZ = waypoint.getPos().getZ() - renderInfo.getCenterZ();
+					boolean isHovered = isHovered(renderInfo, waypointX, waypointZ);
+
+					if (isRotated) {
 						matrix.push();
-						matrix.translate(waypoint.getPos().getX() - renderInfo.getCenterX(), waypoint.getPos().getZ() - renderInfo.getCenterZ(), 0);
-						float yaw =(float) Math.toRadians(Minecraft.getInstance().player.getYaw(delta)- 180) /2F;
-						matrix.rotate(new Quaternion(0, 0, (float)Math.sin(yaw), (float)Math.cos(yaw)));
-						fill(matrix, - 4, - 4, 4, 4, 0xFFFF00FF);
+						matrix.translate(waypointX, waypointZ, 0);
+						float yaw = (float) Math.toRadians(Minecraft.getInstance().player.getYaw(delta) - 180) / 2F;
+						matrix.rotate(new Quaternion(0, 0, (float) Math.sin(yaw), (float) Math.cos(yaw)));
+						fill(matrix, -4, -4, 4, 4, isHovered ? 0xFF00FF00 : 0xFFFF00FF);
 						matrix.pop();
-					}else{
+					} else {
 						fill(matrix,
-								(int) (waypoint.getPos().getX() - renderInfo.getCenterX()) - 4,
-								(int) (waypoint.getPos().getZ() - renderInfo.getCenterZ()) - 4,
-								(int) (waypoint.getPos().getX() - renderInfo.getCenterX()) + 4,
-								(int) (waypoint.getPos().getZ() - renderInfo.getCenterZ()) + 4, 0xFFFF00FF);
+								(int) waypointX - 4,
+								(int) waypointZ - 4,
+								(int) waypointX + 4,
+								(int) waypointZ + 4, isHovered ? 0xFF00FF00 : 0xFFFF00FF);
 					}
 
 				});
 
+	}
+
+	private boolean isHovered(MapRenderInfo renderInfo, double waypointX, double waypointZ){
+		if(!renderInfo.hasMouse()) return false;
+		return waypointX - 4 < renderInfo.getScaledMouseX() && waypointX + 4 > renderInfo.getScaledMouseX()
+				&& waypointZ - 4 < renderInfo.getScaledMouseY() && waypointZ + 4 > renderInfo.getScaledMouseY();
 	}
 }
