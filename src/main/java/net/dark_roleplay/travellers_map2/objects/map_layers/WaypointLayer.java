@@ -7,6 +7,11 @@ import net.dark_roleplay.travellers_map.api.util.MapRenderInfo;
 import net.dark_roleplay.travellers_map.util.MapManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.client.event.RenderTooltipEvent;
+import net.minecraftforge.fml.client.gui.GuiUtils;
+
+import java.util.ArrayList;
 
 public class WaypointLayer extends IMapLayer {
 	public WaypointLayer() {
@@ -32,21 +37,30 @@ public class WaypointLayer extends IMapLayer {
 					double waypointZ = waypoint.getPos().getZ() - renderInfo.getCenterZ();
 					boolean isHovered = isHovered(renderInfo, waypointX, waypointZ);
 
+
+					matrix.push();
+					matrix.translate(waypointX, waypointZ, 0);
 					if (isRotated) {
-						matrix.push();
-						matrix.translate(waypointX, waypointZ, 0);
 						float yaw = (float) Math.toRadians(Minecraft.getInstance().player.getYaw(delta) - 180) / 2F;
 						matrix.rotate(new Quaternion(0, 0, (float) Math.sin(yaw), (float) Math.cos(yaw)));
-						fill(matrix, -4, -4, 4, 4, isHovered ? 0xFF00FF00 : 0xFFFF00FF);
-						matrix.pop();
-					} else {
-						fill(matrix,
-								(int) waypointX - 4,
-								(int) waypointZ - 4,
-								(int) waypointX + 4,
-								(int) waypointZ + 4, isHovered ? 0xFF00FF00 : 0xFFFF00FF);
 					}
 
+					fill(matrix, -4, -4, 4, 4, isHovered ? 0xFF00FF00 : 0xFFFF00FF);
+
+					matrix.translate(-waypointX-renderInfo.getScaledWidth()/2, -waypointZ-renderInfo.getScaledHeight()/2, 0);
+					if(isHovered)
+						GuiUtils.drawHoveringText(
+								matrix,
+								new ArrayList() {{add(new StringTextComponent(waypoint.getName()));}},
+								(int) renderInfo.getScaledMouseX() + renderInfo.getScaledWidth()/2,
+								(int) renderInfo.getScaledMouseY() + renderInfo.getScaledHeight()/2,
+								(int) renderInfo.getScaledWidth(),
+								(int) renderInfo.getScaledHeight(),
+								500,
+								Minecraft.getInstance().fontRenderer
+						);
+
+					matrix.pop();
 				});
 
 	}
