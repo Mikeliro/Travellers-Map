@@ -7,8 +7,8 @@ public class MonoColorPalette extends ColorPalette {
 	private int[][] colors;
 
 	public MonoColorPalette(int colorMult) {
-		int multR = colorMult >> 16 & 0xFF;
-		int multG = colorMult >> 8 & 0xFF;
+		int multR = (colorMult >> 16) & 0xFF;
+		int multG = (colorMult >> 8) & 0xFF;
 		int multB = colorMult & 0xFF;
 		colors = new int[MaterialColor.COLORS.length][];
 
@@ -18,14 +18,14 @@ public class MonoColorPalette extends ColorPalette {
 			for (int j = 0; j < 4; j++) {
 				if (MaterialColor.COLORS[i] != null){
 					int color = MaterialColor.COLORS[i].getMapColor(j);
-					float red = color >> 16 & 0xFF;
-					float green = color >> 8 & 0xFF;
+					float red = (color >> 16) & 0xFF;
+					float green = (color >> 8) & 0xFF;
 					float blue = color & 0xFF;
 
 					int grayColor = (int) (0.21 * red + 0.72 * green + 0.07 * blue);
-					int redChannel = (grayColor * (multR/256)) << 16 ;
-					int greenChannel = (grayColor * (multG/256))  << 8;
-					int blueChannel = grayColor * (multB/256);
+					int redChannel = (int)(grayColor * (multR/256F)) << 16 ;
+					int greenChannel = (int)(grayColor * (multG/256F))  << 8;
+					int blueChannel = (int) (grayColor * (multB/256F));
 					colors[i][j] = 0xFF000000 | redChannel | greenChannel | blueChannel;
 				}
 			}
