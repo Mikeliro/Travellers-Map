@@ -1,8 +1,6 @@
 package net.dark_roleplay.travellers_map.mapping;
 
-import net.dark_roleplay.travellers_map.api.mapping.Mapper;
-import net.dark_roleplay.travellers_map.mapping.tickets.ChunkLoadedTicket;
-import net.dark_roleplay.travellers_map.api.mapping.IMapSegmentTicket;
+import net.dark_roleplay.travellers_map.objects.tickets.ChunkLoadedTicket;
 import net.dark_roleplay.travellers_map.util.MapManager;
 import net.dark_roleplay.travellers_map.util.MapSegment;
 import net.minecraft.client.Minecraft;

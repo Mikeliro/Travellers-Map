@@ -5,8 +5,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.IChunk;
 
-import java.io.File;
-
 public class MapSegmentUtil {
 
 	//func_233580_cy_ == player#getPosition

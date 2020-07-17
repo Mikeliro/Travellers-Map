@@ -1,7 +1,6 @@
 package net.dark_roleplay.travellers_map.mapping;
 
-import net.dark_roleplay.travellers_map.mapping.mappers.CaveColorMapper;
-import net.dark_roleplay.travellers_map.mapping.mappers.LightingColorMapper;
+import net.dark_roleplay.travellers_map.objects.mappers.LightingColorMapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.ChunkPos;
 

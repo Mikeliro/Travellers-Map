@@ -1,9 +1,9 @@
 package net.dark_roleplay.travellers_map;
 
 import net.dark_roleplay.travellers_map.util.MapManager;
-import net.dark_roleplay.travellers_map2.configs.ClientConfig;
-import net.dark_roleplay.travellers_map2.handler.TravellersKeybinds;
-import net.dark_roleplay.travellers_map2.listeners.ResourceReloadListener;
+import net.dark_roleplay.travellers_map.configs.ClientConfig;
+import net.dark_roleplay.travellers_map.handler.TravellersKeybinds;
+import net.dark_roleplay.travellers_map.listeners.ResourceReloadListener;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;

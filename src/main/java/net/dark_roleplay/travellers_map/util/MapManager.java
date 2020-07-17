@@ -1,8 +1,7 @@
 package net.dark_roleplay.travellers_map.util;
 
-import net.dark_roleplay.travellers_map.api.mapping.IMapSegmentTicket;
-import net.dark_roleplay.travellers_map.mapping.waypoints.Waypoint;
-import net.dark_roleplay.travellers_map2.util.MapFileHelper;
+import net.dark_roleplay.travellers_map.mapping.IMapSegmentTicket;
+import net.dark_roleplay.travellers_map.objects.waypoints.Waypoint;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.world.chunk.IChunk;
 
