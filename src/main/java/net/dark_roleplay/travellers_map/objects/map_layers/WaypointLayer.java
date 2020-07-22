@@ -55,7 +55,7 @@ public class WaypointLayer extends IMapLayer {
 								(int) renderInfo.getScaledMouseY() + renderInfo.getScaledHeight()/2,
 								(int) renderInfo.getScaledWidth(),
 								(int) renderInfo.getScaledHeight(),
-								500,
+								renderInfo.getScaledWidth(),
 								Minecraft.getInstance().fontRenderer
 						);
 

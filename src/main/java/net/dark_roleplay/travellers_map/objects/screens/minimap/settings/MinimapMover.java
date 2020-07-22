@@ -6,7 +6,7 @@ import net.dark_roleplay.travellers_map.util.BlendBlitHelper;
 import net.dark_roleplay.travellers_map.configs.ClientConfig;
 import net.dark_roleplay.travellers_map.objects.huds.GuiAlignment;
 import net.dark_roleplay.travellers_map.objects.huds.hud.Hud;
-import net.dark_roleplay.travellers_map.objects.huds.hud.HudStyle;
+import net.dark_roleplay.travellers_map.objects.style.HudStyle;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.Widget;
@@ -42,7 +42,7 @@ public class MinimapMover extends Widget {
 
 	@Override
 	public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
-		HudStyle style = this.hud.getStyle();
+		HudStyle style = this.hud.getStyleProvider().getActiveStyle();
 		posX = (int)Math.min(Math.max(0, mouseX + initOffsetX), Minecraft.getInstance().getMainWindow().getScaledWidth() - Math.floor(style.getWidth() * this.scale));
 		posY = (int)Math.min(Math.max(0, mouseY + initOffsetY), Minecraft.getInstance().getMainWindow().getScaledHeight() - Math.floor(style.getHeight() * this.scale));
 	}
@@ -56,7 +56,7 @@ public class MinimapMover extends Widget {
 	@Override
 	public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float delta) {
 		MainWindow window = Minecraft.getInstance().getMainWindow();
-		HudStyle style = this.hud.getStyle();
+		HudStyle style = this.hud.getStyleProvider().getActiveStyle();
 
 		this.width = (int)(style.getWidth() * this.scale);
 		this.height = (int)(style.getWidth() * this.scale);

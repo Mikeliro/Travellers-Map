@@ -5,15 +5,24 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
-import net.dark_roleplay.travellers_map.objects.huds.hud.HudStyle;
+import net.dark_roleplay.travellers_map.TravellersMap;
+import net.dark_roleplay.travellers_map.objects.huds.compass.CompassHud;
+import net.dark_roleplay.travellers_map.objects.style.HudStyle;
 import net.dark_roleplay.travellers_map.objects.huds.minimap.MinimapHUD;
+import net.dark_roleplay.travellers_map.objects.style.HudStyleProvider;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IFutureReloadListener;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,31 +47,46 @@ public class ResourceReloadListener {
 		if (Minecraft.getInstance() == null) return; //Nop out, running DataGen
 
 		if (Minecraft.getInstance().getResourceManager() instanceof IReloadableResourceManager) {
-			((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(ResourceReloadListener::reload);
+			((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(
+					new StyleReloadListener("travellers_map/minimap_styles", MinimapHUD.INSTANCE.getStyleProvider())
+			);
+			((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(
+					new StyleReloadListener("travellers_map/compass_styles", CompassHud.INSTANCE.getStyleProvider())
+			);
 		}
 	}
 
-	private static CompletableFuture<Void> reload(IFutureReloadListener.IStage stage, IResourceManager resourceManager, IProfiler preparationsProfiler, IProfiler reloadProfiler, Executor backgroundExecutor, Executor gameExecutor){
-		Set<HudStyle> styles = new HashSet<>();
-		return CompletableFuture.<Void>supplyAsync(() -> {
-			Collection<ResourceLocation> minimapStyles = resourceManager.getAllResourceLocations("travellers_map/styles/minimap", val -> true);
+	private static class StyleReloadListener implements IFutureReloadListener{
+		private HudStyleProvider styleProvider;
+		private String folder;
 
-			for(ResourceLocation styleLoc : minimapStyles){
-				try {
-					IResource resource = resourceManager.getResource(styleLoc);
-					try (JsonReader reader = new JsonReader(new BufferedReader(new InputStreamReader(resource.getInputStream())))) {
-						HudStyle style = GSON.fromJson(reader, HudStyle.class);
-						styles.add(style);
-					}catch (JsonIOException | JsonSyntaxException e){
+		public StyleReloadListener(String folder, HudStyleProvider styleProvider){
+			this.folder = folder;
+			this.styleProvider = styleProvider;
+		}
+
+		public CompletableFuture<Void> reload(IFutureReloadListener.IStage stage, IResourceManager resourceManager, IProfiler preparationsProfiler, IProfiler reloadProfiler, Executor backgroundExecutor, Executor gameExecutor){
+			return CompletableFuture.<Void>supplyAsync(() -> {
+				Set<HudStyle> styles = new HashSet<>();
+				Collection<ResourceLocation> minimapStyles = resourceManager.getAllResourceLocations(this.folder, val -> true);
+
+				for(ResourceLocation styleLoc : minimapStyles){
+					try {
+						IResource resource = resourceManager.getResource(styleLoc);
+						try (JsonReader reader = new JsonReader(new BufferedReader(new InputStreamReader(resource.getInputStream())))) {
+							HudStyle style = GSON.fromJson(reader, HudStyle.class);
+							styles.add(style);
+						}catch (JsonIOException | JsonSyntaxException e){
+							e.printStackTrace();
+						}
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				} catch (IOException e) {
-					e.printStackTrace();
 				}
-			}
 
-			MinimapHUD.INSTANCE.refreshStyles(styles);
-			return null;
-		}).thenCompose(stage::markCompleteAwaitingOthers);
+				styleProvider.reloadStyles(styles);
+				return null;
+			}).thenCompose(stage::markCompleteAwaitingOthers);
+		}
 	}
 }

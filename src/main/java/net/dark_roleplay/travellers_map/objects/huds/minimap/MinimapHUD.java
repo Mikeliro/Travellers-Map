@@ -3,12 +3,13 @@ package net.dark_roleplay.travellers_map.objects.huds.minimap;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.dark_roleplay.travellers_map.TravellersMap;
+import net.dark_roleplay.travellers_map.objects.style.HudStyleProvider;
 import net.dark_roleplay.travellers_map.rendering.MapType;
 import net.dark_roleplay.travellers_map.rendering.MapRenderInfo;
 import net.dark_roleplay.travellers_map.util.BlendBlitHelper;
 import net.dark_roleplay.travellers_map.configs.ClientConfig;
 import net.dark_roleplay.travellers_map.objects.huds.hud.Hud;
-import net.dark_roleplay.travellers_map.objects.huds.hud.HudStyle;
+import net.dark_roleplay.travellers_map.objects.style.HudStyle;
 import net.dark_roleplay.travellers_map.objects.screens.full_map.FullMapScreen;
 import net.dark_roleplay.travellers_map.rendering.MapRenderer;
 import net.minecraft.client.Minecraft;
@@ -24,7 +25,9 @@ public class MinimapHUD extends Hud {
 
 	private MinimapHUD() {
 		super(ClientConfig.MINIMAP, "hud." + TravellersMap.MODID + ".minimap",
-				new HudStyle("Default", 64, 64, "travellers_map:textures/styles/minimap/default_mask.png", "travellers_map:textures/styles/minimap/default_overlay.png"));
+				new HudStyleProvider(ClientConfig.MINIMAP,
+						new HudStyle("Default", 64, 64, "travellers_map:textures/styles/minimap/default_mask.png", "travellers_map:textures/styles/minimap/default_overlay.png")
+				));
 	}
 
 	@Override
@@ -35,7 +38,7 @@ public class MinimapHUD extends Hud {
 	}
 
 	private void renderOverlay(MatrixStack matrix) {
-		HudStyle style = getStyle();
+		HudStyle style = this.getStyleProvider().getActiveStyle();
 
 		RenderSystem.pushMatrix();
 		RenderSystem.scaled(ClientConfig.MINIMAP.SCALE.get(), ClientConfig.MINIMAP.SCALE.get(), 1);
@@ -65,7 +68,7 @@ public class MinimapHUD extends Hud {
 	}
 
 	private void renderMap(MatrixStack matrix, float delta) {
-		HudStyle style = getStyle();
+		HudStyle style = this.getStyleProvider().getActiveStyle();
 		MatrixStack stack = new MatrixStack();
 
 		BlockPos playerPos = Minecraft.getInstance().player.func_233580_cy_();

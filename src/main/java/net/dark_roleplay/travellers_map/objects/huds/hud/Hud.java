@@ -2,6 +2,8 @@ package net.dark_roleplay.travellers_map.objects.huds.hud;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dark_roleplay.travellers_map.configs.client.HudConfig;
+import net.dark_roleplay.travellers_map.objects.style.HudStyle;
+import net.dark_roleplay.travellers_map.objects.style.HudStyleProvider;
 import net.minecraft.client.gui.AbstractGui;
 
 import java.util.Collection;
@@ -10,48 +12,25 @@ import java.util.Map;
 
 public abstract class Hud extends AbstractGui {
 
-    public final Map<String, HudStyle> STYLES = new HashMap<>();
-
-    private HudStyle selectedStyle = null;
-    private final HudStyle fallbackStyle;
-
     protected int wWidth;
     protected int wHeight;
+    protected HudStyleProvider styleProvider;
 
     protected HudConfig config;
     private String unlocalizedName;
 
-    protected Hud(HudConfig config, String unlocalizedName, HudStyle fallbackStyle){
+    protected Hud(HudConfig config, String unlocalizedName, HudStyleProvider styleProvider){
         this.config = config;
         this.unlocalizedName = unlocalizedName;
-        this.fallbackStyle = fallbackStyle;
+        this.styleProvider = styleProvider;
     }
 
-    public void refreshStyles(Collection<HudStyle> styles){
-        selectedStyle = null;
-        STYLES.clear();
-        STYLES.put("Default", fallbackStyle);
-
-        for(HudStyle style : styles){
-            STYLES.put(style.getStyleName(), style);
-        }
-
-        HudStyle configStyle = STYLES.get(this.config.STYLE.get());
-        if(configStyle != null)
-            this.selectedStyle = configStyle;
-    }
-
-    public HudStyle getStyle(){
-        return selectedStyle == null ? fallbackStyle : selectedStyle;
-    }
-
-    public void setStyle(HudStyle style){
-        selectedStyle = style;
-        this.config.STYLE.set(style.getStyleName());
+    public HudStyleProvider getStyleProvider(){
+        return this.styleProvider;
     }
 
     public String getUnlocalizedName() {
-        return unlocalizedName;
+        return this.unlocalizedName;
     }
 
     public void setWindowSize(int width, int height) {

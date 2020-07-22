@@ -3,7 +3,7 @@ package net.dark_roleplay.travellers_map.objects.screens.minimap.settings;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.dark_roleplay.travellers_map.util.BlendBlitHelper;
 import net.dark_roleplay.travellers_map.objects.huds.hud.Hud;
-import net.dark_roleplay.travellers_map.objects.huds.hud.HudStyle;
+import net.dark_roleplay.travellers_map.objects.style.HudStyle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.renderer.Tessellator;
@@ -23,7 +23,7 @@ public class StylesPanel extends ScrollPanel {
 	@Override
 	protected int getContentHeight() {
 		int height = 0;
-		for(HudStyle style : this.hud.STYLES.values())
+		for(HudStyle style : this.hud.getStyleProvider().getStyles())
 			height += style.getHeight() + spacing;
 		return height;
 	}
@@ -31,7 +31,7 @@ public class StylesPanel extends ScrollPanel {
 	@Override
 	protected void drawPanel(MatrixStack matrix, int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY) {
 		int offset = 5;
-		for(HudStyle style : this.hud.STYLES.values()){
+		for(HudStyle style : this.hud.getStyleProvider().getStyles()){
 			int elemTop = (int)(this.top + offset - this.scrollDistance);
 			offset += style.getHeight() + spacing;
 			if(elemTop + style.getHeight() < this.top || elemTop > this.top + this.height) continue;
@@ -50,13 +50,13 @@ public class StylesPanel extends ScrollPanel {
 	@Override
 	protected boolean clickPanel(double mouseX, double mouseY, int button) {
 		int offset = 5;
-		for(HudStyle style : this.hud.STYLES.values()) {
+		for(HudStyle style : this.hud.getStyleProvider().getStyles()) {
 			int elemTop = (int) (this.top + offset - this.scrollDistance);
 			offset += style.getHeight() + spacing;
 			if (elemTop + style.getHeight() < this.top || elemTop > this.top + this.height) continue;
 
 			if(mouseX >= this.left && mouseX <= this.right  - 6 && mouseY >= elemTop - 2 && mouseY <= elemTop + style.getHeight() + 2){
-				this.hud.setStyle(style);
+				this.hud.getStyleProvider().setActiveStyle(style);
 				Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 				System.out.println(style.getStyleName());
 				return true;

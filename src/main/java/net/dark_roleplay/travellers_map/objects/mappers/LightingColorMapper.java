@@ -32,8 +32,8 @@ public class LightingColorMapper extends Mapper {
 		BlockPos.Mutable pos = new BlockPos.Mutable();
 		BlockPos.Mutable fluidPos = new BlockPos.Mutable();
 		int x = chunkPos.x * 16, z = chunkPos.z * 16;
-		for(int x2 = x; x2 < x + 16; x2++){
-			for(int z2 = z; z2 < z + 16; z2++){
+		for(int i = 0, x2 = x; i < 16; i++, x2++){
+			for(int j = 0, z2 = z; j < 16; j++, z2++){
 				int y = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE, x2, z2);
 				BlockState firstBlock = MapperUtil.getFirstMappableBlock(world, pos.setPos(x2, y, z2), y, 0);
 
@@ -45,7 +45,7 @@ public class LightingColorMapper extends Mapper {
 					int brightness;
 					if(!firstBlock.getFluidState().isEmpty() && firstBlock.getFluidState().getFluid() == Fluids.WATER){
 						brightness = 2;
-						boolean isPrimary = (x2 + z2) % 2 == 1;
+						boolean isPrimary = (i + j) % 2 == 1;
 
 						int depth = MapperUtil.getFluidDepth(world, fluidPos.setPos(pos));
 						if(depth >= 10 || (depth >= 7 && isPrimary))
