@@ -13,7 +13,7 @@ import net.minecraftforge.client.gui.ScrollPanel;
 
 public class MinimapSettingsScreen extends Screen {
 
-	private ScrollPanel stylePanel;
+	//private ScrollPanel stylePanel;
 	private Screen parentScreen;
 	private MinimapMover mover;
 	private StyleChoser styleChoser;
@@ -40,17 +40,17 @@ public class MinimapSettingsScreen extends Screen {
 	@Override
 	protected void init() {
 		if(mover != null) mover.onClose();
-		stylePanel = new StylesPanel(this.minecraft, 5, 5, 118, this.height - 10, MinimapHUD.INSTANCE);
+		//stylePanel = new StylesPanel(this.minecraft, 5, 5, 118, this.height - 10, MinimapHUD.INSTANCE);
 		this.addButton(mover = new MinimapMover(MinimapHUD.INSTANCE));
 		this.addButton(new SidePanelButton(-2, (this.height - 23) / 2, isStlyeListOpen, btn -> {
 			if(isStlyeListOpen.get()){
-				this.children.add(stylePanel);
+				//this.children.add(stylePanel);
 				this.addListener(styleChoser);
-				btn.x = 125;
+				//btn.x = 125;
 			}else{
-				this.buttons.remove(stylePanel);
+				//this.buttons.remove(stylePanel);
 				this.children.remove(styleChoser);
-				btn.x = -2;
+				//btn.x = -2;
 			}
 		}));
 	}
@@ -59,14 +59,15 @@ public class MinimapSettingsScreen extends Screen {
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float delta) {
 		//this.renderDirtBackground(0);
 
-		super.render(matrix, mouseX, mouseY, delta);
-
 		if(isStlyeListOpen.get()){
+			mover.visible = false;
 			this.styleChoser.render(matrix, mouseX, mouseY, delta);
 			Minecraft.getInstance().getTextureManager().bindTexture(FullMapScreen.FULL_MAP_TEXTURES);
-			blit(matrix, 0, 0, 128, this.height, 0, 0, 128, 256, 256, 256);
-			stylePanel.render(matrix, mouseX, mouseY, delta);
+			//blit(matrix, 0, 0, 128, this.height, 0, 0, 128, 256, 256, 256);
+			//stylePanel.render(matrix, mouseX, mouseY, delta);
 		}
+		super.render(matrix, mouseX, mouseY, delta);
+		mover.visible = true;
 	}
 
 	@Override

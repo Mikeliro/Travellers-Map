@@ -76,6 +76,7 @@ public class FullMapScreen extends Screen {
 
         MapRenderer.renderMap(matrix, mapRenderInfo, MapType.FULL_MAP, false, delta);
 
+        Minecraft.getInstance().getTextureManager().bindTexture(FULL_MAP_TEXTURES);
         if(isWaypointListOpen.get()){
             blit(matrix, 0, 0, 128, this.height, 0, 0, 128, 256, 256, 256);
             scrollPanel.render(matrix, mouseX, mouseY, delta);
@@ -118,8 +119,7 @@ public class FullMapScreen extends Screen {
         double worldZ = playerPos.getZ() + (( mouseY - (this.height/2)) / zoomLevels[currentZoomLevel]);
         xOffset = 0;
         zOffset = 0;
-        Minecraft.getInstance().player.sendChatMessage("/tp " + worldX + " 255 " + worldZ);
-        System.out.println(worldX  + " " + worldZ);
+        //Minecraft.getInstance().player.sendChatMessage("/tp " + worldX + " 255 " + worldZ);
         return true;
     }
 
