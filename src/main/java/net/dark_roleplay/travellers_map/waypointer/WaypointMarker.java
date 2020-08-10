@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.Set;
+
 public class WaypointMarker {
 
     private String internalName;
@@ -42,5 +44,12 @@ public class WaypointMarker {
 
     public ResourceLocation getMapIconTint(){
         return mapIconColored;
+    }
+
+    public void gatherTextures(Set<ResourceLocation> textures){
+        if(compassIcon != null) textures.add(compassIcon);
+        if(compassIconTint != null) textures.add(compassIconTint);
+        if(mapIcon != null) textures.add(mapIcon);
+        if(mapIconColored != null) textures.add(mapIconColored);
     }
 }

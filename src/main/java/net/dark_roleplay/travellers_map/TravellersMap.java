@@ -4,6 +4,7 @@ import net.dark_roleplay.travellers_map.util.MapManager;
 import net.dark_roleplay.travellers_map.configs.ClientConfig;
 import net.dark_roleplay.travellers_map.handler.TravellersKeybinds;
 import net.dark_roleplay.travellers_map.listeners.ResourceReloadListener;
+import net.dark_roleplay.travellers_map.waypointer.WaypointSpriteAtlasHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -31,6 +32,8 @@ public class TravellersMap {
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> ResourceReloadListener::run);
 
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(WaypointSpriteAtlasHelper::clientSetup);
+
 	}
 
 	public void clientSetup(FMLClientSetupEvent event) {

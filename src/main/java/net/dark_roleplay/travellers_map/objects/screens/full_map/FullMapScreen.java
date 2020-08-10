@@ -10,6 +10,7 @@ import net.dark_roleplay.travellers_map.objects.screens.minimap.settings.Minimap
 import net.dark_roleplay.travellers_map.objects.screens.waypoints.WayPointCreationScreen;
 import net.dark_roleplay.travellers_map.objects.screens.waypoints.WaypointScrollPanel;
 import net.dark_roleplay.travellers_map.rendering.MapRenderer;
+import net.dark_roleplay.travellers_map.waypointer.WaypointSpriteAtlasHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
